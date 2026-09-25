@@ -1,0 +1,129 @@
+{
+  "scope": "Two repeats of a revised development setup, not a policy ablation or new independent issue",
+  "plan": "cookie-v2-plan-001.json",
+  "plan_sha256": "18a9b3841a40fefe8456d4941e768268d27d6cf1c99696116d467de733f731b1",
+  "frozen_files_unchanged": true,
+  "runs": [
+    {
+      "batch": "repo-cookie-v2-submit-a",
+      "completion": {
+        "state": "verified_submitted",
+        "patch_verified": true,
+        "agent_submitted": true,
+        "agent_exit": "Submitted",
+        "verification_returncode": 0
+      },
+      "api_calls": 24,
+      "rejected_responses": 0,
+      "truncated_responses": 0,
+      "pruned_requests": 16,
+      "submission_aware_notices": 3,
+      "final_action": "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT",
+      "verification": {
+        "output": "test_cookie_metadata_survives_prepared_copy (__main__.CookieContract) ... /workspace/requests/models.py:169: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\n  if isinstance(hook, collections.Callable):\nok\ntest_empty_and_absent_cookiejar (__main__.CookieContract) ... ok\ntest_requests_cookie_objects_are_independent (__main__.CookieContract) ... ok\ntest_scope_and_request_fields_preserved (__main__.CookieContract) ... ok\ntest_standard_cookie_objects_are_independent (__main__.CookieContract) ... ok\ntest_standard_cookiejar_issue_reproduction (__main__.CookieContract) ... ok\ntest_standard_jar_policy_preserved (__main__.CookieContract) ... ok\ntest_subclass_required_constructor_and_state (__main__.CookieContract) ... ok\ntest_update_does_not_share_cookie_objects (__main__.CookieContract) ... ok\ntest_update_preserves_rfc2109 (__main__.CookieContract) ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 0.015s\n\nOK\n",
+        "returncode": 0,
+        "exception_info": ""
+      },
+      "estimated_no_cache_cny": 0.09306656,
+      "unknown_cost_requests": 0,
+      "elapsed_seconds": 92.562,
+      "evidence_sha256": {
+        "trajectory.json": "9e7d38efb228cb84ed8ccff7a4cbdcf3b2bcaf26cedbefea9a7dfc0fa786c071",
+        "patch.diff": "4d943d257e29cee045a8c20f746f93213175550686ce456f4d9197a184b256a2",
+        "requests.json": "0bc55758b50f5b7b9ec9c7228b40286b9c80a3ca80fd85018f6aaa105f73911c",
+        "result.json": "693fc15c9345de41ce6b4815d9cbbde6124a219e1abafd7bb07aee185a65ade4"
+      }
+    },
+    {
+      "batch": "repo-cookie-v2-submit-b",
+      "completion": {
+        "state": "failed_unsubmitted",
+        "patch_verified": false,
+        "agent_submitted": false,
+        "agent_exit": "LimitsExceeded",
+        "verification_returncode": 1
+      },
+      "api_calls": 24,
+      "rejected_responses": 1,
+      "truncated_responses": 1,
+      "pruned_requests": 16,
+      "submission_aware_notices": 3,
+      "final_action": "cd /workspace && { python reproduce_issue.py > /tmp/r.log 2>&1 && python -c \"\nimport copy, requests.cookies as rc, requests.models as m\nfrom http.cookiejar import CookieJar, DefaultCookiePolicy, LoadError\ncj=CookieJar(); cj.set_cookie(rc.create_cookie('a','1',domain='example.com',path='/x'))\nclass Sub(CookieJar):\n    def __init__(self,policy=None,extra=None):\n        super().__init__(policy); self.extra=extra\nfor jar in (cj, rc.RequestsCookieJar({'z':'9'}), Sub(DefaultCookiePolicy(),extra='E')):\n    c=m.cookiecopy(jar)\n    assert len(list(c))==len(list(jar)) and all(x is not y for x,y in zip(jar,c)), jar\n    if isinstance(jar,Sub): assert type(c) is Sub and getattr(c,'policy',None) is jar.policy\np=m.PreparedRequest(); p.method='GET'; p.url='http://example.com'; p.headers=m.CaseInsensitiveDict({'X':'Y'})\np._cookies=cj; p.hooks={'response':[]}; p.prepare_content(b'body')\nq=p.copy()\nassert q.headers['X']=='Y' and q.body==b'body' and q.method=='GET' and q.url==p.url\nassert [ (c.name,c.value,c.domain,c.path) for c in q._cookies ]==[ (c.name,c.value,c.domain,c.path) for c in cj ]\nassert all(a is not b for a,b in zip(cj,q._cookies))\nd={'k':'v'}; rj=rc.RequestsCookieJar(); rj.update(rc.dict_from_cookiejar(d) and rc.cookiejar_from_dict(d)); rj['k']='changed'; assert d['k']=='v'\nprint('ALL OK')\n\"; [ $? -eq 0 ] && echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT || { echo FAILED; cat /tmp/r.log; exit 1; }; }",
+      "verification": {
+        "output": "test_cookie_metadata_survives_prepared_copy (__main__.CookieContract) ... /workspace/requests/models.py:169: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\n  if isinstance(hook, collections.Callable):\nERROR\ntest_empty_and_absent_cookiejar (__main__.CookieContract) ... ERROR\ntest_requests_cookie_objects_are_independent (__main__.CookieContract) ... ERROR\ntest_scope_and_request_fields_preserved (__main__.CookieContract) ... ERROR\ntest_standard_cookie_objects_are_independent (__main__.CookieContract) ... ERROR\ntest_standard_cookiejar_issue_reproduction (__main__.CookieContract) ... FAIL\ntest_standard_jar_policy_preserved (__main__.CookieContract) ... ERROR\ntest_subclass_required_constructor_and_state (__main__.CookieContract) ... ERROR\ntest_update_does_not_share_cookie_objects (__main__.CookieContract) ... ok\ntest_update_preserves_rfc2109 (__main__.CookieContract) ... ok\n\n======================================================================\nERROR: test_cookie_metadata_survives_prepared_copy (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 109, in test_cookie_metadata_survives_prepared_copy\n    copied = list(original.copy()._cookies)[0]\n  File \"/workspace/requests/models.py\", line 328, in copy\n    p.prepare_content(self.body)\nAttributeError: 'PreparedRequest' object has no attribute 'prepare_content'\n\n======================================================================\nERROR: test_empty_and_absent_cookiejar (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/requests/cookies.py\", line 477, in cookiecopy\n    policy = cj.policy\nAttributeError: 'CookieJar' object has no attribute 'policy'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 60, in test_empty_and_absent_cookiejar\n    copied = prepared.copy()\n  File \"/workspace/requests/models.py\", line 325, in copy\n    p._cookies = cookiecopy(self._cookies)\n  File \"/workspace/requests/cookies.py\", line 481, in cookiecopy\n    return cj.copy()\nAttributeError: 'CookieJar' object has no attribute 'copy'\n\n======================================================================\nERROR: test_requests_cookie_objects_are_independent (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 35, in test_requests_cookie_objects_are_independent\n    copied = original.copy()\n  File \"/workspace/requests/models.py\", line 328, in copy\n    p.prepare_content(self.body)\nAttributeError: 'PreparedRequest' object has no attribute 'prepare_content'\n\n======================================================================\nERROR: test_scope_and_request_fields_preserved (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 48, in test_scope_and_request_fields_preserved\n    copied = original.copy()\n  File \"/workspace/requests/models.py\", line 328, in copy\n    p.prepare_content(self.body)\nAttributeError: 'PreparedRequest' object has no attribute 'prepare_content'\n\n======================================================================\nERROR: test_standard_cookie_objects_are_independent (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/requests/cookies.py\", line 477, in cookiecopy\n    policy = cj.policy\nAttributeError: 'CookieJar' object has no attribute 'policy'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 27, in test_standard_cookie_objects_are_independent\n    copied = original.copy()\n  File \"/workspace/requests/models.py\", line 325, in copy\n    p._cookies = cookiecopy(self._cookies)\n  File \"/workspace/requests/cookies.py\", line 481, in cookiecopy\n    return cj.copy()\nAttributeError: 'CookieJar' object has no attribute 'copy'\n\n======================================================================\nERROR: test_standard_jar_policy_preserved (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/requests/cookies.py\", line 477, in cookiecopy\n    policy = cj.policy\nAttributeError: 'CookieJar' object has no attribute 'policy'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 74, in test_standard_jar_policy_preserved\n    copied = original.copy()\n  File \"/workspace/requests/models.py\", line 325, in copy\n    p._cookies = cookiecopy(self._cookies)\n  File \"/workspace/requests/cookies.py\", line 481, in cookiecopy\n    return cj.copy()\nAttributeError: 'CookieJar' object has no attribute 'copy'\n\n======================================================================\nERROR: test_subclass_required_constructor_and_state (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/requests/cookies.py\", line 477, in cookiecopy\n    policy = cj.policy\nAttributeError: 'LabelledJar' object has no attribute 'policy'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 94, in test_subclass_required_constructor_and_state\n    copied = original.copy()\n  File \"/workspace/requests/models.py\", line 325, in copy\n    p._cookies = cookiecopy(self._cookies)\n  File \"/workspace/requests/cookies.py\", line 481, in cookiecopy\n    return cj.copy()\nAttributeError: 'LabelledJar' object has no attribute 'copy'\n\n======================================================================\nFAIL: test_standard_cookiejar_issue_reproduction (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/requests/cookies.py\", line 477, in cookiecopy\n    policy = cj.policy\nAttributeError: 'CookieJar' object has no attribute 'policy'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 19, in test_standard_cookiejar_issue_reproduction\n    copied = original.copy()\n  File \"/workspace/requests/models.py\", line 325, in copy\n    p._cookies = cookiecopy(self._cookies)\n  File \"/workspace/requests/cookies.py\", line 481, in cookiecopy\n    return cj.copy()\nAttributeError: 'CookieJar' object has no attribute 'copy'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 21, in test_standard_cookiejar_issue_reproduction\n    self.fail(str(error))\nAssertionError: 'CookieJar' object has no attribute 'copy'\n\n----------------------------------------------------------------------\nRan 10 tests in 0.013s\n\nFAILED (failures=1, errors=7)\n",
+        "returncode": 1,
+        "exception_info": ""
+      },
+      "estimated_no_cache_cny": 0.09485256,
+      "unknown_cost_requests": 0,
+      "elapsed_seconds": 110.969,
+      "evidence_sha256": {
+        "trajectory.json": "34f804bd19e496a5950ccf22edce9174ebb72e11a7786ac5bc1902dfb5cffdda",
+        "patch.diff": "12f1faf71dd094ed486dd34cb017824da0fce34761e4fcbbe3d2d000dc184713",
+        "requests.json": "321764148c86d9e703471e602e2a8c04d90567a2be7cfde3202045c52172bc61",
+        "result.json": "87d660a1116d4ed9cc048a62f7a839921f19b35c32b417ca30aa99432f990a74"
+      }
+    }
+  ],
+  "repeat_comparison": {
+    "scope": "Single run per development task per arm; not a benchmark or causal estimate.",
+    "controls_match": true,
+    "intervention_fields": [],
+    "arms": [
+      {
+        "batch": "repo-cookie-v2-submit-a",
+        "policy": "recovery-submit",
+        "max_output_tokens": 1024,
+        "context_policy": "recent-turns",
+        "verified": 1,
+        "submitted": 1,
+        "calls": 24,
+        "rejected_actions": 0,
+        "estimated_known_no_cache_cny": 0.09306656,
+        "unknown_cost_requests": 0,
+        "tasks": [
+          {
+            "task": "requests-2527-v2",
+            "verified_success": true,
+            "agent_exit": "Submitted",
+            "api_calls": 24,
+            "format_error_count": 0
+          }
+        ]
+      },
+      {
+        "batch": "repo-cookie-v2-submit-b",
+        "policy": "recovery-submit",
+        "max_output_tokens": 1024,
+        "context_policy": "recent-turns",
+        "verified": 0,
+        "submitted": 0,
+        "calls": 24,
+        "rejected_actions": 1,
+        "estimated_known_no_cache_cny": 0.09485256,
+        "unknown_cost_requests": 0,
+        "tasks": [
+          {
+            "task": "requests-2527-v2",
+            "verified_success": false,
+            "agent_exit": "LimitsExceeded",
+            "api_calls": 24,
+            "format_error_count": 1
+          }
+        ]
+      }
+    ]
+  },
+  "totals": {
+    "api_calls": 48,
+    "estimated_no_cache_cny": 0.18791912,
+    "unknown_cost_requests": 0,
+    "verified_submitted": 1,
+    "budget": {
+      "limit_cny": "40",
+      "reserved_cny": "36.2",
+      "remaining_reservation_cny": "3.8",
+      "note": "Conservative planning reservations, not actual provider charges"
+    }
+  }
+}

@@ -62,7 +62,7 @@ class DmxModel:
         if max_calls not in (8, 12, 24):
             raise ValueError('Unsupported request limit')
         self.max_calls = max_calls
-        if policy not in ('baseline', 'recovery', 'recovery-budget'):
+        if policy not in ('baseline', 'recovery', 'recovery-budget', 'recovery-submit'):
             raise ValueError('Unknown policy')
         self.policy = policy
 

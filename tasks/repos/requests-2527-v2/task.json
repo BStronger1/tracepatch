@@ -1,0 +1,15 @@
+{
+  "id": "requests-2527-v2",
+  "repository": "https://github.com/psf/requests",
+  "issue": "https://github.com/psf/requests/issues/2527",
+  "reference_url": "https://github.com/psf/requests/commit/36093e69c70b9b24dd1e007befa35ad891313f51",
+  "base_commit": "18e678c1f897d5bcc934f0b1d5788afee9c37ada",
+  "reference_commit": "36093e69c70b9b24dd1e007befa35ad891313f51",
+  "image": "python@sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b",
+  "evaluation": "expanded custom development regression; not a new independent issue or official benchmark",
+  "expected_failure": "test_standard_cookiejar_issue_reproduction",
+  "verifier_test_count": 10,
+  "instruction": "Fix reliable copying of cookies in prepared requests. A standard-library CookieJar has no copy method, so PreparedRequest.copy fails. Copies and RequestsCookieJar.update must also avoid sharing mutable Cookie objects with the source. Preserve cookie domains, paths, values and unrelated prepared-request behavior. Inspect the repository and implement a compatible fix. Only existing Python files under requests/ will be exported. No network is available. You may write local tests; do not modify upstream tests. Submit after focused checks pass. Preserve all Cookie flags and metadata when copying or updating, and preserve the type and configured policy of standard CookieJar subclasses. A subclass may require constructor arguments. Do not reset configured state.",
+  "parent_task": "requests-2527",
+  "evaluation_version": 2
+}

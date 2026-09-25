@@ -1,0 +1,33 @@
+{
+  "scope": "Retrospective independent verification; original results unchanged; no API calls",
+  "batch": "repo-cookie-out512-b",
+  "original_task": "requests-2527",
+  "evaluation_task": "requests-2527-v2",
+  "evaluation_version": 2,
+  "original_completion": {
+    "state": "verified_unsubmitted",
+    "patch_verified": true,
+    "agent_submitted": false,
+    "agent_exit": "LimitsExceeded",
+    "verification_returncode": 0
+  },
+  "reevaluated_completion": {
+    "state": "verified_unsubmitted",
+    "patch_verified": true,
+    "agent_submitted": false,
+    "agent_exit": "LimitsExceeded",
+    "verification_returncode": 0
+  },
+  "verification": {
+    "output": "test_cookie_metadata_survives_prepared_copy (__main__.CookieContract) ... /workspace/requests/models.py:169: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\n  if isinstance(hook, collections.Callable):\nok\ntest_empty_and_absent_cookiejar (__main__.CookieContract) ... ok\ntest_requests_cookie_objects_are_independent (__main__.CookieContract) ... ok\ntest_scope_and_request_fields_preserved (__main__.CookieContract) ... ok\ntest_standard_cookie_objects_are_independent (__main__.CookieContract) ... ok\ntest_standard_cookiejar_issue_reproduction (__main__.CookieContract) ... ok\ntest_standard_jar_policy_preserved (__main__.CookieContract) ... ok\ntest_subclass_required_constructor_and_state (__main__.CookieContract) ... ok\ntest_update_does_not_share_cookie_objects (__main__.CookieContract) ... ok\ntest_update_preserves_rfc2109 (__main__.CookieContract) ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 0.011s\n\nOK\n",
+    "returncode": 0,
+    "exception_info": ""
+  },
+  "evidence_sha256": {
+    "original_result": "e7c93ee64d765e64c0bc2bdc05838f105cfa1f8c8aa6073b0f647b6f0584d55e",
+    "candidate_tree": "d02aba060dbc9c86bde479ad8dc42c528c972ffc00a741934c385a6185fc5265",
+    "patch": "861b66b9b116b01486f54a51a21258adb386979c3268349248adb55fdb2b4f01",
+    "task": "a5c5eb4c6b0a16907ffe3f6e92a79c84530d6435d0e6be2cae9125a55165ed3d",
+    "verifier": "e10d646c605c3c4a8c59db51992a74551438d342cc48e848d90420d1a057ecf8"
+  }
+}

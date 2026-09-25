@@ -65,7 +65,7 @@ def main():
     parser.add_argument('--batch', required=True)
     parser.add_argument('--task', choices=sorted(p.parent.name for p in (ROOT / 'tasks/repos').glob('*/task.json')),
                         default='requests-2317')
-    parser.add_argument('--policy', choices=('recovery', 'recovery-budget'), default='recovery-budget')
+    parser.add_argument('--policy', choices=('recovery', 'recovery-budget', 'recovery-submit'), default='recovery-budget')
     parser.add_argument('--verify-only', action='store_true')
     parser.add_argument('--context-policy', choices=('none', 'recent-turns'), default='none')
     parser.add_argument('--visible-reproducer', action='store_true')

@@ -1,0 +1,27 @@
+{
+  "frozen_at_utc": "2026-09-25T18:54:56.191991+00:00",
+  "task": "requests-2527-v2",
+  "scope": "Two repeats of a revised development setup, not a policy ablation or new independent issue",
+  "policy": "recovery-submit",
+  "max_output_tokens": 1024,
+  "max_calls": 24,
+  "order": [
+    "repo-cookie-v2-submit-a",
+    "repo-cookie-v2-submit-b"
+  ],
+  "file_hashes": {
+    "scripts/run-repo.py": "57cf0d01cf2a50382b29fa175fcc596c443e87b847726ba85b5e1ad8ba2f6164",
+    "scripts/run-smoke.py": "44dc672734b219acdd9f0b7809d48c7c0d4f9437d8c370649cb699ac9f556ab1",
+    "scripts/compare-runs.py": "4586af8dc9a1789d74e28266460f384696727f5a024332d676f3dbc7d4fa1c87",
+    "docs/VERSIONED_EVALUATION.md": "48e02a821c4c771a508ef3595dd6007852c284d6aa5ed5c9cf2cc9a4dde4f7f2",
+    "src/tracepatch/budget.py": "1b01eec313421e8f457c54c37fd34924c5ab98df8ab045ea1788d9486a2724bf",
+    "src/tracepatch/actions.py": "46e9a0e0ba16ffd4e24d021d88933b3ffd676e396234250d67e540a678130003",
+    "src/tracepatch/recovery.py": "1a98ce4a7d50b47f1878e69176a893db6a4e7650a2be72aa8f6d8f0e1079b939",
+    "src/tracepatch/lifecycle.py": "924ed1387360656fcbf5a077c3796db426074f541ca3079fd00edabfd3c66179",
+    "src/tracepatch/window.py": "4612cbba4b060863eae2a3a958af33a3d44ccdddc43dae2276585b7e71b8e706",
+    "src/tracepatch/toolcalling.py": "3b182f990998cdc8ff8a7744bf070b7cf63d296bb97c2518369a91309c950e9a",
+    "tasks/repos/requests-2527-v2/task.json": "a5c5eb4c6b0a16907ffe3f6e92a79c84530d6435d0e6be2cae9125a55165ed3d",
+    "tasks/repos/requests-2527-v2/verify.py": "e10d646c605c3c4a8c59db51992a74551438d342cc48e848d90420d1a057ecf8",
+    "tasks/repos/requests-2527-v2/reproduce_issue.py": "b90f3904845b77411e372de9b978f20fef6d05acd1731cfcad8b4e670937e7a3"
+  }
+}

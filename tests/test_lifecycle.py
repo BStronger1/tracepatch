@@ -3,6 +3,19 @@ from tracepatch.lifecycle import budget_notice, completion_status, prepare_messa
 
 
 class LifecycleTests(unittest.TestCase):
+    def test_submission_aware_guidance_preserves_original_policy(self):
+        messages = [{'role': 'user', 'content': 'task'}]
+        _, old = prepare_messages(messages, 11, 12, 'recovery-budget')
+        _, new = prepare_messages(messages, 11, 12, 'recovery-submit')
+        self.assertIn('&& echo', old)
+        self.assertNotIn('FIRST output line', old)
+        self.assertIn('FIRST output line', new)
+        self.assertIn('BOTH stdout and stderr', new)
+        self.assertIn('exit nonzero', new)
+        self.assertIn('separate bash call', new)
+        self.assertEqual(budget_notice(0, 12), budget_notice(0, 12, submission_aware=True))
+        self.assertEqual(messages, [{'role': 'user', 'content': 'task'}])
+
     def test_boundary_includes_current_call(self):
         self.assertIn('12 model calls remain INCLUDING', budget_notice(0, 12))
         self.assertIn('reserve a call', budget_notice(9, 12))

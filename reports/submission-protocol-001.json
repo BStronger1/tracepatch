@@ -1,0 +1,57 @@
+{
+  "scope": "Deterministic Docker protocol checks, no model calls or fix-quality claims",
+  "upstream_unchanged": true,
+  "cases": [
+    {
+      "case": "noisy_success_then_marker",
+      "command": "printf \"checks passed\\n\" && echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT",
+      "submitted": false,
+      "expected": false,
+      "output": {
+        "output": "checks passed\nCOMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT\n",
+        "returncode": 0,
+        "exception_info": ""
+      }
+    },
+    {
+      "case": "standalone_marker",
+      "command": "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT",
+      "submitted": true,
+      "expected": true,
+      "output": {
+        "note": "Pinned upstream raised Submitted"
+      }
+    },
+    {
+      "case": "captured_success",
+      "command": "if (printf \"checks passed\\n\"; printf \"warning\\n\" >&2) >/tmp/check.log 2>&1; then echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT; else cat /tmp/check.log; exit 1; fi",
+      "submitted": true,
+      "expected": true,
+      "output": {
+        "note": "Pinned upstream raised Submitted"
+      }
+    },
+    {
+      "case": "captured_failure",
+      "command": "if (printf \"check failed\\n\"; exit 7) >/tmp/check.log 2>&1; then echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT; else cat /tmp/check.log; exit 1; fi",
+      "submitted": false,
+      "expected": false,
+      "output": {
+        "output": "check failed\n",
+        "returncode": 1,
+        "exception_info": ""
+      }
+    },
+    {
+      "case": "marker_nonzero",
+      "command": "echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT; exit 1",
+      "submitted": false,
+      "expected": false,
+      "output": {
+        "output": "COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT\n",
+        "returncode": 1,
+        "exception_info": ""
+      }
+    }
+  ]
+}
