@@ -1,0 +1,6 @@
+{
+  "id": "job-queue",
+  "split": "development",
+  "source_files": ["config.py", "queue_store.py", "worker.py"],
+  "instruction": "Fix the local job queue across config.py, queue_store.py and worker.py. Read SPEC.md for the exact contract and run python test_visible.py from /workspace. Preserve public interfaces. Do not modify tests or SPEC.md. All edits must be in the three source files."
+}

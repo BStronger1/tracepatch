@@ -22,3 +22,9 @@ class RecoveryTests(unittest.TestCase):
         self.assertIn('No command', message)
         self.assertLess(len(message), 600)
         self.assertIn('COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT', recovery_feedback('missing_action'))
+
+    def test_missing_function_tag_seen_in_multifile_run(self):
+        # Minimal sanitized reproduction of the observed malformed wrapper.
+        text = '<tool_call>\n<parameter=command>\necho ok\n</parameter>\n</function>\n</tool_call>'
+        self.assertEqual(diagnose_action(text, 'stop'), 'malformed_tool_call')
+        self.assertIn('no tool-call XML', recovery_feedback('malformed_tool_call'))

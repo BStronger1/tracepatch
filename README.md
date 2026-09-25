@@ -18,6 +18,8 @@ Diagnose coding-agent failures, preserve evidence, and evaluate recovery with in
 
 3 个自建开发任务首次配对实验：基线验证通过 2/3，恢复组 3/3；正常提交分别 1/3、2/3，调用分别 21、22 次。任务少、未重复且已用于开发，不能推断通用提升。见 [完整报告](reports/dev-paired-003.md) 和 [复现说明](docs/REPRODUCE.md)。
 
+已新增 [三文件任务队列修复](docs/MULTIFILE.md)：基线未通过，恢复组通过全部 8 组独立测试，但仍因步数耗尽未正常提交。见 [多文件对照报告](reports/multifile-paired-001.md)。此任务也是自建开发题，不是真实企业 issue 或独立保留集。18 项离线测试覆盖诊断、预算、证据留存及任务验证器。
+
 ## 本地运行（Python 3.12+，无需 API）
 
 ```powershell
@@ -36,4 +38,4 @@ python -m unittest discover -s tests -v
 
 第三阶段已新增带预算账本的 `scripts/run-dev.py`。阅读 [第三课](docs/LESSON_03.md) 和 [首批开发集报告](reports/dev-baseline-002.md)：3 个补丁通过，2 个正常提交，发现 4 个动作格式问题。该开发集很小且已参与调试，不能当作泛化成绩。未来付费实验统一从带账本的入口运行，不直接重跑旧教学脚本。
 
-本项目实现诊断与恢复策略。Agent 底座来自 [mini-swe-agent](https://github.com/SWE-agent/mini-swe-agent)。Harbor 集成、多文件真实仓库评测和停滞恢复尚未实现。见 [上游归属](THIRD_PARTY_NOTICES.md)、[贡献指南](CONTRIBUTING.md) 与 [MIT License](LICENSE)。
+本项目实现诊断与恢复策略。Agent 底座来自 [mini-swe-agent](https://github.com/SWE-agent/mini-swe-agent)。已支持清单内多个 Python 源文件的导出与独立验证；真实开源仓库 issue 评测、Harbor 集成和停滞恢复尚未实现。见 [上游归属](THIRD_PARTY_NOTICES.md)、[贡献指南](CONTRIBUTING.md) 与 [MIT License](LICENSE)。

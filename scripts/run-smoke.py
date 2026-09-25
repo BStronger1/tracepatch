@@ -45,12 +45,15 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
 
 class DmxModel:
     """Thin adapter; fixed model, no retries, no secrets in serialization."""
-    def __init__(self, config, key, *, run_dir=None, ledger=None, policy='baseline'):
+    def __init__(self, config, key, *, run_dir=None, ledger=None, policy='baseline', max_calls=8):
         self.config = config
         self.key = key
         self.calls = []
         self.run_dir = run_dir or RUN
         self.ledger = ledger
+        if max_calls not in (8, 12):
+            raise ValueError('Unsupported request limit')
+        self.max_calls = max_calls
         if policy not in ('baseline', 'recovery'):
             raise ValueError('Unknown policy')
         self.policy = policy
@@ -66,7 +69,7 @@ class DmxModel:
                          'currency': 'CNY', 'request_records': self.calls}}
 
     def query(self, messages):
-        if len(self.calls) >= 8:
+        if len(self.calls) >= self.max_calls:
             raise RuntimeError('Smoke request limit reached')
         wire = [{'role': m['role'], 'content': m.get('content', '')} for m in messages]
         payload = json.dumps({'model': self.config['model'], 'messages': wire,

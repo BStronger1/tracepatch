@@ -33,13 +33,24 @@ def save(path, data):
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 
 
-def verify(task, source):
+def source_files(task):
+    files = json.loads((task / 'task.json').read_text()).get('source_files', ['solution.py'])
+    if not files or len(set(files)) != len(files) or any(not re.fullmatch(r'[a-z_]+\.py', f) for f in files):
+        raise ValueError('Source allowlist must contain unique plain Python filenames')
+    return files
+
+
+def verify(task, source, replacement=None):
     env = runtime.WindowsDockerEnvironment(image=IMAGE, executable=runtime.DOCKER,
         cwd='/workspace', timeout=20, container_timeout='90',
         run_args=['--rm', '--network', 'none', '--memory', '256m', '--cpus', '1',
                   '--pids-limit', '64', '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges'])
     try:
-        docker('cp', str(source), env.container_id + ':/workspace/solution.py')
+        for name in source_files(task):
+            path = source / name if source.is_dir() else source
+            if replacement and name == replacement:
+                path = task / 'workspace' / name
+            docker('cp', str(path), env.container_id + ':/workspace/' + name)
         docker('cp', str(task / 'verify.py'), env.container_id + ':/workspace/verify.py')
         result = env.execute({'command': 'python -I -c "import sys;sys.path.insert(0,\'/workspace\');import runpy;runpy.run_path(\'/workspace/verify.py\',run_name=\'__main__\')"'})
         return result
@@ -52,7 +63,16 @@ def main():
     parser.add_argument('--batch', required=True)
     parser.add_argument('--verify-only', action='store_true')
     parser.add_argument('--policy', choices=('baseline', 'recovery'), default='baseline')
+    parser.add_argument('--suite', choices=('dev', 'multifile'), default='dev')
     args = parser.parse_args()
+    task_ids = TASK_IDS if args.suite == 'dev' else ('job-queue',)
+    max_calls = 8 if args.suite == 'dev' else 12
+    system = SYSTEM if args.suite == 'dev' else (
+        'You fix Python code in /workspace. Read SPEC.md, inspect the source files, edit only allowed source files, '
+        'and run visible tests. You have at most 12 model turns, including inspection, edits and submission. '
+        'Each reply must contain exactly one complete fenced bash action. Each command runs in a new shell; '
+        'use cd /workspace or absolute paths. No network. Do not edit tests or SPEC.md. '
+        'When done issue: echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT')
     if not re.fullmatch(r'dev-[a-z0-9-]{1,40}', args.batch):
         parser.error('Use a batch ID such as dev-baseline-001')
     config = json.loads((ROOT / 'configs/model.json').read_text())
@@ -71,25 +91,30 @@ def main():
     shutil.copyfile(ROOT / 'src/tracepatch/recovery.py', batch / 'recovery.snapshot.py')
     save(batch / 'config.json', config)
     manifest = {'split': 'development', 'benchmark_result': False, 'upstream_commit': commit,
-                'image': IMAGE, 'system_prompt': SYSTEM, 'policy': args.policy,
+                'image': IMAGE, 'system_prompt': system, 'policy': args.policy, 'suite': args.suite,
                 'reject_provider_truncation': True,
-                'model': config['model'], 'max_calls_per_task': 8, 'max_output_tokens': 512,
+                'model': config['model'], 'max_calls_per_task': max_calls, 'max_output_tokens': 512,
                 'enable_thinking': False, 'observation_char_limit': 6000,
                 'input_json_byte_limit': 24000, 'tasks': {}}
-    for task_id in TASK_IDS:
-        task = ROOT / 'tasks/dev' / task_id
+    for task_id in task_ids:
+        task = ROOT / 'tasks' / args.suite / task_id
         manifest['tasks'][task_id] = {
             p.relative_to(task).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
             for p in sorted(task.rglob('*')) if p.is_file() and '__pycache__' not in p.parts}
     save(batch / 'manifest.json', manifest)
     preflight = {}
-    for task_id in TASK_IDS:
-        task = ROOT / 'tasks/dev' / task_id
-        broken = verify(task, task / 'workspace/solution.py')
-        oracle = verify(task, task / 'oracle.py')
+    for task_id in task_ids:
+        task = ROOT / 'tasks' / args.suite / task_id
+        reference = task / ('oracle.py' if args.suite == 'dev' else 'oracle')
+        broken = verify(task, task / 'workspace')
+        oracle = verify(task, reference)
         expected_failure = 'ValueError: expected three fields' if task_id == 'long-log' else 'AssertionError'
         passed = broken['returncode'] == 1 and expected_failure in broken['output'] and oracle['returncode'] == 0
         preflight[task_id] = {'broken': broken, 'oracle': oracle, 'valid': passed}
+        if args.suite == 'multifile':
+            mutations = {name: verify(task, reference, replacement=name) for name in source_files(task)}
+            passed = passed and all(r['returncode'] == 1 and 'FAIL:' in r['output'] for r in mutations.values())
+            preflight[task_id].update(single_module_regressions=mutations, valid=passed)
         save(batch / 'preflight.json', preflight)
         print(f'Preflight {task_id}: {passed}', flush=True)
         if not passed:
@@ -102,12 +127,12 @@ def main():
     if not re.fullmatch(r'sk-[A-Za-z0-9_-]{16,}', key):
         raise RuntimeError('No valid key')
     summaries = []
-    for task_id in TASK_IDS:
-        task = ROOT / 'tasks/dev' / task_id
+    for task_id in task_ids:
+        task = ROOT / 'tasks' / args.suite / task_id
         task_config = json.loads((task / 'task.json').read_text())
         run = batch / f'{args.batch}--{task_id}'
         run.mkdir()
-        model = runtime.DmxModel(config, key, run_dir=run, ledger=ledger, policy=args.policy)
+        model = runtime.DmxModel(config, key, run_dir=run, ledger=ledger, policy=args.policy, max_calls=max_calls)
         env = runtime.WindowsDockerEnvironment(image=IMAGE, executable=runtime.DOCKER,
             cwd='/workspace', timeout=20, container_timeout='600',
             run_args=['--rm', '--network', 'none', '--memory', '512m', '--cpus', '1',
@@ -117,23 +142,25 @@ def main():
         save(run / 'result.json', result)
         try:
             docker('cp', str(task / 'workspace') + '/.', env.container_id + ':/workspace')
-            agent = runtime.DefaultAgent(model, env, step_limit=8, cost_limit=0.8,
+            agent = runtime.DefaultAgent(model, env, step_limit=max_calls, cost_limit=max_calls * 0.1,
                 wall_time_limit_seconds=300, output_path=run / 'trajectory.json',
-                system_template=SYSTEM, instance_template='{{task}}')
+                system_template=system, instance_template='{{task}}')
             exit_data = agent.run(task_config['instruction'])
             result['agent_exit'] = exit_data.get('exit_status')
-            docker('cp', env.container_id + ':/workspace/solution.py', str(run / 'solution.py'))
+            for name in source_files(task):
+                docker('cp', env.container_id + ':/workspace/' + name, str(run / name))
             result['status'] = 'agent_finished'
         except Exception as error:
             result.update(status='execution_error', error_type=type(error).__name__)
         finally:
             env.cleanup()
-        if (run / 'solution.py').exists():
-            result['verification'] = verify(task, run / 'solution.py')
+        if all((run / name).is_file() and not (run / name).is_symlink() for name in source_files(task)):
+            result['verification'] = verify(task, run)
             result['verified_success'] = result['verification']['returncode'] == 0
             result['status'] = 'verified'
-            patch = ''.join(difflib.unified_diff((task / 'workspace/solution.py').read_text().splitlines(True),
-                (run / 'solution.py').read_text().splitlines(True), fromfile='a/solution.py', tofile='b/solution.py'))
+            patch = ''.join(''.join(difflib.unified_diff((task / 'workspace' / name).read_text().splitlines(True),
+                (run / name).read_text().splitlines(True), fromfile='a/' + name, tofile='b/' + name))
+                for name in source_files(task))
             (run / 'patch.diff').write_text(patch, encoding='utf-8')
         if (run / 'trajectory.json').exists():
             trajectory = json.loads((run / 'trajectory.json').read_text())
@@ -146,7 +173,7 @@ def main():
             budget=ledger.summary())
         save(run / 'result.json', result)
         summaries.append(result)
-        save(batch / 'summary.json', {'tasks': summaries, 'planned_tasks': list(TASK_IDS), 'budget': ledger.summary()})
+        save(batch / 'summary.json', {'tasks': summaries, 'planned_tasks': list(task_ids), 'budget': ledger.summary()})
         print(f"Task {task_id}: {result['status']}, success={result['verified_success']}, calls={len(model.calls)}", flush=True)
         if result['status'] == 'execution_error':
             print('Stopping batch for inspection. No automatic retry.', flush=True)
