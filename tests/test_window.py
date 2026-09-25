@@ -4,6 +4,20 @@ from tracepatch.window import request_payload
 
 
 class WindowTests(unittest.TestCase):
+    def test_output_limit_reaches_wire_and_rejects_unbudgeted_values(self):
+        messages = [{'role': 'system', 'content': 's'}, {'role': 'user', 'content': 't'}]
+        default, _ = request_payload('m', messages)
+        explicit, _ = request_payload('m', messages, max_output_tokens=512)
+        larger, _ = request_payload('m', messages, max_output_tokens=1024)
+        self.assertEqual(default, explicit)
+        a, b = json.loads(default), json.loads(larger)
+        self.assertEqual(a.pop('max_tokens'), 512)
+        self.assertEqual(b.pop('max_tokens'), 1024)
+        self.assertEqual(a, b)
+        for invalid in (True, 512.0, '1024', 0, 2048):
+            with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                request_payload('m', messages, max_output_tokens=invalid)
+
     def test_whole_turn_removal_preserves_task_and_latest_feedback(self):
         messages = [{'role': 'system', 'content': 'system'}, {'role': 'user', 'content': 'task'}]
         for i in range(4):

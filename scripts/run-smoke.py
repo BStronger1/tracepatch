@@ -22,7 +22,7 @@ sys.path.insert(0, str(ROOT / 'src'))
 from tracepatch.actions import parse_action
 from tracepatch.recovery import diagnose_action, recovery_feedback
 from tracepatch.lifecycle import prepare_messages
-from tracepatch.window import request_payload
+from tracepatch.window import request_payload, validate_output_limit
 from tracepatch.toolcalling import TOOL_OPTIONS, native_history, parse_tool_call
 from minisweagent.agents.default import DefaultAgent
 from minisweagent.environments.docker import DockerEnvironment
@@ -48,13 +48,14 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
 
 class DmxModel:
     """Thin adapter; fixed model, no retries, no secrets in serialization."""
-    def __init__(self, config, key, *, run_dir=None, ledger=None, policy='baseline', max_calls=8, context_policy='none', action_protocol='text'):
+    def __init__(self, config, key, *, run_dir=None, ledger=None, policy='baseline', max_calls=8, context_policy='none', action_protocol='text', max_output_tokens=512):
         self.config = config
         self.key = key
         self.calls = []
         self.run_dir = run_dir or RUN
         self.ledger = ledger
         self.context_policy = context_policy
+        self.max_output_tokens = validate_output_limit(max_output_tokens)
         if action_protocol not in ('text', 'native'):
             raise ValueError('Unknown action protocol')
         self.action_protocol = action_protocol
@@ -84,14 +85,16 @@ class DmxModel:
             if notice:
                 wire.append({'role': 'user', 'content': notice})
         payload, context_metadata = request_payload(self.config['model'], wire, self.context_policy,
-            tool_options=TOOL_OPTIONS if self.action_protocol == 'native' else None)
+            tool_options=TOOL_OPTIONS if self.action_protocol == 'native' else None,
+            max_output_tokens=self.max_output_tokens)
         # At quoted prices even input + cache creation per byte and full output
-        # fits within 0.1 CNY/request. Reserve 0.8 CNY for all 8 requests.
+        # plus up to 1024 output tokens fits within 0.1 CNY/request.
         record = {'index': len(self.calls) + 1, 'status': 'started',
                   'request_bytes': len(payload), 'reserved_cny': 0.1}
         record.update(calls_remaining_including_current=self.max_calls - len(self.calls), budget_notice=notice)
         record.update(context_metadata)
         record['action_protocol'] = self.action_protocol
+        record['max_output_tokens'] = self.max_output_tokens
         if self.ledger:
             self.ledger.reserve(f'{self.run_dir.name}:{record["index"]}')
         self.calls.append(record)
@@ -121,7 +124,7 @@ class DmxModel:
         record['estimated_no_cache_cny'] = (usage['prompt_tokens'] * pricing['input'] +
                                            usage['completion_tokens'] * pricing['output']) / 1e6
         self.save_calls()
-        if usage['completion_tokens'] > 512:
+        if usage['completion_tokens'] > self.max_output_tokens:
             raise RuntimeError('Provider exceeded requested output limit; stop')
         text = data['choices'][0]['message'].get('content') or ''
         finish_reason = data['choices'][0].get('finish_reason')
@@ -137,7 +140,7 @@ class DmxModel:
                             'extra': {'cost': record['estimated_no_cache_cny'], 'usage': usage, 'actions': [],
                                       'rejected_tool_calls': raw_message.get('tool_calls')}}
                 raise FormatError(rejected, {'role': 'user', 'content':
-                    'No command was executed. Call the bash function once with a complete JSON object containing only a nonempty command string. Do not write XML or fenced actions. Keep the command short enough for 512 output tokens.'})
+                    'No command was executed. Call the bash function once with a complete JSON object containing only a nonempty command string. Do not write XML or fenced actions. Keep the command short enough for the configured output limit.'})
             record.update(finish_reason=finish_reason, action_diagnosis='valid', policy=self.policy)
             self.save_calls()
             return {'role': 'assistant', 'content': raw_message.get('content'), 'tool_calls': [call],
@@ -158,7 +161,7 @@ class DmxModel:
         message = {'role': 'assistant', 'content': text, 'extra': extra}
         print(f"Model call {len(self.calls)}: {usage['prompt_tokens']} input / {usage['completion_tokens']} output tokens")
         if len(actions) != 1:
-            feedback = recovery_feedback(reason) if self.policy != 'baseline' else 'Return exactly one fenced bash action.'
+            feedback = recovery_feedback(reason, self.max_output_tokens) if self.policy != 'baseline' else 'Return exactly one fenced bash action.'
             raise FormatError(message, {'role': 'user', 'content': feedback})
         return message
 

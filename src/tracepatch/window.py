@@ -3,11 +3,18 @@ import hashlib
 import json
 
 
-def request_payload(model: str, messages: list[dict], policy: str = 'none', byte_limit: int = 24000, *, tool_options=None):
+def validate_output_limit(value):
+    if type(value) is not int or value not in (512, 1024):
+        raise ValueError('Output limit must be 512 or 1024 tokens')
+    return value
+
+
+def request_payload(model: str, messages: list[dict], policy: str = 'none', byte_limit: int = 24000, *, tool_options=None, max_output_tokens=512):
+    validate_output_limit(max_output_tokens)
     if policy not in ('none', 'recent-turns'):
         raise ValueError('Unknown context policy')
     def encode(wire):
-        return json.dumps({'model': model, 'messages': wire, 'max_tokens': 512,
+        return json.dumps({'model': model, 'messages': wire, 'max_tokens': max_output_tokens,
                            'enable_thinking': False, 'stream': False, **(tool_options or {})}).encode()
     raw = encode(messages)
     metadata = {'context_policy': policy, 'original_request_bytes': len(raw), 'omitted_messages': 0}

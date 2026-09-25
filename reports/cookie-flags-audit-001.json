@@ -1,0 +1,38 @@
+{
+  "post_hoc": true,
+  "changes_frozen_result": false,
+  "motivation": "First 1024 candidate hardcodes rfc2109=False; both 1024 candidates reset a standard CookieJar policy",
+  "audit_sha256": "c0e08a3cd4ab72098bd33a1089cd75f9546b43a60a478f11f7c40c64623203dd",
+  "checks": {
+    "base": {
+      "output": "test_standard_jar_copy_preserves_policy_settings (__main__.CookieFlags) ... /workspace/requests/models.py:169: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\n  if isinstance(hook, collections.Callable):\nERROR\ntest_update_preserves_rfc2109_flag (__main__.CookieFlags) ... ok\n\n======================================================================\nERROR: test_standard_jar_copy_preserves_policy_settings (__main__.CookieFlags)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 18, in test_standard_jar_copy_preserves_policy_settings\n    copied = original.copy()\n  File \"/workspace/requests/models.py\", line 323, in copy\n    p._cookies = self._cookies.copy() if self._cookies is not None else None\nAttributeError: 'CookieJar' object has no attribute 'copy'\n\n----------------------------------------------------------------------\nRan 2 tests in 0.009s\n\nFAILED (errors=1)\n",
+      "returncode": 1,
+      "exception_info": ""
+    },
+    "reference": {
+      "output": "test_standard_jar_copy_preserves_policy_settings (__main__.CookieFlags) ... /workspace/requests/models.py:169: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\n  if isinstance(hook, collections.Callable):\nok\ntest_update_preserves_rfc2109_flag (__main__.CookieFlags) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.009s\n\nOK\n",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    "repo-cookie-out512-a": {
+      "output": "test_standard_jar_copy_preserves_policy_settings (__main__.CookieFlags) ... /workspace/requests/models.py:169: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\n  if isinstance(hook, collections.Callable):\nERROR\ntest_update_preserves_rfc2109_flag (__main__.CookieFlags) ... ok\n\n======================================================================\nERROR: test_standard_jar_copy_preserves_policy_settings (__main__.CookieFlags)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 18, in test_standard_jar_copy_preserves_policy_settings\n    copied = original.copy()\n  File \"/workspace/requests/models.py\", line 323, in copy\n    p._cookies = copy.deepcopy(self._cookies) if self._cookies is not None else None\nNameError: name 'copy' is not defined\n\n----------------------------------------------------------------------\nRan 2 tests in 0.009s\n\nFAILED (errors=1)\n",
+      "returncode": 1,
+      "exception_info": ""
+    },
+    "repo-cookie-out1024-a": {
+      "output": "test_standard_jar_copy_preserves_policy_settings (__main__.CookieFlags) ... /workspace/requests/models.py:171: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\n  if isinstance(hook, collections.Callable):\nFAIL\ntest_update_preserves_rfc2109_flag (__main__.CookieFlags) ... FAIL\n\n======================================================================\nFAIL: test_standard_jar_copy_preserves_policy_settings (__main__.CookieFlags)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 20, in test_standard_jar_copy_preserves_policy_settings\n    self.assertEqual(copied._cookies._policy.blocked_domains(), ('example.invalid',))\nAssertionError: Tuples differ: () != ('example.invalid',)\n\nSecond tuple contains 1 additional elements.\nFirst extra element 0:\n'example.invalid'\n\n- ()\n+ ('example.invalid',)\n\n======================================================================\nFAIL: test_update_preserves_rfc2109_flag (__main__.CookieFlags)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 31, in test_update_preserves_rfc2109_flag\n    self.assertIs(actual.rfc2109, True)\nAssertionError: False is not True\n\n----------------------------------------------------------------------\nRan 2 tests in 0.008s\n\nFAILED (failures=2)\n",
+      "returncode": 1,
+      "exception_info": ""
+    },
+    "repo-cookie-out1024-b": {
+      "output": "test_standard_jar_copy_preserves_policy_settings (__main__.CookieFlags) ... /workspace/requests/models.py:169: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\n  if isinstance(hook, collections.Callable):\nFAIL\ntest_update_preserves_rfc2109_flag (__main__.CookieFlags) ... ok\n\n======================================================================\nFAIL: test_standard_jar_copy_preserves_policy_settings (__main__.CookieFlags)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 20, in test_standard_jar_copy_preserves_policy_settings\n    self.assertEqual(copied._cookies._policy.blocked_domains(), ('example.invalid',))\nAssertionError: Tuples differ: () != ('example.invalid',)\n\nSecond tuple contains 1 additional elements.\nFirst extra element 0:\n'example.invalid'\n\n- ()\n+ ('example.invalid',)\n\n----------------------------------------------------------------------\nRan 2 tests in 0.009s\n\nFAILED (failures=1)\n",
+      "returncode": 1,
+      "exception_info": ""
+    },
+    "repo-cookie-out512-b": {
+      "output": "test_standard_jar_copy_preserves_policy_settings (__main__.CookieFlags) ... /workspace/requests/models.py:169: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\n  if isinstance(hook, collections.Callable):\nok\ntest_update_preserves_rfc2109_flag (__main__.CookieFlags) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.009s\n\nOK\n",
+      "returncode": 0,
+      "exception_info": ""
+    }
+  }
+}

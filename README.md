@@ -18,13 +18,15 @@ Diagnose coding-agent failures, preserve evidence, and evaluate recovery with in
 
 3 个自建开发任务首次配对实验：基线验证通过 2/3，恢复组 3/3；正常提交分别 1/3、2/3，调用分别 21、22 次。任务少、未重复且已用于开发，不能推断通用提升。见 [完整报告](reports/dev-paired-003.md) 和 [复现说明](docs/REPRODUCE.md)。
 
-已新增 [三文件任务队列修复](docs/MULTIFILE.md)：基线未通过，恢复组通过全部 8 组独立测试，但仍因步数耗尽未正常提交。见 [多文件对照报告](reports/multifile-paired-001.md)。此任务也是自建开发题，不是真实企业 issue 或独立保留集。29 项离线测试覆盖诊断、预算、证据留存、任务验证器、结束状态、有界历史及原生工具协议。
+已新增 [三文件任务队列修复](docs/MULTIFILE.md)：基线未通过，恢复组通过全部 8 组独立测试，但仍因步数耗尽未正常提交。见 [多文件对照报告](reports/multifile-paired-001.md)。此任务也是自建开发题，不是真实企业 issue 或独立保留集。33 项离线测试覆盖诊断、预算、证据留存、任务验证器、结束状态、有界历史、原生工具协议及输出额度对照。
 
 `recovery-budget` 增加逐轮剩余调用提醒，并明确区分补丁验证与正常提交；历史设计见[轨迹审计](reports/completion-audit-001.md)。现已在真实仓库试跑，尚无稳定效果结论。
 
 使用[原生工具调用](docs/NATIVE_TOOLS.md)后，同一个 Requests 真实历史 issue 的两次干净运行均通过 5 组独立回归并正常提交，分别调用 21/22 次，格式拒绝均为 0；两次各有 7 次请求实际使用有界历史选择。见 [成功复测及限制](reports/native-study-001.md)。这是单题重复、自定义回归，不是跨任务成功率或 SWE-bench 分数。
 
-最新扩展至 **3 个不同的 Requests 历史问题**。新增重定向题通过冻结的 6 组测试但未提交，事后审计还发现新参数冲突；Cookie 题因多次输出截断退出，未修复。两题均只跑一次，完整保留负结果，见[新增任务报告](reports/new-requests-study-001.md)和[复现步骤](docs/NEW_REQUESTS_TASKS.md)。这提醒我们：通过有限测试不能等同于完整修复。
+已扩展至 **3 个不同的 Requests 历史问题**。新增重定向题通过冻结的 6 组测试但未提交，事后审计还发现新参数冲突；Cookie 题首次运行因多次输出截断退出，未修复。该轮两题均只跑一次，完整保留负结果，见[新增任务报告](reports/new-requests-study-001.md)和[复现步骤](docs/NEW_REQUESTS_TASKS.md)。
+
+最新：[输出额度重复对照](reports/output-budget-study-001.md)在同一 Cookie 题各跑两次，512/1024 组累计截断为 9/1，冻结测试通过且提交为 0/2、2/2；**额外审计发现两份 1024 补丁仍有缺陷**，不能宣称修复质量提升。现支持可配置输出上限和严格对照检查；见[复现设计](docs/OUTPUT_BUDGET.md)和[第四课讲解](docs/LESSON_04.md)。
 
 此前五次未成功的开发尝试和条件变化完整保留在[历史报告](reports/requests-study-001.md)。不将失败隐藏，也不把协议改动前后不同条件的结果当作严格因果对照。
 

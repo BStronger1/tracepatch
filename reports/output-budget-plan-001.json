@@ -1,0 +1,43 @@
+{
+  "frozen_at_utc": "2026-09-25T13:41:51.799133+00:00",
+  "scope": "Repeated development experiment on one known historical Requests issue; not a benchmark",
+  "task": "requests-2527",
+  "model": "qwen3.8-flash",
+  "primary_outcome": "Independent verification passed AND normal submission",
+  "max_calls_per_run": 24,
+  "automatic_retries": false,
+  "order": [
+    {
+      "batch": "repo-cookie-out512-a",
+      "max_output_tokens": 512
+    },
+    {
+      "batch": "repo-cookie-out1024-a",
+      "max_output_tokens": 1024
+    },
+    {
+      "batch": "repo-cookie-out1024-b",
+      "max_output_tokens": 1024
+    },
+    {
+      "batch": "repo-cookie-out512-b",
+      "max_output_tokens": 512
+    }
+  ],
+  "file_hashes": {
+    "scripts/run-repo.py": "3dbbdff88107d8ee82d0652455572cf251d335b01bc920504c33f45fb54f77c3",
+    "scripts/run-smoke.py": "616b25239c1adb920f04c426e8682e43f36bd33c607d6215f46b574d86213b4b",
+    "scripts/compare-runs.py": "4586af8dc9a1789d74e28266460f384696727f5a024332d676f3dbc7d4fa1c87",
+    "configs/model.json": "ed54b384d92fa9cd3dc7a75a2ee0c3dda5fe33af7b89f4346b56edd9c3e1ddfc",
+    "docs/OUTPUT_BUDGET.md": "1f21ea79beb863ac5ce0862cedbeac224174ff8a70f7e658dca57d764b3dcfa1",
+    "src/tracepatch/budget.py": "1b01eec313421e8f457c54c37fd34924c5ab98df8ab045ea1788d9486a2724bf",
+    "src/tracepatch/actions.py": "46e9a0e0ba16ffd4e24d021d88933b3ffd676e396234250d67e540a678130003",
+    "src/tracepatch/recovery.py": "1a98ce4a7d50b47f1878e69176a893db6a4e7650a2be72aa8f6d8f0e1079b939",
+    "src/tracepatch/lifecycle.py": "1f7bad2db4020a3b7a13ba52f728edc4c9f524d0b0af9550527b6dad2a637a46",
+    "src/tracepatch/window.py": "4612cbba4b060863eae2a3a958af33a3d44ccdddc43dae2276585b7e71b8e706",
+    "src/tracepatch/toolcalling.py": "3b182f990998cdc8ff8a7744bf070b7cf63d296bb97c2518369a91309c950e9a",
+    "tasks/repos/requests-2527/task.json": "ccd76cbdb8e8b5f98e254d3f65b7dfd7039f67129bc02735c3e261a63d67c599",
+    "tasks/repos/requests-2527/verify.py": "631aace99389b960fdf40105dbf387fc529d82f05817b0e9ffe1f62b1de6dd03",
+    "tasks/repos/requests-2527/reproduce_issue.py": "b90f3904845b77411e372de9b978f20fef6d05acd1731cfcad8b4e670937e7a3"
+  }
+}

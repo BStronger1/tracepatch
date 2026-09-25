@@ -70,6 +70,7 @@ def main():
     parser.add_argument('--context-policy', choices=('none', 'recent-turns'), default='none')
     parser.add_argument('--visible-reproducer', action='store_true')
     parser.add_argument('--max-calls', type=int, choices=(12, 24), default=12)
+    parser.add_argument('--max-output-tokens', type=int, choices=(512, 1024), default=512)
     parser.add_argument('--action-protocol', choices=('text', 'native'), default='text')
     args = parser.parse_args()
     system = SYSTEM.replace('12 model calls', f'{args.max_calls} model calls')
@@ -105,7 +106,7 @@ def main():
                 'policy': args.policy, 'model': config['model'], 'max_calls_per_task': args.max_calls,
                 'context_policy': args.context_policy,
                 'action_protocol': args.action_protocol,
-                'max_output_tokens': 512, 'enable_thinking': False, 'observation_char_limit': 6000,
+                'max_output_tokens': args.max_output_tokens, 'enable_thinking': False, 'observation_char_limit': 6000,
                 'input_json_byte_limit': 24000, 'reject_provider_truncation': True,
                 'tasks': {task_config['id']: hashes}, 'provenance': task_config}
     save(batch / 'manifest.json', manifest)
@@ -135,7 +136,8 @@ def main():
     run = batch / (args.batch + '--' + task_config['id'])
     run.mkdir()
     model = runtime.DmxModel(config, key, run_dir=run, ledger=ledger, policy=args.policy,
-                             max_calls=args.max_calls, context_policy=args.context_policy, action_protocol=args.action_protocol)
+                             max_calls=args.max_calls, context_policy=args.context_policy, action_protocol=args.action_protocol,
+                             max_output_tokens=args.max_output_tokens)
     env = environment(image)
     result = {'task': task_config['id'], 'status': 'started', 'verified_success': False}
     started = time.monotonic()
