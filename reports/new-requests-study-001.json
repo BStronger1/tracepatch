@@ -1,0 +1,171 @@
+{
+  "scope": "Two new historical issues in Requests; custom development evaluation, not a benchmark or cross-repository score",
+  "selection": "Frozen before model calls; one run per task, no retries or outcome-dependent test edits",
+  "runs": [
+    {
+      "batch": "repo-redirect-native-001",
+      "task": "requests-2504",
+      "completion": {
+        "state": "verified_unsubmitted",
+        "patch_verified": true,
+        "agent_submitted": false,
+        "agent_exit": "LimitsExceeded",
+        "verification_returncode": 0
+      },
+      "api_calls": 24,
+      "rejected_responses": 1,
+      "rejections": [
+        {
+          "index": 13,
+          "finish_reason": "length",
+          "action_diagnosis": "output_limit"
+        }
+      ],
+      "pruned_requests": 13,
+      "max_request_bytes": 23958,
+      "estimated_no_cache_cny": 0.091347915,
+      "unknown_cost_requests": 0,
+      "elapsed_seconds": 104.89,
+      "frozen_verification": {
+        "output": "test_custom_option_issue_reproduction (__main__.RedirectContract) ... /workspace/requests/models.py:169: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\n  if isinstance(hook, collections.Callable):\nok\ntest_multiple_hops_and_options (__main__.RedirectContract) ... ok\ntest_post_302_conversion (__main__.RedirectContract) ... ok\ntest_post_307_preserves_body (__main__.RedirectContract) ... ok\ntest_redirect_disabled (__main__.RedirectContract) ... ok\ntest_standard_options_preserved (__main__.RedirectContract) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.012s\n\nOK\n",
+        "returncode": 0,
+        "exception_info": ""
+      },
+      "frozen_hashes": {
+        "base_archive": "20140340aea94f951d828b8604e800f7877b68ed12f1e3c5e8051a019ad41e73",
+        "reference_archive": "83c8c5bf39018e4da0f4b04e4e5d3b0759393254e71da33ae8f07f63e2ed3e4e",
+        "verifier": "fd8f49e85321e62fdbc0267fa1c4c3999fc1e0130e46b84efa603156772a2e6b",
+        "task": "5c972b3e0931a0f10f63b65158105c794e4ed68e62f47da4b1b3cacd6204ae99",
+        "visible_reproducer": "8cbd605687edaab217d3a92a3009db259536a2c9e618754b67244fe28310758c"
+      },
+      "task_files_still_match_frozen_hashes": true,
+      "patch_sha256": "8709a0327acbe95dc1ed058d4b0d1fc87ee26b79476b27af7611dee684bf9a5f",
+      "patch_bytes": 2817,
+      "controls": {
+        "model": "qwen3.8-flash",
+        "policy": "recovery-budget",
+        "action_protocol": "native",
+        "context_policy": "recent-turns",
+        "max_calls_per_task": 24,
+        "max_output_tokens": 512,
+        "input_json_byte_limit": 24000,
+        "upstream_commit": "04d809ceab9df28f9adaed044884180159172930",
+        "image": "python@sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b"
+      },
+      "runtime_snapshots": {
+        "actions.snapshot.py": "46e9a0e0ba16ffd4e24d021d88933b3ffd676e396234250d67e540a678130003",
+        "budget.snapshot.py": "1b01eec313421e8f457c54c37fd34924c5ab98df8ab045ea1788d9486a2724bf",
+        "lifecycle.snapshot.py": "1f7bad2db4020a3b7a13ba52f728edc4c9f524d0b0af9550527b6dad2a637a46",
+        "recovery.snapshot.py": "1a98ce4a7d50b47f1878e69176a893db6a4e7650a2be72aa8f6d8f0e1079b939",
+        "runner.snapshot.py": "64c2d3e6028f1786fad9571e061acb915b45adc8a009fd2c1de090472e390857",
+        "runtime.snapshot.py": "371c6c382da916cfc1280c7f9475134214a150cc3f8fae8f64fa5ff489199457",
+        "toolcalling.snapshot.py": "3b182f990998cdc8ff8a7744bf070b7cf63d296bb97c2518369a91309c950e9a",
+        "window.snapshot.py": "ff7ded3cd4b617d0d0918b96765b4cdf09d2fe0708b5f2ecaa0f04701d5e1890"
+      }
+    },
+    {
+      "batch": "repo-cookie-native-001",
+      "task": "requests-2527",
+      "completion": {
+        "state": "failed_unsubmitted",
+        "patch_verified": false,
+        "agent_submitted": false,
+        "agent_exit": "RepeatedFormatError",
+        "verification_returncode": 1
+      },
+      "api_calls": 17,
+      "rejected_responses": 7,
+      "rejections": [
+        {
+          "index": 6,
+          "finish_reason": "length",
+          "action_diagnosis": "output_limit"
+        },
+        {
+          "index": 8,
+          "finish_reason": "length",
+          "action_diagnosis": "output_limit"
+        },
+        {
+          "index": 10,
+          "finish_reason": "length",
+          "action_diagnosis": "output_limit"
+        },
+        {
+          "index": 13,
+          "finish_reason": "length",
+          "action_diagnosis": "output_limit"
+        },
+        {
+          "index": 15,
+          "finish_reason": "length",
+          "action_diagnosis": "output_limit"
+        },
+        {
+          "index": 16,
+          "finish_reason": "length",
+          "action_diagnosis": "output_limit"
+        },
+        {
+          "index": 17,
+          "finish_reason": "length",
+          "action_diagnosis": "output_limit"
+        }
+      ],
+      "pruned_requests": 0,
+      "max_request_bytes": 20753,
+      "estimated_no_cache_cny": 0.05481747,
+      "unknown_cost_requests": 0,
+      "elapsed_seconds": 80.781,
+      "frozen_verification": {
+        "output": "test_empty_and_absent_cookiejar (__main__.CookieContract) ... ERROR\ntest_requests_cookie_objects_are_independent (__main__.CookieContract) ... /workspace/requests/models.py:169: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\n  if isinstance(hook, collections.Callable):\nFAIL\ntest_scope_and_request_fields_preserved (__main__.CookieContract) ... ok\ntest_standard_cookie_objects_are_independent (__main__.CookieContract) ... ERROR\ntest_standard_cookiejar_issue_reproduction (__main__.CookieContract) ... FAIL\ntest_update_does_not_share_cookie_objects (__main__.CookieContract) ... FAIL\n\n======================================================================\nERROR: test_empty_and_absent_cookiejar (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 60, in test_empty_and_absent_cookiejar\n    copied = prepared.copy()\n  File \"/workspace/requests/models.py\", line 323, in copy\n    p._cookies = self._cookies.copy() if self._cookies is not None else None\nAttributeError: 'CookieJar' object has no attribute 'copy'\n\n======================================================================\nERROR: test_standard_cookie_objects_are_independent (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 27, in test_standard_cookie_objects_are_independent\n    copied = original.copy()\n  File \"/workspace/requests/models.py\", line 323, in copy\n    p._cookies = self._cookies.copy() if self._cookies is not None else None\nAttributeError: 'CookieJar' object has no attribute 'copy'\n\n======================================================================\nFAIL: test_requests_cookie_objects_are_independent (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 37, in test_requests_cookie_objects_are_independent\n    self.assertEqual([c.value for c in original._cookies], ['one', 'two'])\nAssertionError: Lists differ: ['changed', 'two'] != ['one', 'two']\n\nFirst differing element 0:\n'changed'\n'one'\n\n- ['changed', 'two']\n?   ^^^ - -\n\n+ ['one', 'two']\n?   ^\n\n\n======================================================================\nFAIL: test_standard_cookiejar_issue_reproduction (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 19, in test_standard_cookiejar_issue_reproduction\n    copied = original.copy()\n  File \"/workspace/requests/models.py\", line 323, in copy\n    p._cookies = self._cookies.copy() if self._cookies is not None else None\nAttributeError: 'CookieJar' object has no attribute 'copy'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 21, in test_standard_cookiejar_issue_reproduction\n    self.fail(str(error))\nAssertionError: 'CookieJar' object has no attribute 'copy'\n\n======================================================================\nFAIL: test_update_does_not_share_cookie_objects (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 44, in test_update_does_not_share_cookie_objects\n    self.assertEqual([c.value for c in source], ['one', 'two'])\nAssertionError: Lists differ: ['changed', 'two'] != ['one', 'two']\n\nFirst differing element 0:\n'changed'\n'one'\n\n- ['changed', 'two']\n?   ^^^ - -\n\n+ ['one', 'two']\n?   ^\n\n\n----------------------------------------------------------------------\nRan 6 tests in 0.012s\n\nFAILED (failures=3, errors=2)\n",
+        "returncode": 1,
+        "exception_info": ""
+      },
+      "frozen_hashes": {
+        "base_archive": "6653d29afd392d4a7fd90d56164c2a5b65562e888c8db4c5ba968b5b3d2eb783",
+        "reference_archive": "4e4e065880a67aebb9fc1c91c3684b8ffb93a2d61262f5fbcab5d54af8e704d9",
+        "verifier": "631aace99389b960fdf40105dbf387fc529d82f05817b0e9ffe1f62b1de6dd03",
+        "task": "ccd76cbdb8e8b5f98e254d3f65b7dfd7039f67129bc02735c3e261a63d67c599",
+        "visible_reproducer": "b90f3904845b77411e372de9b978f20fef6d05acd1731cfcad8b4e670937e7a3"
+      },
+      "task_files_still_match_frozen_hashes": true,
+      "patch_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "patch_bytes": 0,
+      "controls": {
+        "model": "qwen3.8-flash",
+        "policy": "recovery-budget",
+        "action_protocol": "native",
+        "context_policy": "recent-turns",
+        "max_calls_per_task": 24,
+        "max_output_tokens": 512,
+        "input_json_byte_limit": 24000,
+        "upstream_commit": "04d809ceab9df28f9adaed044884180159172930",
+        "image": "python@sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b"
+      },
+      "runtime_snapshots": {
+        "actions.snapshot.py": "46e9a0e0ba16ffd4e24d021d88933b3ffd676e396234250d67e540a678130003",
+        "budget.snapshot.py": "1b01eec313421e8f457c54c37fd34924c5ab98df8ab045ea1788d9486a2724bf",
+        "lifecycle.snapshot.py": "1f7bad2db4020a3b7a13ba52f728edc4c9f524d0b0af9550527b6dad2a637a46",
+        "recovery.snapshot.py": "1a98ce4a7d50b47f1878e69176a893db6a4e7650a2be72aa8f6d8f0e1079b939",
+        "runner.snapshot.py": "64c2d3e6028f1786fad9571e061acb915b45adc8a009fd2c1de090472e390857",
+        "runtime.snapshot.py": "371c6c382da916cfc1280c7f9475134214a150cc3f8fae8f64fa5ff489199457",
+        "toolcalling.snapshot.py": "3b182f990998cdc8ff8a7744bf070b7cf63d296bb97c2518369a91309c950e9a",
+        "window.snapshot.py": "ff7ded3cd4b617d0d0918b96765b4cdf09d2fe0708b5f2ecaa0f04701d5e1890"
+      }
+    }
+  ],
+  "totals": {
+    "api_calls": 41,
+    "estimated_no_cache_cny": 0.146165385,
+    "frozen_contract_passes": 1,
+    "normal_submissions": 0,
+    "post_hoc_regression_found_in_redirect_patch": true,
+    "budget": {
+      "limit_cny": "30",
+      "reserved_cny": "23.0",
+      "remaining_reservation_cny": "7.0",
+      "note": "Conservative planning reservations, not actual provider charges"
+    }
+  }
+}

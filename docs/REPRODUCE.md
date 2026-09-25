@@ -41,8 +41,8 @@ adversarial submission service. Legacy run-smoke.py and probe-api.py preserve ea
 experiments; use run-dev.py for further paid work to retain shared ledger coverage.
 
 The optional `--policy recovery-budget` adds per-request remaining-call guidance
-to recovery feedback. It is implemented and tested offline, but has no model-effect
-results yet. Compare it against `recovery` using the same current runner and task
+to recovery feedback. It has now been exercised in the published real-repository
+studies, without a stable causal improvement claim. Compare it against `recovery` using the same current runner and task
 snapshot, not older frozen experiments. Request records preserve the exact notice;
 new result files include a separate `completion` classification. Reports never
 treat submission alone as verified correctness.

@@ -1,4 +1,4 @@
-"""One pinned upstream issue, full source checkout, custom independent offline verifier."""
+"""Pinned upstream tasks, full source checkouts, independent offline verifiers."""
 import argparse
 import difflib
 import hashlib
@@ -63,6 +63,8 @@ def verify(image, source, task, verifier='verify.py'):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--batch', required=True)
+    parser.add_argument('--task', choices=sorted(p.parent.name for p in (ROOT / 'tasks/repos').glob('*/task.json')),
+                        default='requests-2317')
     parser.add_argument('--policy', choices=('recovery', 'recovery-budget'), default='recovery-budget')
     parser.add_argument('--verify-only', action='store_true')
     parser.add_argument('--context-policy', choices=('none', 'recent-turns'), default='none')
@@ -76,7 +78,7 @@ def main():
                                 'Call the bash function exactly once per reply with a complete command argument. Do not write XML or fenced actions.')
     if not re.fullmatch(r'repo-[a-z0-9-]{1,45}', args.batch):
         parser.error('Use a new repo-... batch ID')
-    task = ROOT / 'tasks/repos/requests-2317'
+    task = ROOT / 'tasks/repos' / args.task
     task_config = json.loads((task / 'task.json').read_text())
     config = json.loads((ROOT / 'configs/model.json').read_text())
     ledger = BudgetLedger(ROOT / 'artifacts/budget-ledger.json', str(config['first_run_budget_cny']))
@@ -109,8 +111,10 @@ def main():
     save(batch / 'manifest.json', manifest)
     save(batch / 'config.json', config)
     before, oracle = verify(image, base, task), verify(image, reference, task)
-    valid = (before['returncode'] == 1 and 'FAIL: test_bytes_get_issue_reproduction' in before['output']
-             and oracle['returncode'] == 0 and 'Ran 5 tests' in oracle['output'])
+    expected_failure = task_config.get('expected_failure', 'test_bytes_get_issue_reproduction')
+    test_count = task_config.get('verifier_test_count', 5)
+    valid = (before['returncode'] == 1 and f'FAIL: {expected_failure} ' in before['output']
+             and oracle['returncode'] == 0 and f'Ran {test_count} tests' in oracle['output'])
     checks = {'broken': before, 'reference': oracle, 'valid': valid}
     if args.visible_reproducer:
         repro_before = verify(image, base, task, 'reproduce_issue.py')

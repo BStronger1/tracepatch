@@ -1,0 +1,21 @@
+{
+  "post_hoc": true,
+  "changes_frozen_result": false,
+  "audit_sha256": "6a57d56c9d61c953351efb5e153f45fa9f907505f2cc053f321f8db017c6149f",
+  "candidate_patch_sha256": "8709a0327acbe95dc1ed058d4b0d1fc87ee26b79476b27af7611dee684bf9a5f",
+  "base": {
+    "output": "test_custom_parameter_name_is_not_newly_reserved (__main__.ParameterCollision) ... /workspace/requests/models.py:169: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\n  if isinstance(hook, collections.Callable):\nFAIL\n\n======================================================================\nFAIL: test_custom_parameter_name_is_not_newly_reserved (__main__.ParameterCollision)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 42, in test_custom_parameter_name_is_not_newly_reserved\n    self.assertEqual([opts.get('populate_history') for opts in adapter.seen],\nAssertionError: Lists differ: ['adapter-owned', None] != ['adapter-owned', 'adapter-owned']\n\nFirst differing element 1:\nNone\n'adapter-owned'\n\n- ['adapter-owned', None]\n?                   ^\n\n+ ['adapter-owned', 'adapter-owned']\n?                   ^^^^^^^^^ +  ++\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.011s\n\nFAILED (failures=1)\n",
+    "returncode": 1,
+    "exception_info": ""
+  },
+  "reference": {
+    "output": "test_custom_parameter_name_is_not_newly_reserved (__main__.ParameterCollision) ... /workspace/requests/models.py:169: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\n  if isinstance(hook, collections.Callable):\nok\n\n----------------------------------------------------------------------\nRan 1 test in 0.011s\n\nOK\n",
+    "returncode": 0,
+    "exception_info": ""
+  },
+  "candidate": {
+    "output": "test_custom_parameter_name_is_not_newly_reserved (__main__.ParameterCollision) ... /workspace/requests/models.py:169: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\n  if isinstance(hook, collections.Callable):\nFAIL\n\n======================================================================\nFAIL: test_custom_parameter_name_is_not_newly_reserved (__main__.ParameterCollision)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 42, in test_custom_parameter_name_is_not_newly_reserved\n    self.assertEqual([opts.get('populate_history') for opts in adapter.seen],\nAssertionError: Lists differ: [None, None] != ['adapter-owned', 'adapter-owned']\n\nFirst differing element 0:\nNone\n'adapter-owned'\n\n- [None, None]\n+ ['adapter-owned', 'adapter-owned']\n\n----------------------------------------------------------------------\nRan 1 test in 0.010s\n\nFAILED (failures=1)\n",
+    "returncode": 1,
+    "exception_info": ""
+  }
+}

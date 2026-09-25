@@ -63,3 +63,7 @@ python scripts/run-repo.py --batch repo-assisted-local --policy recovery-budget 
 
 新增原生模式：添加 `--action-protocol native`，见 [接口配置](NATIVE_TOOLS.md)。
 该模式在本题完成了两次通过独立验证且正常提交的重复运行，见 [最新结果](../reports/native-study-001.md)。
+
+现可用 `--task requests-2504` 或 `--task requests-2527` 选择另外两个历史问题。
+各自预检查使用任务指定的失败用例和测试数量，默认仍为原来的 requests-2317。
+见[新任务的评估与复现](NEW_REQUESTS_TASKS.md)和[完整结果](../reports/new-requests-study-001.md)。

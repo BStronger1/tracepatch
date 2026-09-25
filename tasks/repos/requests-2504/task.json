@@ -1,0 +1,13 @@
+{
+  "id": "requests-2504",
+  "repository": "https://github.com/psf/requests",
+  "issue": "https://github.com/psf/requests/issues/2503",
+  "reference_url": "https://github.com/psf/requests/pull/2504",
+  "base_commit": "5a799dd0f505e6c6c2ff67e227f6a3d25c086342",
+  "reference_commit": "a0d9e0bc57c971823811de38e5733b4b85e575ae",
+  "image": "python@sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b",
+  "evaluation": "custom offline regression, not official SWE-bench evaluation",
+  "expected_failure": "test_custom_option_issue_reproduction",
+  "verifier_test_count": 6,
+  "instruction": "Fix loss of custom adapter keyword arguments during redirects. Session.send accepts extra options for a custom transport, but those options disappear on redirected requests. Preserve custom options across every redirect while retaining standard options and existing redirect behavior. Inspect the repository and implement a compatible fix. Only existing Python files under requests/ will be exported. No network is available. You may write local tests; do not modify upstream tests. Submit after focused checks pass."
+}
