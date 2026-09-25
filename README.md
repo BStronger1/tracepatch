@@ -18,7 +18,9 @@ Diagnose coding-agent failures, preserve evidence, and evaluate recovery with in
 
 3 个自建开发任务首次配对实验：基线验证通过 2/3，恢复组 3/3；正常提交分别 1/3、2/3，调用分别 21、22 次。任务少、未重复且已用于开发，不能推断通用提升。见 [完整报告](reports/dev-paired-003.md) 和 [复现说明](docs/REPRODUCE.md)。
 
-已新增 [三文件任务队列修复](docs/MULTIFILE.md)：基线未通过，恢复组通过全部 8 组独立测试，但仍因步数耗尽未正常提交。见 [多文件对照报告](reports/multifile-paired-001.md)。此任务也是自建开发题，不是真实企业 issue 或独立保留集。18 项离线测试覆盖诊断、预算、证据留存及任务验证器。
+已新增 [三文件任务队列修复](docs/MULTIFILE.md)：基线未通过，恢复组通过全部 8 组独立测试，但仍因步数耗尽未正常提交。见 [多文件对照报告](reports/multifile-paired-001.md)。此任务也是自建开发题，不是真实企业 issue 或独立保留集。22 项离线测试覆盖诊断、预算、证据留存、任务验证器和结束状态。
+
+最新候选 `recovery-budget` 增加逐轮剩余调用提醒，并明确区分补丁验证与正常提交；已完成离线测试和[历史轨迹审计](reports/completion-audit-001.md)，尚未进行新策略的模型效果评估。
 
 ## 本地运行（Python 3.12+，无需 API）
 

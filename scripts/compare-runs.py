@@ -16,6 +16,11 @@ def compare(left: Path, right: Path) -> dict:
     for name in ('runner', 'runtime', 'budget', 'actions', 'recovery'):
         if (left / f'{name}.snapshot.py').read_bytes() != (right / f'{name}.snapshot.py').read_bytes():
             raise ValueError('Different implementation snapshot: ' + name)
+    if any((p / 'lifecycle.snapshot.py').exists() for p in (left, right)):
+        if not all((p / 'lifecycle.snapshot.py').exists() for p in (left, right)):
+            raise ValueError('Missing lifecycle snapshot')
+        if (left / 'lifecycle.snapshot.py').read_bytes() != (right / 'lifecycle.snapshot.py').read_bytes():
+            raise ValueError('Different lifecycle snapshot')
     arms = []
     for folder, manifest in zip((left, right), manifests):
         summary = json.loads((folder / 'summary.json').read_text(encoding='utf-8'))

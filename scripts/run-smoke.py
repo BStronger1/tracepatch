@@ -21,6 +21,7 @@ sys.path.insert(0, str(UPSTREAM / 'src'))
 sys.path.insert(0, str(ROOT / 'src'))
 from tracepatch.actions import parse_action
 from tracepatch.recovery import diagnose_action, recovery_feedback
+from tracepatch.lifecycle import prepare_messages
 from minisweagent.agents.default import DefaultAgent
 from minisweagent.environments.docker import DockerEnvironment
 from minisweagent.exceptions import FormatError
@@ -54,7 +55,7 @@ class DmxModel:
         if max_calls not in (8, 12):
             raise ValueError('Unsupported request limit')
         self.max_calls = max_calls
-        if policy not in ('baseline', 'recovery'):
+        if policy not in ('baseline', 'recovery', 'recovery-budget'):
             raise ValueError('Unknown policy')
         self.policy = policy
 
@@ -71,7 +72,7 @@ class DmxModel:
     def query(self, messages):
         if len(self.calls) >= self.max_calls:
             raise RuntimeError('Smoke request limit reached')
-        wire = [{'role': m['role'], 'content': m.get('content', '')} for m in messages]
+        wire, notice = prepare_messages(messages, len(self.calls), self.max_calls, self.policy)
         payload = json.dumps({'model': self.config['model'], 'messages': wire,
                               'max_tokens': 512, 'enable_thinking': False, 'stream': False}).encode()
         if len(payload) > 24000:
@@ -80,6 +81,7 @@ class DmxModel:
         # fits within 0.1 CNY/request. Reserve 0.8 CNY for all 8 requests.
         record = {'index': len(self.calls) + 1, 'status': 'started',
                   'request_bytes': len(payload), 'reserved_cny': 0.1}
+        record.update(calls_remaining_including_current=self.max_calls - len(self.calls), budget_notice=notice)
         if self.ledger:
             self.ledger.reserve(f'{self.run_dir.name}:{record["index"]}')
         self.calls.append(record)
@@ -128,7 +130,7 @@ class DmxModel:
         message = {'role': 'assistant', 'content': text, 'extra': extra}
         print(f"Model call {len(self.calls)}: {usage['prompt_tokens']} input / {usage['completion_tokens']} output tokens")
         if len(actions) != 1:
-            feedback = recovery_feedback(reason) if self.policy == 'recovery' else 'Return exactly one fenced bash action.'
+            feedback = recovery_feedback(reason) if self.policy != 'baseline' else 'Return exactly one fenced bash action.'
             raise FormatError(message, {'role': 'user', 'content': feedback})
         return message
 

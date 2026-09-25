@@ -39,3 +39,10 @@ ignored by Git. Docker has no network and receives only task files. Verification
 runs separately with reference tests. This is development isolation, not a hardened
 adversarial submission service. Legacy run-smoke.py and probe-api.py preserve early
 experiments; use run-dev.py for further paid work to retain shared ledger coverage.
+
+The optional `--policy recovery-budget` adds per-request remaining-call guidance
+to recovery feedback. It is implemented and tested offline, but has no model-effect
+results yet. Compare it against `recovery` using the same current runner and task
+snapshot, not older frozen experiments. Request records preserve the exact notice;
+new result files include a separate `completion` classification. Reports never
+treat submission alone as verified correctness.

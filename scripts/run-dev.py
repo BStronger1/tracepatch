@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'src'))
 from tracepatch.budget import BudgetLedger
 from tracepatch.analyze import analyze
+from tracepatch.lifecycle import completion_status
 
 spec = importlib.util.spec_from_file_location('smoke_runtime', ROOT / 'scripts/run-smoke.py')
 runtime = importlib.util.module_from_spec(spec)
@@ -62,7 +63,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--batch', required=True)
     parser.add_argument('--verify-only', action='store_true')
-    parser.add_argument('--policy', choices=('baseline', 'recovery'), default='baseline')
+    parser.add_argument('--policy', choices=('baseline', 'recovery', 'recovery-budget'), default='baseline')
     parser.add_argument('--suite', choices=('dev', 'multifile'), default='dev')
     args = parser.parse_args()
     task_ids = TASK_IDS if args.suite == 'dev' else ('job-queue',)
@@ -89,6 +90,7 @@ def main():
     shutil.copyfile(ROOT / 'src/tracepatch/budget.py', batch / 'budget.snapshot.py')
     shutil.copyfile(ROOT / 'src/tracepatch/actions.py', batch / 'actions.snapshot.py')
     shutil.copyfile(ROOT / 'src/tracepatch/recovery.py', batch / 'recovery.snapshot.py')
+    shutil.copyfile(ROOT / 'src/tracepatch/lifecycle.py', batch / 'lifecycle.snapshot.py')
     save(batch / 'config.json', config)
     manifest = {'split': 'development', 'benchmark_result': False, 'upstream_commit': commit,
                 'image': IMAGE, 'system_prompt': system, 'policy': args.policy, 'suite': args.suite,
@@ -167,6 +169,7 @@ def main():
             result['diagnostics'] = analyze(trajectory)
             result['format_error_count'] = sum(m.get('role') == 'assistant' and not m.get('extra', {}).get('actions')
                                                 for m in trajectory['messages'])
+        result['completion'] = completion_status(result.get('agent_exit'), result.get('verification'))
         result.update(api_calls=len(model.calls), elapsed_seconds=round(time.monotonic() - started, 3),
             estimated_known_no_cache_cny=sum(c.get('estimated_no_cache_cny', 0) for c in model.calls),
             unknown_cost_requests=sum('estimated_no_cache_cny' not in c for c in model.calls),

@@ -1,0 +1,106 @@
+{
+  "run": "dev-multifile-recovery-001--job-queue",
+  "observed_policy": "recovery",
+  "mode": "offline audit; notice previews were NOT sent in this historical run",
+  "completion": {
+    "state": "verified_unsubmitted",
+    "patch_verified": true,
+    "agent_submitted": false,
+    "agent_exit": "LimitsExceeded",
+    "verification_returncode": 0
+  },
+  "calls_used": 12,
+  "call_limit": 12,
+  "rejected_responses": 4,
+  "events": [
+    {
+      "call": 1,
+      "remaining_including_current": 12,
+      "observed_action_diagnosis": "valid",
+      "observed_finish_reason": "stop",
+      "notice_preview": null
+    },
+    {
+      "call": 2,
+      "remaining_including_current": 11,
+      "observed_action_diagnosis": "valid",
+      "observed_finish_reason": "stop",
+      "notice_preview": null
+    },
+    {
+      "call": 3,
+      "remaining_including_current": 10,
+      "observed_action_diagnosis": "valid",
+      "observed_finish_reason": "stop",
+      "notice_preview": null
+    },
+    {
+      "call": 4,
+      "remaining_including_current": 9,
+      "observed_action_diagnosis": "malformed_tool_call",
+      "observed_finish_reason": "stop",
+      "notice_preview": null
+    },
+    {
+      "call": 5,
+      "remaining_including_current": 8,
+      "observed_action_diagnosis": "valid",
+      "observed_finish_reason": "stop",
+      "notice_preview": null
+    },
+    {
+      "call": 6,
+      "remaining_including_current": 7,
+      "observed_action_diagnosis": "valid",
+      "observed_finish_reason": "stop",
+      "notice_preview": null
+    },
+    {
+      "call": 7,
+      "remaining_including_current": 6,
+      "observed_action_diagnosis": "malformed_tool_call",
+      "observed_finish_reason": "stop",
+      "notice_preview": null
+    },
+    {
+      "call": 8,
+      "remaining_including_current": 5,
+      "observed_action_diagnosis": "valid",
+      "observed_finish_reason": "stop",
+      "notice_preview": null
+    },
+    {
+      "call": 9,
+      "remaining_including_current": 4,
+      "observed_action_diagnosis": "output_limit",
+      "observed_finish_reason": "length",
+      "notice_preview": null
+    },
+    {
+      "call": 10,
+      "remaining_including_current": 3,
+      "observed_action_diagnosis": "valid",
+      "observed_finish_reason": "stop",
+      "notice_preview": "Harness budget: 3 model calls remain INCLUDING this reply. Rejected or truncated replies also consume a call. Prioritize required fixes and focused tests; reserve a call for submission. Avoid expanding optional test scripts. Submission is a completion signal, not proof of independent verification."
+    },
+    {
+      "call": 11,
+      "remaining_including_current": 2,
+      "observed_action_diagnosis": "malformed_tool_call",
+      "observed_finish_reason": "stop",
+      "notice_preview": "Harness budget: 2 model calls remain INCLUDING this reply. Rejected or truncated replies also consume a call. Prioritize required fixes and focused tests; reserve a call for submission. Avoid expanding optional test scripts. Submission is a completion signal, not proof of independent verification."
+    },
+    {
+      "call": 12,
+      "remaining_including_current": 1,
+      "observed_action_diagnosis": "valid",
+      "observed_finish_reason": "stop",
+      "notice_preview": "Harness budget: 1 model calls remain INCLUDING this reply. Rejected or truncated replies also consume a call. This is the final call. If the fix is ready, run the relevant tests and use && echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT only if they pass. If the fix is not ready, do the most useful remaining work; do not claim completion. Submission is a completion signal, not proof of independent verification."
+    }
+  ],
+  "limitations": [
+    "No counterfactual model outputs were generated.",
+    "Preview does not establish that reminders improve task completion.",
+    "Post-run verification does not identify when the patch first became correct."
+  ]
+}
