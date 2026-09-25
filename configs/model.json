@@ -1,0 +1,19 @@
+{
+  "base_url": "https://www.dmxapi.cn/v1",
+  "model": "qwen3.8-flash",
+  "api_key_env": "OPENAI_API_KEY",
+  "connection_verified": true,
+  "pricing": {
+    "source": "user-provided 2026-09-24; not independently verified",
+    "currency": "CNY",
+    "unit_tokens": 1000000,
+    "input": 0.76,
+    "output": 2.565,
+    "cache_creation": 1.188,
+    "cache_hit": 0.095,
+    "cache_billing_semantics_verified": false
+  },
+  "first_run_budget_cny": 10,
+  "probe_max_output_tokens": 64,
+  "probe_max_requests": 1
+}

@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tracepatch-local"
+version = "0.1.0"
+description = "Inspect coding-agent trajectories before designing recovery policies"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+tracepatch = "tracepatch.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

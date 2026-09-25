@@ -1,0 +1,14 @@
+{
+  "trajectory_format": "mini-swe-agent-1.1",
+  "tracepatch_fixture": "synthetic",
+  "info": {"model_stats": {"api_calls": 3}, "exit_status": "LimitsExceeded"},
+  "messages": [
+    {"role": "user", "content": "Synthetic example only: fix a failing test."},
+    {"role": "assistant", "extra": {"actions": [{"command": "python -m unittest"}]}},
+    {"role": "user", "content": "FAILED: expected 3, got 2"},
+    {"role": "assistant", "extra": {"actions": [{"command": "cat calculator.py"}]}},
+    {"role": "user", "content": "def add(a, b): return a + b - 1"},
+    {"role": "assistant", "extra": {"actions": [{"command": "python -m unittest"}]}},
+    {"role": "user", "content": "FAILED: expected 3, got 2"}
+  ]
+}
