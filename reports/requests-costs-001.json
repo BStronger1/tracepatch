@@ -1,0 +1,23 @@
+[
+  {
+    "batch": "repo-requests-recovery-001",
+    "calls": 10,
+    "estimated_cny": 0.023963845,
+    "pruned_requests": 0,
+    "rejected_responses": 1
+  },
+  {
+    "batch": "repo-requests-control-002",
+    "calls": 12,
+    "estimated_cny": 0.036912725,
+    "pruned_requests": 0,
+    "rejected_responses": 2
+  },
+  {
+    "batch": "repo-requests-window-002",
+    "calls": 12,
+    "estimated_cny": 0.03825061,
+    "pruned_requests": 0,
+    "rejected_responses": 2
+  }
+]

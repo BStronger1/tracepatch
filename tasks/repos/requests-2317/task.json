@@ -1,0 +1,11 @@
+{
+  "id": "requests-2317",
+  "repository": "https://github.com/psf/requests",
+  "issue": "https://github.com/psf/requests/issues/2316",
+  "reference_pr": "https://github.com/psf/requests/pull/2317",
+  "base_commit": "091991be0da19de9108dbe5e3752917fea3d7fdc",
+  "reference_commit": "de2494d36f53aaaf32f6b387c1112f2e37325533",
+  "image": "python@sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b",
+  "evaluation": "custom offline regression, not official SWE-bench evaluation",
+  "instruction": "Fix the HTTP method handling bug in this Requests checkout. On Python 3 a caller passing a bytes method such as b'GET' has it converted to the literal text b'GET' instead of GET, causing the wrong HTTP method to be sent. Preserve existing text-method behavior and request options. Inspect the repository and implement a compatible fix. Only existing Python files under requests/ will be exported. No network is available; the package imports directly from /workspace. You may write focused local tests using an in-memory transport. Do not modify upstream tests. Submit only after focused checks pass."
+}

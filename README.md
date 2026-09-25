@@ -18,9 +18,11 @@ Diagnose coding-agent failures, preserve evidence, and evaluate recovery with in
 
 3 个自建开发任务首次配对实验：基线验证通过 2/3，恢复组 3/3；正常提交分别 1/3、2/3，调用分别 21、22 次。任务少、未重复且已用于开发，不能推断通用提升。见 [完整报告](reports/dev-paired-003.md) 和 [复现说明](docs/REPRODUCE.md)。
 
-已新增 [三文件任务队列修复](docs/MULTIFILE.md)：基线未通过，恢复组通过全部 8 组独立测试，但仍因步数耗尽未正常提交。见 [多文件对照报告](reports/multifile-paired-001.md)。此任务也是自建开发题，不是真实企业 issue 或独立保留集。22 项离线测试覆盖诊断、预算、证据留存、任务验证器和结束状态。
+已新增 [三文件任务队列修复](docs/MULTIFILE.md)：基线未通过，恢复组通过全部 8 组独立测试，但仍因步数耗尽未正常提交。见 [多文件对照报告](reports/multifile-paired-001.md)。此任务也是自建开发题，不是真实企业 issue 或独立保留集。25 项离线测试覆盖诊断、预算、证据留存、任务验证器、结束状态和有界历史选择。
 
-最新候选 `recovery-budget` 增加逐轮剩余调用提醒，并明确区分补丁验证与正常提交；已完成离线测试和[历史轨迹审计](reports/completion-audit-001.md)，尚未进行新策略的模型效果评估。
+`recovery-budget` 增加逐轮剩余调用提醒，并明确区分补丁验证与正常提交；历史设计见[轨迹审计](reports/completion-audit-001.md)。现已在真实仓库试跑，尚无稳定效果结论。
+
+首个 [Requests 真实仓库接入](docs/REAL_REPOSITORY.md)已完成：五次开发尝试仍未成功修复，失败及条件变化全部记录在[研究报告](reports/requests-study-001.md)。新增有界历史选择可离线处理实际超限请求，但实时试跑尚未验证它改善修复效果。这是自定义回归，不是 SWE-bench 分数。
 
 ## 本地运行（Python 3.12+，无需 API）
 
@@ -40,4 +42,4 @@ python -m unittest discover -s tests -v
 
 第三阶段已新增带预算账本的 `scripts/run-dev.py`。阅读 [第三课](docs/LESSON_03.md) 和 [首批开发集报告](reports/dev-baseline-002.md)：3 个补丁通过，2 个正常提交，发现 4 个动作格式问题。该开发集很小且已参与调试，不能当作泛化成绩。未来付费实验统一从带账本的入口运行，不直接重跑旧教学脚本。
 
-本项目实现诊断与恢复策略。Agent 底座来自 [mini-swe-agent](https://github.com/SWE-agent/mini-swe-agent)。已支持清单内多个 Python 源文件的导出与独立验证；真实开源仓库 issue 评测、Harbor 集成和停滞恢复尚未实现。见 [上游归属](THIRD_PARTY_NOTICES.md)、[贡献指南](CONTRIBUTING.md) 与 [MIT License](LICENSE)。
+本项目实现诊断与恢复策略。Agent 底座来自 [mini-swe-agent](https://github.com/SWE-agent/mini-swe-agent)。已支持清单内多个 Python 源文件及 Requests 整仓实验中的源码导出与独立验证；Harbor 集成和停滞恢复尚未实现。见 [上游归属](THIRD_PARTY_NOTICES.md)、[贡献指南](CONTRIBUTING.md) 与 [MIT License](LICENSE)。

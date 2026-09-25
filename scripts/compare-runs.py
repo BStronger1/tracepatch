@@ -22,12 +22,18 @@ def compare(left: Path, right: Path) -> dict:
         if (left / 'lifecycle.snapshot.py').read_bytes() != (right / 'lifecycle.snapshot.py').read_bytes():
             raise ValueError('Different lifecycle snapshot')
     arms = []
+    if any((p / 'window.snapshot.py').exists() for p in (left, right)):
+        if not all((p / 'window.snapshot.py').exists() for p in (left, right)):
+            raise ValueError('Missing context implementation snapshot')
+        if (left / 'window.snapshot.py').read_bytes() != (right / 'window.snapshot.py').read_bytes():
+            raise ValueError('Different context implementation snapshot')
     for folder, manifest in zip((left, right), manifests):
         summary = json.loads((folder / 'summary.json').read_text(encoding='utf-8'))
         tasks = summary['tasks']
         if set(t['task'] for t in tasks) != set(manifest['tasks']):
             raise ValueError('Incomplete batch')
         arms.append({'batch': folder.name, 'policy': manifest['policy'],
+                     'context_policy': manifest.get('context_policy', 'none'),
                      'verified': sum(t['verified_success'] for t in tasks),
                      'submitted': sum(t.get('agent_exit') == 'Submitted' for t in tasks),
                      'calls': sum(t['api_calls'] for t in tasks),
@@ -36,8 +42,10 @@ def compare(left: Path, right: Path) -> dict:
                      'unknown_cost_requests': sum(t['unknown_cost_requests'] for t in tasks),
                      'tasks': [{k: t.get(k) for k in ('task', 'verified_success', 'agent_exit',
                                 'api_calls', 'format_error_count')} for t in tasks]})
+    interventions = [key for key in ('policy', 'context_policy')
+                     if manifests[0].get(key, 'none') != manifests[1].get(key, 'none')]
     return {'scope': 'Single run per development task per arm; not a benchmark or causal estimate.',
-            'controls_match': True, 'arms': arms}
+            'controls_match': True, 'intervention_fields': interventions, 'arms': arms}
 
 
 if __name__ == '__main__':

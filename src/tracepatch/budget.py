@@ -72,3 +72,18 @@ class BudgetLedger:
         return {'limit_cny': str(self.limit), 'reserved_cny': str(reserved),
                 'remaining_reservation_cny': str(self.limit - reserved),
                 'note': 'Conservative planning reservations, not actual provider charges'}
+
+    def increase_limit(self, new_limit: str, reason: str):
+        """Explicit operator action; preserve every reservation and log the change."""
+        value = Decimal(new_limit)
+        if not value.is_finite() or not reason.strip():
+            raise ValueError('Finite budget and change reason required')
+        with self.locked():
+            data = self.read()
+            previous = Decimal(data['limit'])
+            if value <= previous:
+                raise ValueError('New limit must exceed existing limit')
+            data.setdefault('limit_changes', []).append({'from': str(previous), 'to': str(value), 'reason': reason})
+            data['limit'] = str(value)
+            self.write(data)
+            self.limit = value

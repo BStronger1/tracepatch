@@ -5,6 +5,19 @@ from tracepatch.budget import BudgetLedger
 
 
 class BudgetTests(unittest.TestCase):
+    def test_explicit_increase_preserves_reservations(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'budget.json'
+            ledger = BudgetLedger(path)
+            ledger.reserve('unknown')
+            ledger.increase_limit('20', 'User authorized continued experiments')
+            resumed = BudgetLedger(path, limit='20')
+            self.assertEqual(resumed.summary()['reserved_cny'], '1.3')
+            self.assertEqual(resumed.read()['requests'][0]['status'], 'started')
+            self.assertEqual(len(resumed.read()['limit_changes']), 1)
+            with self.assertRaises(ValueError):
+                resumed.increase_limit('10', 'invalid decrease')
+
     def test_crash_restart_duplicate_and_limit(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'ledger.json'

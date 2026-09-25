@@ -22,6 +22,7 @@ sys.path.insert(0, str(ROOT / 'src'))
 from tracepatch.actions import parse_action
 from tracepatch.recovery import diagnose_action, recovery_feedback
 from tracepatch.lifecycle import prepare_messages
+from tracepatch.window import request_payload
 from minisweagent.agents.default import DefaultAgent
 from minisweagent.environments.docker import DockerEnvironment
 from minisweagent.exceptions import FormatError
@@ -46,13 +47,14 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
 
 class DmxModel:
     """Thin adapter; fixed model, no retries, no secrets in serialization."""
-    def __init__(self, config, key, *, run_dir=None, ledger=None, policy='baseline', max_calls=8):
+    def __init__(self, config, key, *, run_dir=None, ledger=None, policy='baseline', max_calls=8, context_policy='none'):
         self.config = config
         self.key = key
         self.calls = []
         self.run_dir = run_dir or RUN
         self.ledger = ledger
-        if max_calls not in (8, 12):
+        self.context_policy = context_policy
+        if max_calls not in (8, 12, 24):
             raise ValueError('Unsupported request limit')
         self.max_calls = max_calls
         if policy not in ('baseline', 'recovery', 'recovery-budget'):
@@ -73,15 +75,13 @@ class DmxModel:
         if len(self.calls) >= self.max_calls:
             raise RuntimeError('Smoke request limit reached')
         wire, notice = prepare_messages(messages, len(self.calls), self.max_calls, self.policy)
-        payload = json.dumps({'model': self.config['model'], 'messages': wire,
-                              'max_tokens': 512, 'enable_thinking': False, 'stream': False}).encode()
-        if len(payload) > 24000:
-            raise RuntimeError('Smoke input byte limit reached')
+        payload, context_metadata = request_payload(self.config['model'], wire, self.context_policy)
         # At quoted prices even input + cache creation per byte and full output
         # fits within 0.1 CNY/request. Reserve 0.8 CNY for all 8 requests.
         record = {'index': len(self.calls) + 1, 'status': 'started',
                   'request_bytes': len(payload), 'reserved_cny': 0.1}
         record.update(calls_remaining_including_current=self.max_calls - len(self.calls), budget_notice=notice)
+        record.update(context_metadata)
         if self.ledger:
             self.ledger.reserve(f'{self.run_dir.name}:{record["index"]}')
         self.calls.append(record)

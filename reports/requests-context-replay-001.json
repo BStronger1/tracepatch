@@ -1,0 +1,20 @@
+{
+  "run": "repo-requests-recovery-001--requests-2317",
+  "mode": "offline payload replay only",
+  "policies": {
+    "none": {
+      "within_limit": false,
+      "reason": "Input byte limit reached"
+    },
+    "recent-turns": {
+      "within_limit": true,
+      "request_bytes": 21773,
+      "context_policy": "recent-turns",
+      "original_request_bytes": 24575,
+      "omitted_messages": 2,
+      "omitted_sha256": "e784b2f99c37b7564f0e5e4c2fa3fcb7378d9abe49bf7f346c0e47cd23b9ab00"
+    }
+  },
+  "model_calls": 0,
+  "limitations": "Fits payload budget does not mean a correct repair or successful submission."
+}

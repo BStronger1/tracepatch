@@ -12,3 +12,10 @@ separately into `../vendor/mini-swe-agent` and is not included in this repositor
 TracePatch implements the diagnostics, action compatibility parsing, targeted
 recovery feedback, reservation ledger, development tasks and comparison runner.
 Harbor integration and standard benchmark scores are not implemented.
+
+The optional real-repository experiment separately downloads Requests from
+https://github.com/psf/requests at frozen commits listed in tasks/repos/requests-2317/task.json.
+Requests is Apache-2.0 licensed. Its source archives and reference solution remain
+local in ignored runs/ directories and are not redistributed in TracePatch.
+The custom offline verifier uses Requests' public adapter interface; it is not the
+upstream test suite or the official SWE-bench harness.
