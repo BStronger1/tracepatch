@@ -1,5 +1,7 @@
 # 首个真实 Requests issue：接入完成，尚无成功修复
 
+历史阶段记录：以下五次结果保持原样。后续原生工具模式的两次成功重复见 [native-study-001](native-study-001.md)。
+
 2026-09-25。来源：[issue 2316](https://github.com/psf/requests/issues/2316)、[PR 2317](https://github.com/psf/requests/pull/2317)。
 模型 qwen3.8-flash / DMXAPI。[复现说明](../docs/REAL_REPOSITORY.md)，[全部运行统计](requests-study-001.json)。
 

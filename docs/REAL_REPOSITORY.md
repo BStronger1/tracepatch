@@ -60,3 +60,6 @@ python scripts/run-repo.py --batch repo-assisted-local --policy recovery-budget 
 
 `--max-calls 24` 可单独增加整仓任务的步数上限；默认仍为 12。
 改变上限也是实验条件变化，不能与旧组直接归因为策略效果。全部当前结果见 [开发报告](../reports/requests-study-001.md)。
+
+新增原生模式：添加 `--action-protocol native`，见 [接口配置](NATIVE_TOOLS.md)。
+该模式在本题完成了两次通过独立验证且正常提交的重复运行，见 [最新结果](../reports/native-study-001.md)。

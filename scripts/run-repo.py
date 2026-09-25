@@ -68,8 +68,12 @@ def main():
     parser.add_argument('--context-policy', choices=('none', 'recent-turns'), default='none')
     parser.add_argument('--visible-reproducer', action='store_true')
     parser.add_argument('--max-calls', type=int, choices=(12, 24), default=12)
+    parser.add_argument('--action-protocol', choices=('text', 'native'), default='text')
     args = parser.parse_args()
     system = SYSTEM.replace('12 model calls', f'{args.max_calls} model calls')
+    if args.action_protocol == 'native':
+        system = system.replace('Return exactly one complete fenced bash action per reply.',
+                                'Call the bash function exactly once per reply with a complete command argument. Do not write XML or fenced actions.')
     if not re.fullmatch(r'repo-[a-z0-9-]{1,45}', args.batch):
         parser.error('Use a new repo-... batch ID')
     task = ROOT / 'tasks/repos/requests-2317'
@@ -85,7 +89,7 @@ def main():
     batch = ROOT / 'runs' / args.batch
     batch.mkdir(parents=True, exist_ok=False)
     for name, path in {'runner': Path(__file__), 'runtime': ROOT / 'scripts/run-smoke.py',
-                       **{n: ROOT / f'src/tracepatch/{n}.py' for n in ('budget', 'actions', 'recovery', 'lifecycle', 'window')}}.items():
+                       **{n: ROOT / f'src/tracepatch/{n}.py' for n in ('budget', 'actions', 'recovery', 'lifecycle', 'window', 'toolcalling')}}.items():
         shutil.copyfile(path, batch / f'{name}.snapshot.py')
     base, reference = batch / 'base', batch / 'reference'
     hashes = {'base_archive': archive_source(task_config['base_commit'], base),
@@ -98,6 +102,7 @@ def main():
                 'upstream_commit': commit, 'image': image, 'system_prompt': system,
                 'policy': args.policy, 'model': config['model'], 'max_calls_per_task': args.max_calls,
                 'context_policy': args.context_policy,
+                'action_protocol': args.action_protocol,
                 'max_output_tokens': 512, 'enable_thinking': False, 'observation_char_limit': 6000,
                 'input_json_byte_limit': 24000, 'reject_provider_truncation': True,
                 'tasks': {task_config['id']: hashes}, 'provenance': task_config}
@@ -126,7 +131,7 @@ def main():
     run = batch / (args.batch + '--' + task_config['id'])
     run.mkdir()
     model = runtime.DmxModel(config, key, run_dir=run, ledger=ledger, policy=args.policy,
-                             max_calls=args.max_calls, context_policy=args.context_policy)
+                             max_calls=args.max_calls, context_policy=args.context_policy, action_protocol=args.action_protocol)
     env = environment(image)
     result = {'task': task_config['id'], 'status': 'started', 'verified_success': False}
     started = time.monotonic()

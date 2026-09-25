@@ -3,12 +3,12 @@ import hashlib
 import json
 
 
-def request_payload(model: str, messages: list[dict], policy: str = 'none', byte_limit: int = 24000):
+def request_payload(model: str, messages: list[dict], policy: str = 'none', byte_limit: int = 24000, *, tool_options=None):
     if policy not in ('none', 'recent-turns'):
         raise ValueError('Unknown context policy')
     def encode(wire):
         return json.dumps({'model': model, 'messages': wire, 'max_tokens': 512,
-                           'enable_thinking': False, 'stream': False}).encode()
+                           'enable_thinking': False, 'stream': False, **(tool_options or {})}).encode()
     raw = encode(messages)
     metadata = {'context_policy': policy, 'original_request_bytes': len(raw), 'omitted_messages': 0}
     if len(raw) <= byte_limit:

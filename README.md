@@ -18,11 +18,13 @@ Diagnose coding-agent failures, preserve evidence, and evaluate recovery with in
 
 3 个自建开发任务首次配对实验：基线验证通过 2/3，恢复组 3/3；正常提交分别 1/3、2/3，调用分别 21、22 次。任务少、未重复且已用于开发，不能推断通用提升。见 [完整报告](reports/dev-paired-003.md) 和 [复现说明](docs/REPRODUCE.md)。
 
-已新增 [三文件任务队列修复](docs/MULTIFILE.md)：基线未通过，恢复组通过全部 8 组独立测试，但仍因步数耗尽未正常提交。见 [多文件对照报告](reports/multifile-paired-001.md)。此任务也是自建开发题，不是真实企业 issue 或独立保留集。25 项离线测试覆盖诊断、预算、证据留存、任务验证器、结束状态和有界历史选择。
+已新增 [三文件任务队列修复](docs/MULTIFILE.md)：基线未通过，恢复组通过全部 8 组独立测试，但仍因步数耗尽未正常提交。见 [多文件对照报告](reports/multifile-paired-001.md)。此任务也是自建开发题，不是真实企业 issue 或独立保留集。29 项离线测试覆盖诊断、预算、证据留存、任务验证器、结束状态、有界历史及原生工具协议。
 
 `recovery-budget` 增加逐轮剩余调用提醒，并明确区分补丁验证与正常提交；历史设计见[轨迹审计](reports/completion-audit-001.md)。现已在真实仓库试跑，尚无稳定效果结论。
 
-首个 [Requests 真实仓库接入](docs/REAL_REPOSITORY.md)已完成：五次开发尝试仍未成功修复，失败及条件变化全部记录在[研究报告](reports/requests-study-001.md)。新增有界历史选择可离线处理实际超限请求，但实时试跑尚未验证它改善修复效果。这是自定义回归，不是 SWE-bench 分数。
+最新：使用[原生工具调用](docs/NATIVE_TOOLS.md)后，同一个 Requests 真实历史 issue 的两次干净运行均通过 5 组独立回归并正常提交，分别调用 21/22 次，格式拒绝均为 0；两次各有 7 次请求实际使用有界历史选择。见 [成功复测及限制](reports/native-study-001.md)。这是单题重复、自定义回归，不是跨任务成功率或 SWE-bench 分数。
+
+此前五次未成功的开发尝试和条件变化完整保留在[历史报告](reports/requests-study-001.md)。不将失败隐藏，也不把协议改动前后不同条件的结果当作严格因果对照。
 
 ## 本地运行（Python 3.12+，无需 API）
 

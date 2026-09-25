@@ -92,6 +92,7 @@ def main():
     shutil.copyfile(ROOT / 'src/tracepatch/recovery.py', batch / 'recovery.snapshot.py')
     shutil.copyfile(ROOT / 'src/tracepatch/lifecycle.py', batch / 'lifecycle.snapshot.py')
     shutil.copyfile(ROOT / 'src/tracepatch/window.py', batch / 'window.snapshot.py')
+    shutil.copyfile(ROOT / 'src/tracepatch/toolcalling.py', batch / 'toolcalling.snapshot.py')
     save(batch / 'config.json', config)
     manifest = {'split': 'development', 'benchmark_result': False, 'upstream_commit': commit,
                 'image': IMAGE, 'system_prompt': system, 'policy': args.policy, 'suite': args.suite,

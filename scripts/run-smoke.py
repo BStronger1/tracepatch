@@ -23,6 +23,7 @@ from tracepatch.actions import parse_action
 from tracepatch.recovery import diagnose_action, recovery_feedback
 from tracepatch.lifecycle import prepare_messages
 from tracepatch.window import request_payload
+from tracepatch.toolcalling import TOOL_OPTIONS, native_history, parse_tool_call
 from minisweagent.agents.default import DefaultAgent
 from minisweagent.environments.docker import DockerEnvironment
 from minisweagent.exceptions import FormatError
@@ -47,13 +48,16 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
 
 class DmxModel:
     """Thin adapter; fixed model, no retries, no secrets in serialization."""
-    def __init__(self, config, key, *, run_dir=None, ledger=None, policy='baseline', max_calls=8, context_policy='none'):
+    def __init__(self, config, key, *, run_dir=None, ledger=None, policy='baseline', max_calls=8, context_policy='none', action_protocol='text'):
         self.config = config
         self.key = key
         self.calls = []
         self.run_dir = run_dir or RUN
         self.ledger = ledger
         self.context_policy = context_policy
+        if action_protocol not in ('text', 'native'):
+            raise ValueError('Unknown action protocol')
+        self.action_protocol = action_protocol
         if max_calls not in (8, 12, 24):
             raise ValueError('Unsupported request limit')
         self.max_calls = max_calls
@@ -75,13 +79,19 @@ class DmxModel:
         if len(self.calls) >= self.max_calls:
             raise RuntimeError('Smoke request limit reached')
         wire, notice = prepare_messages(messages, len(self.calls), self.max_calls, self.policy)
-        payload, context_metadata = request_payload(self.config['model'], wire, self.context_policy)
+        if self.action_protocol == 'native':
+            wire = native_history(messages)
+            if notice:
+                wire.append({'role': 'user', 'content': notice})
+        payload, context_metadata = request_payload(self.config['model'], wire, self.context_policy,
+            tool_options=TOOL_OPTIONS if self.action_protocol == 'native' else None)
         # At quoted prices even input + cache creation per byte and full output
         # fits within 0.1 CNY/request. Reserve 0.8 CNY for all 8 requests.
         record = {'index': len(self.calls) + 1, 'status': 'started',
                   'request_bytes': len(payload), 'reserved_cny': 0.1}
         record.update(calls_remaining_including_current=self.max_calls - len(self.calls), budget_notice=notice)
         record.update(context_metadata)
+        record['action_protocol'] = self.action_protocol
         if self.ledger:
             self.ledger.reserve(f'{self.run_dir.name}:{record["index"]}')
         self.calls.append(record)
@@ -115,6 +125,24 @@ class DmxModel:
             raise RuntimeError('Provider exceeded requested output limit; stop')
         text = data['choices'][0]['message'].get('content') or ''
         finish_reason = data['choices'][0].get('finish_reason')
+        if self.action_protocol == 'native':
+            raw_message = data['choices'][0]['message']
+            try:
+                command, call = parse_tool_call(raw_message, finish_reason)
+            except ValueError as error:
+                reason = str(error)
+                record.update(finish_reason=finish_reason, action_diagnosis=reason, policy=self.policy)
+                self.save_calls()
+                rejected = {'role': 'assistant', 'content': text or 'Rejected structured tool call.',
+                            'extra': {'cost': record['estimated_no_cache_cny'], 'usage': usage, 'actions': [],
+                                      'rejected_tool_calls': raw_message.get('tool_calls')}}
+                raise FormatError(rejected, {'role': 'user', 'content':
+                    'No command was executed. Call the bash function once with a complete JSON object containing only a nonempty command string. Do not write XML or fenced actions. Keep the command short enough for 512 output tokens.'})
+            record.update(finish_reason=finish_reason, action_diagnosis='valid', policy=self.policy)
+            self.save_calls()
+            return {'role': 'assistant', 'content': raw_message.get('content'), 'tool_calls': [call],
+                    'extra': {'cost': record['estimated_no_cache_cny'], 'usage': usage,
+                              'actions': [{'command': command}]}}
         reason = diagnose_action(text, finish_reason)
         record.update(finish_reason=finish_reason, action_diagnosis=reason, policy=self.policy)
         self.save_calls()
@@ -141,6 +169,11 @@ class DmxModel:
             self.ledger.record(f'{self.run_dir.name}:{record["index"]}', record)
 
     def format_observation_messages(self, message, outputs, template_vars=None):
+        if self.action_protocol == 'native':
+            if len(outputs) != 1:
+                raise ValueError('Expected one tool result')
+            return [{'role': 'tool', 'tool_call_id': message['tool_calls'][0]['id'],
+                     'content': json.dumps(outputs[0], ensure_ascii=False)[:6000]}]
         return [{'role': 'user', 'content': json.dumps(output, ensure_ascii=False)[:6000]}
                 for output in outputs]
 

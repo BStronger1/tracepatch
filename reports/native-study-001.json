@@ -1,0 +1,61 @@
+{
+  "scope": "Two fresh repeats of one known public issue with a visible reproducer; not two independent tasks or a benchmark score",
+  "probe": {
+    "model": "qwen3.8-flash",
+    "simulated_tool_outputs": true,
+    "executed_commands": 0,
+    "round_trip_verified": true,
+    "api_calls": 2,
+    "estimated_no_cache_cny": 0.0006732649999999999,
+    "observations": [
+      {
+        "index": 1,
+        "status": "completed",
+        "finish_reason": "stop",
+        "action_diagnosis": "valid"
+      },
+      {
+        "index": 2,
+        "status": "completed",
+        "finish_reason": "stop",
+        "action_diagnosis": "valid"
+      }
+    ]
+  },
+  "runs": [
+    {
+      "batch": "repo-requests-native-005",
+      "completion": {
+        "state": "verified_submitted",
+        "patch_verified": true,
+        "agent_submitted": true,
+        "agent_exit": "Submitted",
+        "verification_returncode": 0
+      },
+      "api_calls": 21,
+      "rejected_responses": 0,
+      "pruned_requests": 7,
+      "max_request_bytes": 23584,
+      "estimated_no_cache_cny": 0.072547225,
+      "elapsed_seconds": 62.922,
+      "offline_analyzer_actions": 21
+    },
+    {
+      "batch": "repo-requests-native-006",
+      "completion": {
+        "state": "verified_submitted",
+        "patch_verified": true,
+        "agent_submitted": true,
+        "agent_exit": "Submitted",
+        "verification_returncode": 0
+      },
+      "api_calls": 22,
+      "rejected_responses": 0,
+      "pruned_requests": 7,
+      "max_request_bytes": 23955,
+      "estimated_no_cache_cny": 0.0737257,
+      "elapsed_seconds": 84.047,
+      "offline_analyzer_actions": 22
+    }
+  ]
+}

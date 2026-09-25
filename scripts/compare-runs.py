@@ -6,7 +6,7 @@ from pathlib import Path
 
 def compare(left: Path, right: Path) -> dict:
     manifests = [json.loads((p / 'manifest.json').read_text(encoding='utf-8')) for p in (left, right)]
-    controlled = ('split', 'suite', 'upstream_commit', 'image', 'system_prompt', 'model',
+    controlled = ('split', 'suite', 'upstream_commit', 'image', 'system_prompt', 'model', 'action_protocol',
                   'max_calls_per_task', 'max_output_tokens', 'enable_thinking',
                   'observation_char_limit', 'input_json_byte_limit', 'tasks', 'reject_provider_truncation')
     differences = [key for key in controlled if manifests[0].get(key) != manifests[1].get(key)]
@@ -22,6 +22,11 @@ def compare(left: Path, right: Path) -> dict:
         if (left / 'lifecycle.snapshot.py').read_bytes() != (right / 'lifecycle.snapshot.py').read_bytes():
             raise ValueError('Different lifecycle snapshot')
     arms = []
+    if any((p / 'toolcalling.snapshot.py').exists() for p in (left, right)):
+        if not all((p / 'toolcalling.snapshot.py').exists() for p in (left, right)):
+            raise ValueError('Missing toolcalling snapshot')
+        if (left / 'toolcalling.snapshot.py').read_bytes() != (right / 'toolcalling.snapshot.py').read_bytes():
+            raise ValueError('Different toolcalling snapshot')
     if any((p / 'window.snapshot.py').exists() for p in (left, right)):
         if not all((p / 'window.snapshot.py').exists() for p in (left, right)):
             raise ValueError('Missing context implementation snapshot')
