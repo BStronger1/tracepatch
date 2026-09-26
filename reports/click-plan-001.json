@@ -1,0 +1,30 @@
+{
+  "frozen_at_utc": "2026-09-26T05:34:10.355193+00:00",
+  "task": "click-1687",
+  "scope": "Two fixed-configuration repeats on one historical Click task; second repository, not a benchmark score",
+  "order": [
+    "repo-click-native-a",
+    "repo-click-native-b"
+  ],
+  "policy": "recovery-submit",
+  "max_output_tokens": 1024,
+  "max_calls": 24,
+  "file_hashes": {
+    "scripts/run-repo.py": "c007b199f7b25d5a0be22b2aef941c3f2b334e8329e483ef9c7d4a1982307d07",
+    "scripts/run-smoke.py": "44dc672734b219acdd9f0b7809d48c7c0d4f9437d8c370649cb699ac9f556ab1",
+    "scripts/compare-runs.py": "f9bdc249f7cdc36648eadbb04659da87f8ab193ded509f1bf6cbe4c95d8d38c7",
+    "scripts/reverify-repo.py": "fc6504be4949b7546cb82d4327e0fe6d005f3ce50fe6070a00e1d0ce41efb554",
+    "configs/model.json": "021407109d9b2411db4bca4aef63a273c7106bdd233a28dee20e5906fa90cf6f",
+    "docs/CLICK_TASK.md": "0531bf36e28751969766a8adb41055529d5fef16ec9f9fbab4e182eafba58125",
+    "src/tracepatch/budget.py": "1b01eec313421e8f457c54c37fd34924c5ab98df8ab045ea1788d9486a2724bf",
+    "src/tracepatch/actions.py": "46e9a0e0ba16ffd4e24d021d88933b3ffd676e396234250d67e540a678130003",
+    "src/tracepatch/recovery.py": "1a98ce4a7d50b47f1878e69176a893db6a4e7650a2be72aa8f6d8f0e1079b939",
+    "src/tracepatch/lifecycle.py": "924ed1387360656fcbf5a077c3796db426074f541ca3079fd00edabfd3c66179",
+    "src/tracepatch/window.py": "4612cbba4b060863eae2a3a958af33a3d44ccdddc43dae2276585b7e71b8e706",
+    "src/tracepatch/toolcalling.py": "3b182f990998cdc8ff8a7744bf070b7cf63d296bb97c2518369a91309c950e9a",
+    "src/tracepatch/repositories.py": "04f3c393332518b18c78fbc7a547ef2ebf39d61b5569483865f731da9d106581",
+    "tasks/repos/click-1687/task.json": "98146ee0e4ddf686eec9c8be99389cb9b5556d156e3f7c71d404385918192784",
+    "tasks/repos/click-1687/verify.py": "0baf5fd5d409f6c05a05854bd11805b76ee5a21a42d5e19ee73271fb34ae1880",
+    "tasks/repos/click-1687/reproduce_issue.py": "e4f7b6a0cc86ee13c50af892196f7113f83455789fb36b81a0f3a5a51664171f"
+  }
+}

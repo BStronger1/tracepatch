@@ -1,0 +1,12 @@
+{
+  "id": "click-1687",
+  "repository": "https://github.com/pallets/click",
+  "reference_url": "https://github.com/pallets/click/pull/1687",
+  "base_commit": "b631e5a5794369f03d57719a446a65e423366f36",
+  "reference_commit": "c067af761a70a6cbb91fa49083a41511207297da",
+  "image": "python@sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b",
+  "evaluation": "custom offline subset of historical PR behavior; not official benchmark or complete upstream suite",
+  "expected_failure": "test_repeated_scalar_issue_reproduction",
+  "verifier_test_count": 10,
+  "instruction": "Fix the interaction between repeated Click options and defaults/type inference in this checkout. A multiple=True option with scalar defaults such as (2, 5) should consume one argument per occurrence and infer integers, not infer a two-component tuple. A default containing tuples such as [(1, 'north')] should infer a composite type and preserve repeated tuple structure. Defaults, command-line overrides, default_map and environment values should be converted consistently. Missing repeated values should produce (), while an optional nargs>1 option without a default should produce None. Preserve explicit types and useful invalid-input errors. Inspect the repository and make a focused compatible fix. Only existing Python files under src/click/ are exported. PYTHONPATH already points to /workspace/src for ordinary Python commands. No network or pytest installation is available. You can use click.testing.CliRunner and unittest for local checks. Do not modify upstream tests. Submit only after focused checks pass."
+}

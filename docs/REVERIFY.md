@@ -30,3 +30,8 @@ These are additional evaluations, not revisions to historical scores.
 Example from this project: [v2 recheck of the saved 512-b patch](../reports/cookie-v2-reverify-example-001.json).
 It passes ten contracts but retains its original unsubmitted state. Historical
 v1 results and the newer development study remain separately labelled.
+
+Click is also supported via its registered `src/click` layout. For a local Click
+run, select `--task click-1687`; the verifier imports that archived candidate's
+`src` directory rather than an installed package. Example evidence:
+[Click re-evaluation](../reports/click-reverify-001.json).

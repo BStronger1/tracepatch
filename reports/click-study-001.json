@@ -1,0 +1,129 @@
+{
+  "scope": "Two fixed-configuration repeats on one historical Click task; second repository, not a benchmark score",
+  "plan": "click-plan-001.json",
+  "plan_sha256": "3d1aebcdf3c560b4f70a08ef173f669ea49afd36c420b2c1382132fe3f600c54",
+  "frozen_files_unchanged": true,
+  "runs": [
+    {
+      "batch": "repo-click-native-a",
+      "completion": {
+        "state": "failed_unsubmitted",
+        "patch_verified": false,
+        "agent_submitted": false,
+        "agent_exit": "LimitsExceeded",
+        "verification_returncode": 1
+      },
+      "api_calls": 24,
+      "rejected_responses": 0,
+      "truncated_responses": 0,
+      "pruned_requests": 19,
+      "verification": {
+        "output": "test_bad_numeric_input_is_usage_error (__main__.DefaultContract) ... ERROR\ntest_composite_command_line_overrides_default (__main__.DefaultContract) ... ERROR\ntest_composite_default_inference (__main__.DefaultContract) ... ERROR\ntest_default_map_precedence_and_casting (__main__.DefaultContract) ... ERROR\ntest_environment_precedence_and_casting (__main__.DefaultContract) ... ERROR\ntest_explicit_composite_type_casts_default (__main__.DefaultContract) ... ERROR\ntest_list_and_string_scalar_defaults (__main__.DefaultContract) ... test_missing_defaults_and_optional_nargs (__main__.DefaultContract) ... test_repeated_scalar_issue_reproduction (__main__.DefaultContract) ... ERROR\ntest_scalar_command_line_overrides_default (__main__.DefaultContract) ... ERROR\n\n======================================================================\nERROR: test_bad_numeric_input_is_usage_error (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 54, in test_bad_numeric_input_is_usage_error\n    option=click.Option(['--count'],multiple=True,default=(2,5))\n  File \"/workspace/src/click/core.py\", line 2156, in __init__\n    and not isinstance(default, _missing)\nTypeError: isinstance() arg 2 must be a type or tuple of types\n\n======================================================================\nERROR: test_composite_command_line_overrides_default (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 39, in test_composite_command_line_overrides_default\n    option=click.Option(['--pair'],multiple=True,default=[(1,'north')])\n  File \"/workspace/src/click/core.py\", line 2156, in __init__\n    and not isinstance(default, _missing)\nTypeError: isinstance() arg 2 must be a type or tuple of types\n\n======================================================================\nERROR: test_composite_default_inference (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 28, in test_composite_default_inference\n    option=click.Option(['--pair'],multiple=True,default=[(1,'north'),(3,'south')])\n  File \"/workspace/src/click/core.py\", line 2156, in __init__\n    and not isinstance(default, _missing)\nTypeError: isinstance() arg 2 must be a type or tuple of types\n\n======================================================================\nERROR: test_default_map_precedence_and_casting (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 62, in test_default_map_precedence_and_casting\n    option=click.Option(['--count'],multiple=True,default=(2,5))\n  File \"/workspace/src/click/core.py\", line 2156, in __init__\n    and not isinstance(default, _missing)\nTypeError: isinstance() arg 2 must be a type or tuple of types\n\n======================================================================\nERROR: test_environment_precedence_and_casting (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 66, in test_environment_precedence_and_casting\n    option=click.Option(['--count'],multiple=True,default=(2,5),envvar='TRACEPATCH_COUNTS')\n  File \"/workspace/src/click/core.py\", line 2156, in __init__\n    and not isinstance(default, _missing)\nTypeError: isinstance() arg 2 must be a type or tuple of types\n\n======================================================================\nERROR: test_explicit_composite_type_casts_default (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 50, in test_explicit_composite_type_casts_default\n    option=click.Option(['--pair'],type=(int,str),multiple=True,default=[('2','east')])\n  File \"/workspace/src/click/core.py\", line 2156, in __init__\n    and not isinstance(default, _missing)\nTypeError: isinstance() arg 2 must be a type or tuple of types\n\n======================================================================\nERROR: test_list_and_string_scalar_defaults (__main__.DefaultContract) (default=[3, 7])\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 23, in test_list_and_string_scalar_defaults\n    option=click.Option(['--value'],multiple=True,default=default)\n  File \"/workspace/src/click/core.py\", line 2156, in __init__\n    and not isinstance(default, _missing)\nTypeError: isinstance() arg 2 must be a type or tuple of types\n\n======================================================================\nERROR: test_list_and_string_scalar_defaults (__main__.DefaultContract) (default=('north', 'south'))\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 23, in test_list_and_string_scalar_defaults\n    option=click.Option(['--value'],multiple=True,default=default)\n  File \"/workspace/src/click/core.py\", line 2156, in __init__\n    and not isinstance(default, _missing)\nTypeError: isinstance() arg 2 must be a type or tuple of types\n\n======================================================================\nERROR: test_missing_defaults_and_optional_nargs (__main__.DefaultContract) (settings={'multiple': True})\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 46, in test_missing_defaults_and_optional_nargs\n    option=click.Option(['--value'],default=None,**settings)\n  File \"/workspace/src/click/core.py\", line 2156, in __init__\n    and not isinstance(default, _missing)\nTypeError: isinstance() arg 2 must be a type or tuple of types\n\n======================================================================\nERROR: test_missing_defaults_and_optional_nargs (__main__.DefaultContract) (settings={'nargs': 2, 'multiple': True})\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 46, in test_missing_defaults_and_optional_nargs\n    option=click.Option(['--value'],default=None,**settings)\n  File \"/workspace/src/click/core.py\", line 2156, in __init__\n    and not isinstance(default, _missing)\nTypeError: isinstance() arg 2 must be a type or tuple of types\n\n======================================================================\nERROR: test_repeated_scalar_issue_reproduction (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 15, in test_repeated_scalar_issue_reproduction\n    option=click.Option(['--count'],multiple=True,default=(2,5))\n  File \"/workspace/src/click/core.py\", line 2156, in __init__\n    and not isinstance(default, _missing)\nTypeError: isinstance() arg 2 must be a type or tuple of types\n\n======================================================================\nERROR: test_scalar_command_line_overrides_default (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 35, in test_scalar_command_line_overrides_default\n    option=click.Option(['--count'],multiple=True,default=(2,5))\n  File \"/workspace/src/click/core.py\", line 2156, in __init__\n    and not isinstance(default, _missing)\nTypeError: isinstance() arg 2 must be a type or tuple of types\n\n======================================================================\nFAIL: test_missing_defaults_and_optional_nargs (__main__.DefaultContract) (settings={'nargs': 2})\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 47, in test_missing_defaults_and_optional_nargs\n    self.assertEqual(self.invoke(option),expected)\n  File \"/workspace/verify.py\", line 11, in invoke\n    self.assertIsNone(result.exception,str(result.exception))\nAssertionError: UsageError(\"Argument 'value' takes 2 values but 0 were given.\") is not None : Argument 'value' takes 2 values but 0 were given.\n\n----------------------------------------------------------------------\nRan 10 tests in 0.004s\n\nFAILED (failures=1, errors=12)\n",
+        "returncode": 1,
+        "exception_info": ""
+      },
+      "changed_files": [
+        "src/click/core.py"
+      ],
+      "estimated_no_cache_cny": 0.086690635,
+      "unknown_cost_requests": 0,
+      "elapsed_seconds": 75.921,
+      "evidence_sha256": {
+        "trajectory.json": "e0e26185544990d7b0fa2c0e22fafc064c269e7f919064299bb1534a53fd38ee",
+        "patch.diff": "ffd2861906ef8b2c5a2b445bb5d0a31af5eb61c73c5ddd3216abc9045cbe8ad0",
+        "requests.json": "4aeb5cdde6f90803c966f403bfa0f8af2f7ed2f35596c16c654f60b1b91c3a50",
+        "result.json": "ef06d9af97627ffa8a671c4ff35c21ae50ad6ed116045125cf37a709c7f06009"
+      }
+    },
+    {
+      "batch": "repo-click-native-b",
+      "completion": {
+        "state": "failed_unsubmitted",
+        "patch_verified": false,
+        "agent_submitted": false,
+        "agent_exit": "LimitsExceeded",
+        "verification_returncode": 1
+      },
+      "api_calls": 24,
+      "rejected_responses": 1,
+      "truncated_responses": 1,
+      "pruned_requests": 18,
+      "verification": {
+        "output": "test_bad_numeric_input_is_usage_error (__main__.DefaultContract) ... FAIL\ntest_composite_command_line_overrides_default (__main__.DefaultContract) ... FAIL\ntest_composite_default_inference (__main__.DefaultContract) ... FAIL\ntest_default_map_precedence_and_casting (__main__.DefaultContract) ... FAIL\ntest_environment_precedence_and_casting (__main__.DefaultContract) ... FAIL\ntest_explicit_composite_type_casts_default (__main__.DefaultContract) ... FAIL\ntest_list_and_string_scalar_defaults (__main__.DefaultContract) ... test_missing_defaults_and_optional_nargs (__main__.DefaultContract) ... test_repeated_scalar_issue_reproduction (__main__.DefaultContract) ... FAIL\ntest_scalar_command_line_overrides_default (__main__.DefaultContract) ... FAIL\n\n======================================================================\nFAIL: test_bad_numeric_input_is_usage_error (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 58, in test_bad_numeric_input_is_usage_error\n    self.assertIn('Invalid value',result.output)\nAssertionError: 'Invalid value' not found in 'Error: --count option requires 2 arguments\\n'\n\n======================================================================\nFAIL: test_composite_command_line_overrides_default (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 40, in test_composite_command_line_overrides_default\n    self.assertEqual(self.invoke(option,['--pair','4','west','--pair','5','east']),((4,'west'),(5,'east')))\n  File \"/workspace/verify.py\", line 11, in invoke\n    self.assertIsNone(result.exception,str(result.exception))\nAssertionError: UsageError('Got unexpected extra arguments (west east)') is not None : Got unexpected extra arguments (west east)\n\n======================================================================\nFAIL: test_composite_default_inference (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 29, in test_composite_default_inference\n    self.assertEqual(option.nargs,2)\nAssertionError: 1 != 2\n\n======================================================================\nFAIL: test_default_map_precedence_and_casting (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 63, in test_default_map_precedence_and_casting\n    self.assertEqual(self.invoke(option,default_map={'count':['8','9']}),(8,9))\n  File \"/workspace/verify.py\", line 11, in invoke\n    self.assertIsNone(result.exception,str(result.exception))\nAssertionError: TypeError('It would appear that nargs is set to conflict with the composite type arity.') is not None : It would appear that nargs is set to conflict with the composite type arity.\n\n======================================================================\nFAIL: test_environment_precedence_and_casting (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 67, in test_environment_precedence_and_casting\n    self.assertEqual(self.invoke(option,env={'TRACEPATCH_COUNTS':'8 9'}),(8,9))\n  File \"/workspace/verify.py\", line 11, in invoke\n    self.assertIsNone(result.exception,str(result.exception))\nAssertionError: UsageError(\"Argument 'count' takes 2 values but 1 was given.\") is not None : Argument 'count' takes 2 values but 1 was given.\n\n======================================================================\nFAIL: test_explicit_composite_type_casts_default (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 51, in test_explicit_composite_type_casts_default\n    self.assertEqual(self.invoke(option),((2,'east'),))\n  File \"/workspace/verify.py\", line 11, in invoke\n    self.assertIsNone(result.exception,str(result.exception))\nAssertionError: UsageError(\"Argument 'pair' takes 2 values but 1 was given.\") is not None : Argument 'pair' takes 2 values but 1 was given.\n\n======================================================================\nFAIL: test_list_and_string_scalar_defaults (__main__.DefaultContract) (default=('north', 'south'))\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 24, in test_list_and_string_scalar_defaults\n    self.assertEqual(option.nargs,1)\nAssertionError: 2 != 1\n\n======================================================================\nFAIL: test_missing_defaults_and_optional_nargs (__main__.DefaultContract) (settings={'nargs': 2})\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 47, in test_missing_defaults_and_optional_nargs\n    self.assertEqual(self.invoke(option),expected)\n  File \"/workspace/verify.py\", line 11, in invoke\n    self.assertIsNone(result.exception,str(result.exception))\nAssertionError: UsageError(\"Argument 'value' takes 2 values but 0 were given.\") is not None : Argument 'value' takes 2 values but 0 were given.\n\n======================================================================\nFAIL: test_missing_defaults_and_optional_nargs (__main__.DefaultContract) (settings={'nargs': 2, 'multiple': True})\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 47, in test_missing_defaults_and_optional_nargs\n    self.assertEqual(self.invoke(option),expected)\n  File \"/workspace/verify.py\", line 11, in invoke\n    self.assertIsNone(result.exception,str(result.exception))\nAssertionError: UsageError(\"Argument 'value' takes 2 values but 0 were given.\") is not None : Argument 'value' takes 2 values but 0 were given.\n\n======================================================================\nFAIL: test_repeated_scalar_issue_reproduction (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 16, in test_repeated_scalar_issue_reproduction\n    self.assertEqual(option.nargs,1)\nAssertionError: 2 != 1\n\n======================================================================\nFAIL: test_scalar_command_line_overrides_default (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 36, in test_scalar_command_line_overrides_default\n    self.assertEqual(self.invoke(option,['--count','8','--count','9']),(8,9))\n  File \"/workspace/verify.py\", line 11, in invoke\n    self.assertIsNone(result.exception,str(result.exception))\nAssertionError: BadParameter('--count is not a valid integer') is not None : --count is not a valid integer\n\n----------------------------------------------------------------------\nRan 10 tests in 0.008s\n\nFAILED (failures=11)\n",
+        "returncode": 1,
+        "exception_info": ""
+      },
+      "changed_files": [],
+      "estimated_no_cache_cny": 0.09362801,
+      "unknown_cost_requests": 0,
+      "elapsed_seconds": 96.328,
+      "evidence_sha256": {
+        "trajectory.json": "db44cf874d53484d4d9f8daf740a021e5c382e2ab93053f62f27691bdd12a198",
+        "patch.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "requests.json": "22c0e0bebb6b8a4ba173d56cedcd86c376ff5f5ef7996ff546ec4d00c0c36c7d",
+        "result.json": "c51c598d4ec4c1bc2a761e9daccd7244d30fa5890c46f288160ac32dd66abe49"
+      }
+    }
+  ],
+  "repeat_comparison": {
+    "scope": "Single run per development task per arm; not a benchmark or causal estimate.",
+    "controls_match": true,
+    "intervention_fields": [],
+    "arms": [
+      {
+        "batch": "repo-click-native-a",
+        "policy": "recovery-submit",
+        "max_output_tokens": 1024,
+        "context_policy": "recent-turns",
+        "verified": 0,
+        "submitted": 0,
+        "calls": 24,
+        "rejected_actions": 0,
+        "estimated_known_no_cache_cny": 0.086690635,
+        "unknown_cost_requests": 0,
+        "tasks": [
+          {
+            "task": "click-1687",
+            "verified_success": false,
+            "agent_exit": "LimitsExceeded",
+            "api_calls": 24,
+            "format_error_count": 0
+          }
+        ]
+      },
+      {
+        "batch": "repo-click-native-b",
+        "policy": "recovery-submit",
+        "max_output_tokens": 1024,
+        "context_policy": "recent-turns",
+        "verified": 0,
+        "submitted": 0,
+        "calls": 24,
+        "rejected_actions": 1,
+        "estimated_known_no_cache_cny": 0.09362801,
+        "unknown_cost_requests": 0,
+        "tasks": [
+          {
+            "task": "click-1687",
+            "verified_success": false,
+            "agent_exit": "LimitsExceeded",
+            "api_calls": 24,
+            "format_error_count": 1
+          }
+        ]
+      }
+    ]
+  },
+  "totals": {
+    "api_calls": 48,
+    "estimated_no_cache_cny": 0.180318645,
+    "unknown_cost_requests": 0,
+    "verified_submitted": 0,
+    "budget": {
+      "limit_cny": "50",
+      "reserved_cny": "41.0",
+      "remaining_reservation_cny": "9.0",
+      "note": "Conservative planning reservations, not actual provider charges"
+    }
+  }
+}

@@ -37,7 +37,8 @@ class CompareRunsTests(unittest.TestCase):
         path = self.right / 'manifest.json'
         original = json.loads(path.read_text())
         for key, value in [('policy', 'baseline'), ('context_policy', 'none'),
-                           ('model', 'different'), ('tasks', {'example': 'other hash'})]:
+                           ('model', 'different'), ('tasks', {'example': 'other hash'}),
+                           ('source_layout', {'source': 'different'})]:
             path.write_text(json.dumps(dict(original, **{key: value})))
             with self.subTest(key=key), self.assertRaisesRegex(ValueError, key):
                 module.compare(self.left, self.right, intervention='output-budget')
@@ -47,3 +48,10 @@ class CompareRunsTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'runtime'):
             module.compare(self.left, self.right, intervention='output-budget')
 
+    def test_repository_snapshot_mismatch_is_rejected(self):
+        (self.left/'repositories.snapshot.py').write_text('layout code')
+        with self.assertRaisesRegex(ValueError,'Missing repository'):
+            module.compare(self.left,self.right,intervention='output-budget')
+        (self.right/'repositories.snapshot.py').write_text('changed layout code')
+        with self.assertRaisesRegex(ValueError,'Different repository'):
+            module.compare(self.left,self.right,intervention='output-budget')

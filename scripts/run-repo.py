@@ -1,6 +1,5 @@
 """Pinned upstream tasks, full source checkouts, independent offline verifiers."""
 import argparse
-import difflib
 import hashlib
 import importlib.util
 import json
@@ -16,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'src'))
 from tracepatch.budget import BudgetLedger
 from tracepatch.lifecycle import completion_status
+from tracepatch.repositories import repository_layout, reconstruct_candidate
 
 spec = importlib.util.spec_from_file_location('runtime', ROOT / 'scripts/run-smoke.py')
 runtime = importlib.util.module_from_spec(spec)
@@ -32,8 +32,8 @@ def save(path, value):
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False), encoding='utf-8')
 
 
-def archive_source(commit, target):
-    upstream = ROOT.parent / 'vendor/requests'
+def archive_source(commit, target, repository='https://github.com/psf/requests'):
+    upstream = ROOT.parent / 'vendor' / repository_layout(repository).vendor
     archive = target.with_suffix('.tar')
     subprocess.run(['git', '-c', f'safe.directory={upstream.as_posix()}', '-C', str(upstream),
                     'archive', '--format=tar', '-o', str(archive), commit], check=True)
@@ -43,19 +43,23 @@ def archive_source(commit, target):
     return hashlib.sha256(archive.read_bytes()).hexdigest()
 
 
-def environment(image):
+def environment(image, import_directory='.'):
     return runtime.WindowsDockerEnvironment(image=image, executable=runtime.DOCKER,
         cwd='/workspace', timeout=25, container_timeout='600',
+        env={'PYTHONPATH': '/workspace/' + import_directory} if import_directory != '.' else {},
         run_args=['--rm', '--network', 'none', '--memory', '512m', '--cpus', '1',
                   '--pids-limit', '64', '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges'])
 
 
-def verify(image, source, task, verifier='verify.py'):
+def verify(image, source, task, verifier='verify.py', *, import_directory='.'):
     env = environment(image)
     try:
         docker('cp', str(source) + '/.', env.container_id + ':/workspace')
         docker('cp', str(task / verifier), env.container_id + ':/workspace/verify.py')
-        return env.execute({'command': 'python -I -c "import sys;sys.path.insert(0,\'/workspace\');import runpy;runpy.run_path(\'/workspace/verify.py\',run_name=\'__main__\')"'})
+        if import_directory not in ('.', 'src'):
+            raise ValueError('Unsupported import directory')
+        import_path = '/workspace' if import_directory == '.' else '/workspace/src'
+        return env.execute({'command': f'python -I -c "import sys;sys.path.insert(0,\'{import_path}\');import runpy;runpy.run_path(\'/workspace/verify.py\',run_name=\'__main__\')"'})
     finally:
         env.cleanup()
 
@@ -81,6 +85,8 @@ def main():
         parser.error('Use a new repo-... batch ID')
     task = ROOT / 'tasks/repos' / args.task
     task_config = json.loads((task / 'task.json').read_text())
+    layout = repository_layout(task_config['repository'])
+    system = system.replace('under requests/', f'under {layout.source}/')
     config = json.loads((ROOT / 'configs/model.json').read_text())
     ledger = BudgetLedger(ROOT / 'artifacts/budget-ledger.json', str(config['first_run_budget_cny']))
     commit = subprocess.check_output(['git', '-c', f'safe.directory={runtime.UPSTREAM.as_posix()}',
@@ -92,11 +98,11 @@ def main():
     batch = ROOT / 'runs' / args.batch
     batch.mkdir(parents=True, exist_ok=False)
     for name, path in {'runner': Path(__file__), 'runtime': ROOT / 'scripts/run-smoke.py',
-                       **{n: ROOT / f'src/tracepatch/{n}.py' for n in ('budget', 'actions', 'recovery', 'lifecycle', 'window', 'toolcalling')}}.items():
+                       **{n: ROOT / f'src/tracepatch/{n}.py' for n in ('budget', 'actions', 'recovery', 'lifecycle', 'window', 'toolcalling', 'repositories')}}.items():
         shutil.copyfile(path, batch / f'{name}.snapshot.py')
     base, reference = batch / 'base', batch / 'reference'
-    hashes = {'base_archive': archive_source(task_config['base_commit'], base),
-              'reference_archive': archive_source(task_config['reference_commit'], reference),
+    hashes = {'base_archive': archive_source(task_config['base_commit'], base, task_config['repository']),
+              'reference_archive': archive_source(task_config['reference_commit'], reference, task_config['repository']),
               'verifier': hashlib.sha256((task / 'verify.py').read_bytes()).hexdigest(),
               'task': hashlib.sha256((task / 'task.json').read_bytes()).hexdigest()}
     if args.visible_reproducer:
@@ -106,20 +112,21 @@ def main():
                 'policy': args.policy, 'model': config['model'], 'max_calls_per_task': args.max_calls,
                 'context_policy': args.context_policy,
                 'action_protocol': args.action_protocol,
+                'source_layout': {'vendor': layout.vendor, 'source': layout.source, 'imports': layout.imports},
                 'max_output_tokens': args.max_output_tokens, 'enable_thinking': False, 'observation_char_limit': 6000,
                 'input_json_byte_limit': 24000, 'reject_provider_truncation': True,
                 'tasks': {task_config['id']: hashes}, 'provenance': task_config}
     save(batch / 'manifest.json', manifest)
     save(batch / 'config.json', config)
-    before, oracle = verify(image, base, task), verify(image, reference, task)
+    before, oracle = verify(image, base, task, import_directory=layout.imports), verify(image, reference, task, import_directory=layout.imports)
     expected_failure = task_config.get('expected_failure', 'test_bytes_get_issue_reproduction')
     test_count = task_config.get('verifier_test_count', 5)
     valid = (before['returncode'] == 1 and f'FAIL: {expected_failure} ' in before['output']
              and oracle['returncode'] == 0 and f'Ran {test_count} tests' in oracle['output'])
     checks = {'broken': before, 'reference': oracle, 'valid': valid}
     if args.visible_reproducer:
-        repro_before = verify(image, base, task, 'reproduce_issue.py')
-        repro_after = verify(image, reference, task, 'reproduce_issue.py')
+        repro_before = verify(image, base, task, 'reproduce_issue.py', import_directory=layout.imports)
+        repro_after = verify(image, reference, task, 'reproduce_issue.py', import_directory=layout.imports)
         valid = valid and repro_before['returncode'] == 1 and 'AssertionError' in repro_before['output'] and repro_after['returncode'] == 0
         checks.update(visible_broken=repro_before, visible_reference=repro_after, valid=valid)
     save(batch / 'preflight.json', checks)
@@ -138,7 +145,7 @@ def main():
     model = runtime.DmxModel(config, key, run_dir=run, ledger=ledger, policy=args.policy,
                              max_calls=args.max_calls, context_policy=args.context_policy, action_protocol=args.action_protocol,
                              max_output_tokens=args.max_output_tokens)
-    env = environment(image)
+    env = environment(image, layout.imports)
     result = {'task': task_config['id'], 'status': 'started', 'verified_success': False}
     started = time.monotonic()
     save(run / 'result.json', result)
@@ -157,30 +164,20 @@ def main():
         result.update(status='execution_error', error_type=type(error).__name__)
     finally:
         try:
-            docker('cp', env.container_id + ':/workspace/requests', str(run / 'requests'))
+            export_path = run / layout.source
+            export_path.parent.mkdir(parents=True, exist_ok=True)
+            docker('cp', env.container_id + ':/workspace/' + layout.source, str(export_path))
         except Exception as error:
             result['export_error'] = type(error).__name__
         if not result.get('agent_exit') and (run / 'trajectory.json').exists():
             result['agent_exit'] = json.loads((run / 'trajectory.json').read_text())['info'].get('exit_status')
         env.cleanup()
     try:
-        if (run / 'requests').is_dir():
+        if (run / layout.source).is_dir():
             candidate = run / 'candidate'
-            shutil.copytree(base, candidate)
-            patches = []
-            for original in sorted((base / 'requests').rglob('*.py')):
-                rel = original.relative_to(base)
-                exported = run / rel
-                if any(p.is_symlink() for p in [exported, *exported.parents] if p != run.parent):
-                    raise ValueError('Symlink export rejected')
-                if not exported.is_file():
-                    raise ValueError('Missing allowed source file')
-                shutil.copyfile(exported, candidate / rel)
-                patches.extend(difflib.unified_diff(original.read_text(encoding='utf-8').splitlines(True),
-                    exported.read_text(encoding='utf-8').splitlines(True),
-                    fromfile='a/' + rel.as_posix(), tofile='b/' + rel.as_posix()))
-            (run / 'patch.diff').write_text(''.join(patches), encoding='utf-8')
-            result['verification'] = verify(image, candidate, task)
+            patch = reconstruct_candidate(base, run, candidate, layout)
+            (run / 'patch.diff').write_text(patch, encoding='utf-8')
+            result['verification'] = verify(image, candidate, task, import_directory=layout.imports)
             result.update(status='verified', verified_success=result['verification']['returncode'] == 0)
     except Exception as error:
         result.update(status='verification_error', error_type=type(error).__name__)

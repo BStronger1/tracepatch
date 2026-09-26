@@ -10,7 +10,7 @@ def compare(left: Path, right: Path, *, intervention='policy') -> dict:
     manifests = [json.loads((p / 'manifest.json').read_text(encoding='utf-8')) for p in (left, right)]
     controlled = ('split', 'suite', 'upstream_commit', 'image', 'system_prompt', 'model', 'action_protocol',
                   'max_calls_per_task', 'max_output_tokens', 'enable_thinking',
-                  'observation_char_limit', 'input_json_byte_limit', 'tasks', 'reject_provider_truncation')
+                  'observation_char_limit', 'input_json_byte_limit', 'tasks', 'reject_provider_truncation', 'source_layout')
     if intervention == 'output-budget':
         controlled = tuple(k for k in controlled if k != 'max_output_tokens') + ('policy', 'context_policy')
     differences = [key for key in controlled if manifests[0].get(key) != manifests[1].get(key)]
@@ -26,6 +26,11 @@ def compare(left: Path, right: Path, *, intervention='policy') -> dict:
         if (left / 'lifecycle.snapshot.py').read_bytes() != (right / 'lifecycle.snapshot.py').read_bytes():
             raise ValueError('Different lifecycle snapshot')
     arms = []
+    if any((p / 'repositories.snapshot.py').exists() for p in (left, right)):
+        if not all((p / 'repositories.snapshot.py').exists() for p in (left, right)):
+            raise ValueError('Missing repository layout snapshot')
+        if (left / 'repositories.snapshot.py').read_bytes() != (right / 'repositories.snapshot.py').read_bytes():
+            raise ValueError('Different repository layout snapshot')
     if any((p / 'toolcalling.snapshot.py').exists() for p in (left, right)):
         if not all((p / 'toolcalling.snapshot.py').exists() for p in (left, right)):
             raise ValueError('Missing toolcalling snapshot')

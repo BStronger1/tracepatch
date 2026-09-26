@@ -46,7 +46,8 @@ def main():
     spec = importlib.util.spec_from_file_location('repo_runner',ROOT/'scripts/run-repo.py')
     runner = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(runner)
-    result = runner.verify(target['image'],candidate,task)
+    layout = runner.repository_layout(target['repository'])
+    result = runner.verify(target['image'],candidate,task,import_directory=layout.imports)
     report = {'scope':'Retrospective independent verification; original results unchanged; no API calls',
               'batch':batch.name,'original_task':original_task,'evaluation_task':args.task,
               'evaluation_version':target.get('evaluation_version',1),

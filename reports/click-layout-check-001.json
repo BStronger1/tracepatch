@@ -1,0 +1,9 @@
+{
+  "scope": "Offline src-layout import and visible reproducer check on the upstream reference",
+  "reference_commit": "c067af761a70a6cbb91fa49083a41511207297da",
+  "output": {
+    "output": "/workspace/src/click/__init__.py\nRepeated scalar defaults preserved\n",
+    "returncode": 0,
+    "exception_info": ""
+  }
+}

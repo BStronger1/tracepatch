@@ -19,3 +19,11 @@ Requests is Apache-2.0 licensed. Its source archives and reference solution rema
 local in ignored runs/ directories and are not redistributed in TracePatch.
 The custom offline verifier uses Requests' public adapter interface; it is not the
 upstream test suite or the official SWE-bench harness.
+
+The optional Click experiment separately downloads https://github.com/pallets/click
+at the frozen base and reference commits in tasks/repos/click-1687/task.json.
+Click is BSD-3-Clause licensed. Retain its LICENSE.rst and copyright notices with
+any redistributed upstream source. TracePatch does not redistribute those source
+archives or the reference solution; they remain in ignored local runs/ directories.
+The custom verifier uses Click's public APIs and CliRunner, and evaluates a subset
+of historical PR behavior rather than the complete upstream test suite.
