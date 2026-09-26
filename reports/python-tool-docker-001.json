@@ -1,0 +1,64 @@
+{
+  "scope": "Synthetic local Docker tool integration; not model repair evidence",
+  "assertions_passed": true,
+  "model_api_calls": 0,
+  "image": "python@sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b",
+  "cases": [
+    {
+      "case": "false_success",
+      "status": "process_failed",
+      "returncode": 1,
+      "source_state": "unchanged",
+      "observation_chars": 1044,
+      "output_truncated": false
+    },
+    {
+      "case": "pass_no_submission",
+      "status": "process_passed",
+      "returncode": 0,
+      "source_state": "unchanged",
+      "observation_chars": 903,
+      "output_truncated": false
+    },
+    {
+      "case": "timeout",
+      "status": "timed_out",
+      "returncode": null,
+      "source_state": "unchanged",
+      "observation_chars": 861,
+      "output_truncated": false
+    },
+    {
+      "case": "large_output",
+      "status": "process_failed",
+      "returncode": 1,
+      "source_state": "unchanged",
+      "observation_chars": 6000,
+      "output_truncated": true
+    },
+    {
+      "case": "source_change",
+      "status": "process_passed",
+      "returncode": 0,
+      "source_state": "changed",
+      "observation_chars": 862,
+      "output_truncated": false
+    },
+    {
+      "case": "fake_metadata",
+      "status": "process_failed",
+      "returncode": 1,
+      "source_state": "unchanged",
+      "observation_chars": 1036,
+      "output_truncated": false
+    },
+    {
+      "case": "signal",
+      "status": "process_failed",
+      "returncode": -15,
+      "source_state": "unchanged",
+      "observation_chars": 866,
+      "output_truncated": false
+    }
+  ]
+}

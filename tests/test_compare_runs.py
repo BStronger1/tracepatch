@@ -10,6 +10,25 @@ spec.loader.exec_module(module)
 
 
 class CompareRunsTests(unittest.TestCase):
+    def test_python_tool_requires_exact_prompt_change_and_matching_runtime(self):
+        from tracepatch.testing import NATIVE_INSTRUCTION, python_tool_prompt
+        original_prompt = 'Start. ' + NATIVE_INSTRUCTION + ' Finish.'
+        for folder, mode in ((self.left, 'off'), (self.right, 'python')):
+            path = folder / 'manifest.json'
+            manifest = json.loads(path.read_text())
+            manifest.update(test_tool=mode, max_output_tokens=1024,
+                system_prompt=original_prompt if mode == 'off' else python_tool_prompt(original_prompt))
+            path.write_text(json.dumps(manifest))
+            (folder / 'testing.snapshot.py').write_text('same')
+        result = module.compare(self.left, self.right, intervention='python-test-tool')
+        self.assertEqual(result['intervention_fields'], ['test_tool', 'system_prompt'])
+        path = self.right / 'manifest.json'
+        manifest = json.loads(path.read_text())
+        manifest['system_prompt'] += ' unrelated change'
+        path.write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(ValueError, 'system_prompt'):
+            module.compare(self.left, self.right, intervention='python-test-tool')
+
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)

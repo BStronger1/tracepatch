@@ -1,0 +1,12 @@
+{
+  "id": "click-1840",
+  "repository": "https://github.com/pallets/click",
+  "reference_url": "https://github.com/pallets/click/pull/1840",
+  "base_commit": "6c7624491911f0b18f869e5d0a989506e7b416f8",
+  "reference_commit": "043511294a9eec59d08e64c351621e790ae74b76",
+  "image": "python@sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b",
+  "evaluation": "custom offline historical behavior checks; first use in this project, not an official benchmark or blinded holdout",
+  "expected_failure": "test_multilevel_forward_issue_reproduction",
+  "verifier_test_count": 10,
+  "instruction": "Fix inconsistent parameter propagation when Click commands invoke and forward to other commands. Values received by a command must remain available in its context for subsequent forwarding across multiple command levels, including keyword arguments not declared as options on an intermediate command. Command defaults should be included when omitted, and explicit forwarding overrides (including None or False) must win. Preserve parent context parameters, context parent/command identity, callback return values, direct callback invocation behavior and existing errors for invalid forward targets or commands without callbacks. Do not filter away undeclared keyword values just because an intermediate command does not declare them. Inspect this checkout and implement a focused compatible fix. Only existing Python files under src/click/ will be exported. PYTHONPATH is /workspace/src for ordinary Python commands. No network or pytest installation is available; use unittest or click.testing.CliRunner for focused checks. Do not modify upstream tests. Submit after focused checks pass."
+}

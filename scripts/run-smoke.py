@@ -23,7 +23,8 @@ from tracepatch.actions import parse_action
 from tracepatch.recovery import diagnose_action, recovery_feedback
 from tracepatch.lifecycle import prepare_messages
 from tracepatch.window import request_payload, validate_output_limit
-from tracepatch.toolcalling import TOOL_OPTIONS, native_history, parse_tool_call
+from tracepatch.toolcalling import TOOL_OPTIONS, TEST_TOOL_OPTIONS, native_history, parse_tool_call
+from tracepatch.testing import observation_json
 from minisweagent.agents.default import DefaultAgent
 from minisweagent.environments.docker import DockerEnvironment
 from minisweagent.exceptions import FormatError
@@ -73,6 +74,7 @@ class DmxModel:
         self.memory_profile = 'excerpts'
         self.public_checks = None
         self.check_feedback = False
+        self.test_tool = 'off'
 
     def format_message(self, **kwargs):
         return kwargs
@@ -89,7 +91,7 @@ class DmxModel:
             raise RuntimeError('Smoke request limit reached')
         wire, notice = prepare_messages(messages, len(self.calls), self.max_calls, self.policy)
         if self.action_protocol == 'native':
-            wire = native_history(messages)
+            wire = native_history(messages, allow_python_check=self.test_tool == 'python')
             if notice:
                 wire.append({'role': 'user', 'content': notice})
         progress_notice = None
@@ -108,7 +110,7 @@ class DmxModel:
         if self.memory_mode == 'recall' and self.evidence_memory is not None:
             memory_notice, memory_cards = self.evidence_memory.recall(self.progress_monitor.previous, profile=self.memory_profile)
         payload, context_metadata = request_payload(self.config['model'], wire, self.context_policy,
-            tool_options=TOOL_OPTIONS if self.action_protocol == 'native' else None,
+            tool_options=(TEST_TOOL_OPTIONS if self.test_tool == 'python' else TOOL_OPTIONS) if self.action_protocol == 'native' else None,
             max_output_tokens=self.max_output_tokens, memory_notice=memory_notice)
         # At quoted prices even input + cache creation per byte and full output
         # plus up to 1024 output tokens fits within 0.1 CNY/request.
@@ -118,6 +120,7 @@ class DmxModel:
         record.update(context_metadata)
         record['action_protocol'] = self.action_protocol
         record['max_output_tokens'] = self.max_output_tokens
+        record['test_tool'] = self.test_tool
         if self.public_checks is not None:
             record['public_check_notice'] = check_notice
             record['public_check_evidence'] = self.public_checks.current
@@ -166,7 +169,7 @@ class DmxModel:
         if self.action_protocol == 'native':
             raw_message = data['choices'][0]['message']
             try:
-                command, call = parse_tool_call(raw_message, finish_reason)
+                command, call = parse_tool_call(raw_message, finish_reason, allow_python_check=self.test_tool == 'python')
             except ValueError as error:
                 reason = str(error)
                 record.update(finish_reason=finish_reason, action_diagnosis=reason, policy=self.policy)
@@ -175,12 +178,19 @@ class DmxModel:
                             'extra': {'cost': record['estimated_no_cache_cny'], 'usage': usage, 'actions': [],
                                       'rejected_tool_calls': raw_message.get('tool_calls')}}
                 raise FormatError(rejected, {'role': 'user', 'content':
-                    'No command was executed. Call the bash function once with a complete JSON object containing only a nonempty command string. Do not write XML or fenced actions. Keep the command short enough for the configured output limit.'})
+                    ('No command was executed. Call exactly one function: bash with a nonempty command string, '
+                     'or python_check with a nonempty code string. Do not write XML or fenced actions.'
+                     if self.test_tool == 'python' else
+                     'No command was executed. Call the bash function once with a complete JSON object containing only a nonempty command string. Do not write XML or fenced actions. Keep the command short enough for the configured output limit.')})
             record.update(finish_reason=finish_reason, action_diagnosis='valid', policy=self.policy)
             self.save_calls()
+            action = {'command': command}
+            if call['function']['name'] == 'python_check':
+                action = {'tool': 'python_check', 'code': command,
+                          'command': 'python_check sha256:' + hashlib.sha256(command.encode()).hexdigest()}
             return {'role': 'assistant', 'content': raw_message.get('content'), 'tool_calls': [call],
                     'extra': {'cost': record['estimated_no_cache_cny'], 'usage': usage,
-                              'actions': [{'command': command}]}}
+                              'actions': [action]}}
         reason = diagnose_action(text, finish_reason)
         record.update(finish_reason=finish_reason, action_diagnosis=reason, policy=self.policy)
         self.save_calls()
@@ -211,7 +221,8 @@ class DmxModel:
             if len(outputs) != 1:
                 raise ValueError('Expected one tool result')
             return [{'role': 'tool', 'tool_call_id': message['tool_calls'][0]['id'],
-                     'content': json.dumps(outputs[0], ensure_ascii=False)[:6000]}]
+                     'content': observation_json(outputs[0]) if outputs[0].get('provenance') == 'agent-authored-python'
+                     else json.dumps(outputs[0], ensure_ascii=False)[:6000]}]
         return [{'role': 'user', 'content': json.dumps(output, ensure_ascii=False)[:6000]}
                 for output in outputs]
 

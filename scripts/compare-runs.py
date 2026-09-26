@@ -1,11 +1,15 @@
 """Compare frozen paired development batches without exposing raw prompts or commands."""
 import argparse
 import json
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
+from tracepatch.testing import python_tool_prompt
 
 
 def compare(left: Path, right: Path, *, intervention='policy') -> dict:
-    if intervention not in ('policy', 'output-budget', 'progress-feedback', 'evidence-memory', 'structured-evidence', 'public-check-feedback'):
+    if intervention not in ('policy', 'output-budget', 'progress-feedback', 'evidence-memory', 'structured-evidence', 'public-check-feedback', 'python-test-tool'):
         raise ValueError('Unknown intervention')
     manifests = [json.loads((p / 'manifest.json').read_text(encoding='utf-8')) for p in (left, right)]
     controlled = ('split', 'suite', 'upstream_commit', 'image', 'system_prompt', 'model', 'action_protocol',
@@ -13,7 +17,14 @@ def compare(left: Path, right: Path, *, intervention='policy') -> dict:
                   'observation_char_limit', 'input_json_byte_limit', 'tasks', 'reject_provider_truncation', 'source_layout',
                   'progress_mode', 'progress_threshold', 'progress_schema',
                   'memory_mode', 'memory_schema', 'memory_byte_limit', 'memory_profile',
-                  'check_mode', 'check_schema', 'check_schedule')
+                  'check_mode', 'check_schema', 'check_schedule', 'test_tool', 'test_tool_schema', 'test_tool_timeout')
+    if intervention == 'python-test-tool':
+        controlled = tuple(k for k in controlled if k not in ('test_tool', 'system_prompt')) + ('policy', 'context_policy')
+        if {m.get('test_tool') for m in manifests} != {'off', 'python'}:
+            raise ValueError('Python tool comparison requires off and python modes')
+        by_mode = {m['test_tool']: m for m in manifests}
+        if by_mode['python']['system_prompt'] != python_tool_prompt(by_mode['off']['system_prompt']):
+            raise ValueError('Unexpected system_prompt difference')
     if intervention == 'public-check-feedback':
         controlled = tuple(k for k in controlled if k != 'check_mode') + ('policy', 'context_policy')
         if {m.get('check_mode') for m in manifests} != {'observe', 'feedback'}:
@@ -45,10 +56,11 @@ def compare(left: Path, right: Path, *, intervention='policy') -> dict:
         if (left / 'lifecycle.snapshot.py').read_bytes() != (right / 'lifecycle.snapshot.py').read_bytes():
             raise ValueError('Different lifecycle snapshot')
     arms = []
-    for name in ('memory', 'context', 'symbols', 'checks'):
+    for name in ('memory', 'context', 'symbols', 'checks', 'testing'):
         required = ((intervention == 'evidence-memory' and name in ('memory', 'context'))
-                    or (intervention == 'structured-evidence' and name != 'checks')
-                    or (intervention == 'public-check-feedback' and name == 'checks'))
+                    or (intervention == 'structured-evidence' and name in ('memory', 'context', 'symbols'))
+                    or (intervention == 'public-check-feedback' and name == 'checks')
+                    or (intervention == 'python-test-tool' and name == 'testing'))
         if required or any((p / f'{name}.snapshot.py').exists() for p in (left, right)):
             if not all((p / f'{name}.snapshot.py').exists() for p in (left, right)):
                 raise ValueError('Missing snapshot: ' + name)
@@ -84,6 +96,7 @@ def compare(left: Path, right: Path, *, intervention='policy') -> dict:
                      'memory_mode': manifest.get('memory_mode', 'off'),
                      'memory_profile': manifest.get('memory_profile', 'excerpts'),
                      'check_mode': manifest.get('check_mode', 'off'),
+                     'test_tool': manifest.get('test_tool', 'off'),
                      'max_output_tokens': manifest.get('max_output_tokens'),
                      'context_policy': manifest.get('context_policy', 'none'),
                      'verified': sum(t['verified_success'] for t in tasks),
@@ -94,7 +107,7 @@ def compare(left: Path, right: Path, *, intervention='policy') -> dict:
                      'unknown_cost_requests': sum(t['unknown_cost_requests'] for t in tasks),
                      'tasks': [{k: t.get(k) for k in ('task', 'verified_success', 'agent_exit',
                                 'api_calls', 'format_error_count')} for t in tasks]})
-    interventions = [key for key in ('policy', 'context_policy', 'max_output_tokens', 'progress_mode', 'memory_mode', 'memory_profile', 'check_mode')
+    interventions = [key for key in ('policy', 'context_policy', 'max_output_tokens', 'progress_mode', 'memory_mode', 'memory_profile', 'check_mode', 'test_tool', 'system_prompt')
                      if manifests[0].get(key, 'none') != manifests[1].get(key, 'none')]
     return {'scope': 'Single run per development task per arm; not a benchmark or causal estimate.',
             'controls_match': True, 'intervention_fields': interventions, 'arms': arms}
@@ -105,7 +118,7 @@ if __name__ == '__main__':
     parser.add_argument('baseline', type=Path)
     parser.add_argument('recovery', type=Path)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--intervention', choices=('policy', 'output-budget', 'progress-feedback', 'evidence-memory', 'structured-evidence', 'public-check-feedback'), default='policy')
+    parser.add_argument('--intervention', choices=('policy', 'output-budget', 'progress-feedback', 'evidence-memory', 'structured-evidence', 'public-check-feedback', 'python-test-tool'), default='policy')
     args = parser.parse_args()
     result = compare(args.baseline, args.recovery, intervention=args.intervention)
     with args.output.open('x', encoding='utf-8') as handle:

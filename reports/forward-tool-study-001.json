@@ -1,0 +1,227 @@
+{
+  "scope": "First project use of a historical public issue, one pair; not a blinded holdout or general effect estimate",
+  "plan": "forward-tool-plan-001.json",
+  "comparison": {
+    "scope": "Single run per development task per arm; not a benchmark or causal estimate.",
+    "controls_match": true,
+    "intervention_fields": [
+      "test_tool",
+      "system_prompt"
+    ],
+    "arms": [
+      {
+        "batch": "repo-forward-off-001",
+        "policy": "recovery-submit",
+        "progress_mode": "observe",
+        "memory_mode": "recall",
+        "memory_profile": "structured",
+        "check_mode": "feedback",
+        "test_tool": "off",
+        "max_output_tokens": 1024,
+        "context_policy": "recent-turns",
+        "verified": 1,
+        "submitted": 1,
+        "calls": 23,
+        "rejected_actions": 0,
+        "estimated_known_no_cache_cny": 0.09581253499999999,
+        "unknown_cost_requests": 0,
+        "tasks": [
+          {
+            "task": "click-1840",
+            "verified_success": true,
+            "agent_exit": "Submitted",
+            "api_calls": 23,
+            "format_error_count": 0
+          }
+        ]
+      },
+      {
+        "batch": "repo-forward-python-001",
+        "policy": "recovery-submit",
+        "progress_mode": "observe",
+        "memory_mode": "recall",
+        "memory_profile": "structured",
+        "check_mode": "feedback",
+        "test_tool": "python",
+        "max_output_tokens": 1024,
+        "context_policy": "recent-turns",
+        "verified": 0,
+        "submitted": 0,
+        "calls": 24,
+        "rejected_actions": 0,
+        "estimated_known_no_cache_cny": 0.09422803,
+        "unknown_cost_requests": 0,
+        "tasks": [
+          {
+            "task": "click-1840",
+            "verified_success": false,
+            "agent_exit": "LimitsExceeded",
+            "api_calls": 24,
+            "format_error_count": 0
+          }
+        ]
+      }
+    ]
+  },
+  "arms": [
+    {
+      "batch": "repo-forward-off-001",
+      "test_tool": "off",
+      "result": {
+        "task": "click-1840",
+        "status": "verified",
+        "verified_success": true,
+        "agent_exit": "Submitted",
+        "verification": {
+          "output": "test_callback_invocation_keeps_current_context (__main__.ForwardContract) ... ok\ntest_cli_three_levels_and_return_value (__main__.ForwardContract) ... ok\ntest_command_context_identity_and_parent (__main__.ForwardContract) ... ok\ntest_defaults_survive_next_forward (__main__.ForwardContract) ... ok\ntest_direct_command_invoke_records_all_kwargs (__main__.ForwardContract) ... ok\ntest_explicit_overrides_include_false_and_none (__main__.ForwardContract) ... ok\ntest_invalid_forward_and_missing_callback_errors_remain (__main__.ForwardContract) ... ok\ntest_multilevel_forward_issue_reproduction (__main__.ForwardContract) ... ok\ntest_nonexposed_defaults_are_not_injected (__main__.ForwardContract) ... ok\ntest_parent_params_are_not_changed_or_aliased (__main__.ForwardContract) ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 0.003s\n\nOK\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "completion": {
+          "state": "verified_submitted",
+          "patch_verified": true,
+          "agent_submitted": true,
+          "agent_exit": "Submitted",
+          "verification_returncode": 0
+        },
+        "api_calls": 23,
+        "format_error_count": 0,
+        "estimated_known_no_cache_cny": 0.09581253499999999,
+        "unknown_cost_requests": 0,
+        "elapsed_seconds": 108.078,
+        "budget": {
+          "limit_cny": "70",
+          "reserved_cny": "67.3",
+          "remaining_reservation_cny": "2.7",
+          "note": "Conservative planning reservations, not actual provider charges"
+        }
+      },
+      "tool_calls": {
+        "bash": 23
+      },
+      "structured_checks": [],
+      "structured_checks_audited": 0,
+      "all_structured_versions_and_output_hashes_match": null,
+      "progress": {
+        "actions": 23,
+        "changed_actions": 2,
+        "unknown_actions": 0,
+        "review_signals": 2,
+        "max_unchanged_streak": 11
+      },
+      "first_changed_action": 12,
+      "public_checks": [
+        {
+          "action": 0,
+          "source_sha256": "6f09ab0ba16b273d68a0eb8087440dbdadda7d09471630e4a74216921c261793",
+          "check_sha256": "03719a0827f07697a687a904c13bc7980a53f47725d54fc673663764f50e5d4f",
+          "provenance": "frozen-public-reproducer",
+          "status": "failed",
+          "returncode": 1,
+          "error_type": null,
+          "output_sha256": "0bead15c89102ddebf35f2005078979375c96f5b94cec2a45e318c4997d56210"
+        },
+        {
+          "action": 12,
+          "source_sha256": "c9dcebc0fc4659bc9fa93b9848dbafdb2a3f6cdeb7fa78d37e0fa04c30f09a2e",
+          "check_sha256": "03719a0827f07697a687a904c13bc7980a53f47725d54fc673663764f50e5d4f",
+          "provenance": "frozen-public-reproducer",
+          "status": "failed",
+          "returncode": 1,
+          "error_type": null,
+          "output_sha256": "0bead15c89102ddebf35f2005078979375c96f5b94cec2a45e318c4997d56210"
+        },
+        {
+          "action": 17,
+          "source_sha256": "4559591d836c38af4c959c207e67013dd54f71cb4502070191f203aeea344bdb",
+          "check_sha256": "03719a0827f07697a687a904c13bc7980a53f47725d54fc673663764f50e5d4f",
+          "provenance": "frozen-public-reproducer",
+          "status": "passed",
+          "returncode": 0,
+          "error_type": null,
+          "output_sha256": "c34ed8d1b1c33e3fcbaa5ebc493bea955835df0c0250c11724160499c8152a2c"
+        }
+      ],
+      "history_pruned_requests": 15,
+      "memory_injected_requests": 15,
+      "hashes": {
+        "requests.json": "63ac82a52cfcf90e7100dfca61047fa036f0fd0b5a387ee3200eb8a937f82ccb",
+        "trajectory.json": "0b899659243e9f6f2eb0db96bac866bc381f724ec9d2ba929d58cab9daec9d16",
+        "progress.json": "94e12c33cc738a44999397ea2b3d05602cde414e762b24754d1435e8f3eca633",
+        "patch.diff": "2cb05eea25df68641d14a2680ff57a9ba05ab214519e08ed371b5dd5bb35c046"
+      }
+    },
+    {
+      "batch": "repo-forward-python-001",
+      "test_tool": "python",
+      "result": {
+        "task": "click-1840",
+        "status": "verified",
+        "verified_success": false,
+        "agent_exit": "LimitsExceeded",
+        "verification": {
+          "output": "test_callback_invocation_keeps_current_context (__main__.ForwardContract) ... ok\ntest_cli_three_levels_and_return_value (__main__.ForwardContract) ... FAIL\ntest_command_context_identity_and_parent (__main__.ForwardContract) ... ok\ntest_defaults_survive_next_forward (__main__.ForwardContract) ... FAIL\ntest_direct_command_invoke_records_all_kwargs (__main__.ForwardContract) ... FAIL\ntest_explicit_overrides_include_false_and_none (__main__.ForwardContract) ... test_invalid_forward_and_missing_callback_errors_remain (__main__.ForwardContract) ... ok\ntest_multilevel_forward_issue_reproduction (__main__.ForwardContract) ... FAIL\ntest_nonexposed_defaults_are_not_injected (__main__.ForwardContract) ... ok\ntest_parent_params_are_not_changed_or_aliased (__main__.ForwardContract) ... FAIL\n\n======================================================================\nFAIL: test_cli_three_levels_and_return_value (__main__.ForwardContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 82, in test_cli_three_levels_and_return_value\n    self.assertEqual(result.return_value, (expected, expected))\nAssertionError: Tuples differ: ({}, {}) != ({'count': 6, 'extra': 'retain', 'other': 9[42 chars]: 9})\n\nFirst differing element 0:\n{}\n{'count': 6, 'extra': 'retain', 'other': 9}\n\n- ({}, {})\n+ ({'count': 6, 'extra': 'retain', 'other': 9},\n+  {'count': 6, 'extra': 'retain', 'other': 9})\n\n======================================================================\nFAIL: test_defaults_survive_next_forward (__main__.ForwardContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 29, in test_defaults_survive_next_forward\n    self.assertEqual(self.root().forward(middle), {'count': 3})\nAssertionError: {} != {'count': 3}\n- {}\n+ {'count': 3}\n\n======================================================================\nFAIL: test_direct_command_invoke_records_all_kwargs (__main__.ForwardContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 24, in test_direct_command_invoke_records_all_kwargs\n    self.assertEqual(self.root().invoke(child, extra=7), ({'extra': 7}, {'extra': 7}))\nAssertionError: Tuples differ: ({}, {'extra': 7}) != ({'extra': 7}, {'extra': 7})\n\nFirst differing element 0:\n{}\n{'extra': 7}\n\n- ({}, {'extra': 7})\n+ ({'extra': 7}, {'extra': 7})\n\n======================================================================\nFAIL: test_explicit_overrides_include_false_and_none (__main__.ForwardContract) (value=None)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 36, in test_explicit_overrides_include_false_and_none\n    self.assertEqual(result, ({'value': value}, {'value': value}))\nAssertionError: Tuples differ: ({}, {'value': None}) != ({'value': None}, {'value': None})\n\nFirst differing element 0:\n{}\n{'value': None}\n\n- ({}, {'value': None})\n+ ({'value': None}, {'value': None})\n\n======================================================================\nFAIL: test_explicit_overrides_include_false_and_none (__main__.ForwardContract) (value=False)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 36, in test_explicit_overrides_include_false_and_none\n    self.assertEqual(result, ({'value': value}, {'value': value}))\nAssertionError: Tuples differ: ({}, {'value': False}) != ({'value': False}, {'value': False})\n\nFirst differing element 0:\n{}\n{'value': False}\n\n- ({}, {'value': False})\n+ ({'value': False}, {'value': False})\n\n======================================================================\nFAIL: test_explicit_overrides_include_false_and_none (__main__.ForwardContract) (value=0)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 36, in test_explicit_overrides_include_false_and_none\n    self.assertEqual(result, ({'value': value}, {'value': value}))\nAssertionError: Tuples differ: ({}, {'value': 0}) != ({'value': 0}, {'value': 0})\n\nFirst differing element 0:\n{}\n{'value': 0}\n\n- ({}, {'value': 0})\n+ ({'value': 0}, {'value': 0})\n\n======================================================================\nFAIL: test_explicit_overrides_include_false_and_none (__main__.ForwardContract) (value='')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 36, in test_explicit_overrides_include_false_and_none\n    self.assertEqual(result, ({'value': value}, {'value': value}))\nAssertionError: Tuples differ: ({}, {'value': ''}) != ({'value': ''}, {'value': ''})\n\nFirst differing element 0:\n{}\n{'value': ''}\n\n- ({}, {'value': ''})\n+ ({'value': ''}, {'value': ''})\n\n======================================================================\nFAIL: test_explicit_overrides_include_false_and_none (__main__.ForwardContract) (value='override')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 36, in test_explicit_overrides_include_false_and_none\n    self.assertEqual(result, ({'value': value}, {'value': value}))\nAssertionError: Tuples differ: ({}, {'value': 'override'}) != ({'value': 'override'}, {'value': 'override'})\n\nFirst differing element 0:\n{}\n{'value': 'override'}\n\n- ({}, {'value': 'override'})\n+ ({'value': 'override'}, {'value': 'override'})\n\n======================================================================\nFAIL: test_multilevel_forward_issue_reproduction (__main__.ForwardContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 20, in test_multilevel_forward_issue_reproduction\n    self.assertEqual(self.root(a='alpha', extra='keep').forward(middle), {'a': 'alpha', 'extra': 'keep'})\nAssertionError: {} != {'a': 'alpha', 'extra': 'keep'}\n- {}\n+ {'a': 'alpha', 'extra': 'keep'}\n\n======================================================================\nFAIL: test_parent_params_are_not_changed_or_aliased (__main__.ForwardContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 43, in test_parent_params_are_not_changed_or_aliased\n    parent.forward(command(callback), value='child')\n  File \"/workspace/src/click/core.py\", line 723, in forward\n    return self.invoke(cmd, **kwargs)\n  File \"/workspace/src/click/core.py\", line 706, in invoke\n    return callback(*args, **kwargs)\n  File \"/workspace/src/click/decorators.py\", line 23, in new_func\n    return f(get_current_context(), *args, **kwargs)\n  File \"/workspace/verify.py\", line 41, in callback\n    self.assertEqual(ctx.params, {'value': 'child'})\nAssertionError: {} != {'value': 'child'}\n- {}\n+ {'value': 'child'}\n\n----------------------------------------------------------------------\nRan 10 tests in 0.006s\n\nFAILED (failures=10)\n",
+          "returncode": 1,
+          "exception_info": ""
+        },
+        "completion": {
+          "state": "failed_unsubmitted",
+          "patch_verified": false,
+          "agent_submitted": false,
+          "agent_exit": "LimitsExceeded",
+          "verification_returncode": 1
+        },
+        "api_calls": 24,
+        "format_error_count": 0,
+        "estimated_known_no_cache_cny": 0.09422803,
+        "unknown_cost_requests": 0,
+        "elapsed_seconds": 88.859,
+        "budget": {
+          "limit_cny": "70",
+          "reserved_cny": "69.7",
+          "remaining_reservation_cny": "0.3",
+          "note": "Conservative planning reservations, not actual provider charges"
+        }
+      },
+      "tool_calls": {
+        "bash": 24
+      },
+      "structured_checks": [],
+      "structured_checks_audited": 0,
+      "all_structured_versions_and_output_hashes_match": null,
+      "progress": {
+        "actions": 24,
+        "changed_actions": 0,
+        "unknown_actions": 0,
+        "review_signals": 4,
+        "max_unchanged_streak": 24
+      },
+      "first_changed_action": null,
+      "public_checks": [
+        {
+          "action": 0,
+          "source_sha256": "6f09ab0ba16b273d68a0eb8087440dbdadda7d09471630e4a74216921c261793",
+          "check_sha256": "03719a0827f07697a687a904c13bc7980a53f47725d54fc673663764f50e5d4f",
+          "provenance": "frozen-public-reproducer",
+          "status": "failed",
+          "returncode": 1,
+          "error_type": null,
+          "output_sha256": "0bead15c89102ddebf35f2005078979375c96f5b94cec2a45e318c4997d56210"
+        }
+      ],
+      "history_pruned_requests": 19,
+      "memory_injected_requests": 19,
+      "hashes": {
+        "requests.json": "9660baf5d31104be8e6d672aa22abab310fbde2e0ea9b9be34ce1e9d3a6f0627",
+        "trajectory.json": "3b1bc689107c15e42f06a17492ff39fa21e470276a4dfc101ebdb47406daa46c",
+        "progress.json": "dc8fc3c68e6a574406820ff432d47b7672a98e6ba3457ca20cefc8c3ebe63f61",
+        "patch.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "totals": {
+    "calls": 47,
+    "estimated_known_no_cache_cny": 0.190040565,
+    "unknown_cost_requests": 0
+  }
+}

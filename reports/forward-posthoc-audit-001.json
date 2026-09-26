@@ -1,0 +1,37 @@
+{
+  "scope": "Two post-hoc diagnostic contracts prompted by baseline patch inspection; not frozen benchmark scores",
+  "model_api_calls": 0,
+  "original_scores_preserved": true,
+  "image": "python@sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b",
+  "probe_sha256": "e004a8be190cadcb613ffe103558916bf5bc9c8eed0a55d63bcf629f24133a39",
+  "probe": "import unittest\nimport click\n\nclass AdditionalContracts(unittest.TestCase):\n    def test_invoke_does_not_inherit_unpassed_parent_params(self):\n        parent = click.Context(click.Command('root'))\n        parent.params['unpassed'] = 'parent-only'\n        @click.command()\n        @click.pass_context\n        def child(ctx, **values):\n            return dict(ctx.params), values\n        self.assertEqual(parent.invoke(child, supplied=3), ({'supplied':3}, {'supplied':3}))\n\n    def test_forward_preserves_keyword_names_cmd_and_self(self):\n        parent = click.Context(click.Command('root'))\n        @click.command()\n        @click.pass_context\n        def child(ctx, **values):\n            return values\n        self.assertEqual(parent.forward(child, cmd='keep', self='also-keep'),\n                         {'cmd':'keep', 'self':'also-keep'})\n\nif __name__=='__main__':\n    unittest.main(verbosity=2)\n",
+  "records": [
+    {
+      "candidate": "reference",
+      "core_sha256": "f42e09be0001ffd75e202e4f05af7bb5a1d084aacb0efd5559db575ddd154ccc",
+      "verification": {
+        "output": "test_forward_preserves_keyword_names_cmd_and_self (__main__.AdditionalContracts) ... ok\ntest_invoke_does_not_inherit_unpassed_parent_params (__main__.AdditionalContracts) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nOK\n",
+        "returncode": 0,
+        "exception_info": ""
+      }
+    },
+    {
+      "candidate": "off",
+      "core_sha256": "9ee457ff8271d42a3012a06ec12cecb2f33ba9fdd29d3c6048141883d1e5df66",
+      "verification": {
+        "output": "test_forward_preserves_keyword_names_cmd_and_self (__main__.AdditionalContracts) ... ERROR\ntest_invoke_does_not_inherit_unpassed_parent_params (__main__.AdditionalContracts) ... FAIL\n\n======================================================================\nERROR: test_forward_preserves_keyword_names_cmd_and_self (__main__.AdditionalContracts)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 20, in test_forward_preserves_keyword_names_cmd_and_self\n    self.assertEqual(parent.forward(child, cmd='keep', self='also-keep'),\nTypeError: forward() got multiple values for argument 'cmd'\n\n======================================================================\nFAIL: test_invoke_does_not_inherit_unpassed_parent_params (__main__.AdditionalContracts)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 12, in test_invoke_does_not_inherit_unpassed_parent_params\n    self.assertEqual(parent.invoke(child, supplied=3), ({'supplied':3}, {'supplied':3}))\nAssertionError: Tuples differ: ({'unpassed': 'parent-only', 'supplied': 3}, {'supplied': 3}) != ({'supplied': 3}, {'supplied': 3})\n\nFirst differing element 0:\n{'unpassed': 'parent-only', 'supplied': 3}\n{'supplied': 3}\n\n- ({'supplied': 3, 'unpassed': 'parent-only'}, {'supplied': 3})\n+ ({'supplied': 3}, {'supplied': 3})\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nFAILED (failures=1, errors=1)\n",
+        "returncode": 1,
+        "exception_info": ""
+      }
+    },
+    {
+      "candidate": "python",
+      "core_sha256": "6264689d1c7873e17cc4a8605f5b5f8b1020690b699ee10c5bf04725378ba1fb",
+      "verification": {
+        "output": "test_forward_preserves_keyword_names_cmd_and_self (__main__.AdditionalContracts) ... ok\ntest_invoke_does_not_inherit_unpassed_parent_params (__main__.AdditionalContracts) ... FAIL\n\n======================================================================\nFAIL: test_invoke_does_not_inherit_unpassed_parent_params (__main__.AdditionalContracts)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 12, in test_invoke_does_not_inherit_unpassed_parent_params\n    self.assertEqual(parent.invoke(child, supplied=3), ({'supplied':3}, {'supplied':3}))\nAssertionError: Tuples differ: ({}, {'supplied': 3}) != ({'supplied': 3}, {'supplied': 3})\n\nFirst differing element 0:\n{}\n{'supplied': 3}\n\n- ({}, {'supplied': 3})\n+ ({'supplied': 3}, {'supplied': 3})\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nFAILED (failures=1)\n",
+        "returncode": 1,
+        "exception_info": ""
+      }
+    }
+  ]
+}

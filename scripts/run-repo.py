@@ -19,6 +19,7 @@ from tracepatch.repositories import repository_layout, reconstruct_candidate
 from tracepatch.progress import ProgressMonitor, ObservedEnvironment, docker_snapshot, snapshot_digest
 from tracepatch.memory import EvidenceMemory, docker_read_ranges
 from tracepatch.checks import PublicChecks
+from tracepatch.testing import PythonCheckEnvironment, docker_python_check, python_tool_prompt
 
 spec = importlib.util.spec_from_file_location('runtime', ROOT / 'scripts/run-smoke.py')
 runtime = importlib.util.module_from_spec(spec)
@@ -131,15 +132,20 @@ def main():
     parser.add_argument('--memory-mode', choices=('off', 'observe', 'recall'), default='off')
     parser.add_argument('--memory-profile', choices=('excerpts', 'structured'), default='excerpts')
     parser.add_argument('--check-mode', choices=('off', 'observe', 'feedback'), default='off')
+    parser.add_argument('--test-tool', choices=('off', 'python'), default='off')
     args = parser.parse_args()
     if args.memory_mode != 'off' and args.progress_mode == 'off':
         parser.error('Evidence memory requires source observation')
     if args.check_mode != 'off' and (args.progress_mode == 'off' or not args.visible_reproducer):
         parser.error('Public checks require source observation and a visible reproducer')
+    if args.test_tool == 'python' and (args.action_protocol != 'native' or args.progress_mode == 'off'):
+        parser.error('Python checks require native tools and source observation')
     system = SYSTEM.replace('12 model calls', f'{args.max_calls} model calls')
     if args.action_protocol == 'native':
         system = system.replace('Return exactly one complete fenced bash action per reply.',
                                 'Call the bash function exactly once per reply with a complete command argument. Do not write XML or fenced actions.')
+    if args.test_tool == 'python':
+        system = python_tool_prompt(system)
     if not re.fullmatch(r'repo-[a-z0-9-]{1,45}', args.batch):
         parser.error('Use a new repo-... batch ID')
     task = ROOT / 'tasks/repos' / args.task
@@ -157,7 +163,7 @@ def main():
     batch = ROOT / 'runs' / args.batch
     batch.mkdir(parents=True, exist_ok=False)
     for name, path in {'runner': Path(__file__), 'runtime': ROOT / 'scripts/run-smoke.py',
-                       **{n: ROOT / f'src/tracepatch/{n}.py' for n in ('budget', 'actions', 'recovery', 'lifecycle', 'window', 'toolcalling', 'repositories', 'progress', 'memory', 'context', 'symbols', 'checks')}}.items():
+                       **{n: ROOT / f'src/tracepatch/{n}.py' for n in ('budget', 'actions', 'recovery', 'lifecycle', 'window', 'toolcalling', 'repositories', 'progress', 'memory', 'context', 'symbols', 'checks', 'testing')}}.items():
         shutil.copyfile(path, batch / f'{name}.snapshot.py')
     base, reference = batch / 'base', batch / 'reference'
     hashes = {'base_archive': archive_source(task_config['base_commit'], base, task_config['repository']),
@@ -179,6 +185,8 @@ def main():
                 'memory_profile': args.memory_profile,
                 'check_mode': args.check_mode, 'check_schema': 'tracepatch-public-checks-0.1',
                 'check_schedule': 'initial-and-each-new-observed-source-version',
+                'test_tool': args.test_tool, 'test_tool_schema': 'tracepatch-python-check-0.1',
+                'test_tool_timeout': 20,
                 'max_output_tokens': args.max_output_tokens, 'enable_thinking': False, 'observation_char_limit': 6000,
                 'input_json_byte_limit': 24000, 'reject_provider_truncation': True,
                 'tasks': {task_config['id']: hashes}, 'provenance': task_config}
@@ -211,6 +219,7 @@ def main():
     model = runtime.DmxModel(config, key, run_dir=run, ledger=ledger, policy=args.policy,
                              max_calls=args.max_calls, context_policy=args.context_policy, action_protocol=args.action_protocol,
                              max_output_tokens=args.max_output_tokens)
+    model.test_tool = args.test_tool
     env = environment(image, layout.imports)
     result = {'task': task_config['id'], 'status': 'started', 'verified_success': False}
     started = time.monotonic()
@@ -245,6 +254,9 @@ def main():
                 public_checks.observe(initial, 0)
                 model.public_checks = public_checks
                 model.check_feedback = args.check_mode == 'feedback'
+            if args.test_tool == 'python':
+                execute_check = lambda code: docker_python_check(runtime.DOCKER, container_id, code, layout.imports)
+                env = PythonCheckEnvironment(env, execute_check, snapshot, run / 'python-checks')
             env = ObservedEnvironment(env, monitor, snapshot, run / 'progress.json', memory=memory,
                                       checks=public_checks)
             model.progress_monitor = monitor
