@@ -10,6 +10,22 @@ spec.loader.exec_module(module)
 
 
 class CompareRunsTests(unittest.TestCase):
+    def test_stage_comparison_keeps_tools_and_thresholds_equal(self):
+        for folder, mode in ((self.left, 'observe'), (self.right, 'guide')):
+            path = folder / 'manifest.json'
+            manifest = json.loads(path.read_text())
+            manifest.update(stage_mode=mode, test_tool='python', stage_inspect_calls=6, max_output_tokens=1024)
+            path.write_text(json.dumps(manifest))
+            for name in ('stages', 'testing'):
+                (folder / f'{name}.snapshot.py').write_text('same')
+        result = module.compare(self.left, self.right, intervention='stage-guidance')
+        self.assertEqual(result['intervention_fields'], ['stage_mode'])
+        path = self.right / 'manifest.json'
+        manifest['stage_inspect_calls'] = 4
+        path.write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(ValueError, 'stage_inspect_calls'):
+            module.compare(self.left, self.right, intervention='stage-guidance')
+
     def test_python_tool_requires_exact_prompt_change_and_matching_runtime(self):
         from tracepatch.testing import NATIVE_INSTRUCTION, python_tool_prompt
         original_prompt = 'Start. ' + NATIVE_INSTRUCTION + ' Finish.'

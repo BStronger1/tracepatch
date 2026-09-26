@@ -1,0 +1,70 @@
+{
+  "frozen_at_utc": "2026-09-26T13:58:28.648243+00:00",
+  "scope": "Two known development tasks, one paired run each; combined stage prompts and routing, not a general effect estimate",
+  "order": [
+    {
+      "batch": "repo-stages-click-observe-001",
+      "task": "click-1840-v2",
+      "stage_mode": "observe"
+    },
+    {
+      "batch": "repo-stages-click-guide-001",
+      "task": "click-1840-v2",
+      "stage_mode": "guide"
+    },
+    {
+      "batch": "repo-stages-cookie-guide-001",
+      "task": "requests-2527-v2",
+      "stage_mode": "guide"
+    },
+    {
+      "batch": "repo-stages-cookie-observe-001",
+      "task": "requests-2527-v2",
+      "stage_mode": "observe"
+    }
+  ],
+  "primary_outcome": "independent verification and agent submission separately",
+  "secondary_outcomes": [
+    "forced and unforced Python check calls",
+    "source changes",
+    "stage transitions",
+    "cost"
+  ],
+  "max_calls": 24,
+  "max_output_tokens": 1024,
+  "inspection_calls": 6,
+  "final_reserved_calls": 2,
+  "stop_rule": "No tuning or retries between arms; stop on infrastructure failure, preserve all runs",
+  "file_hashes": {
+    "scripts/run-repo.py": "a43239e2a77f189af9956e2bfcbcafbd82a0be70816e960a8e4b9acc19925cd3",
+    "scripts/run-smoke.py": "bcbb7cf98e3da01ab3827eb1020289c41d69d3041faf765500dc3a910d6065e5",
+    "scripts/compare-runs.py": "854fe79bfbf46e52eb22f1c5f6e94d890575b6e3193b8b64eea549d15f806463",
+    "scripts/check-stages.py": "f3736364db287a630400afd3ab9fa1c236e0a4c2337e5958c14edaa01463dfb3",
+    "configs/model.json": "9cf3e635c3ec5fed20e6414493cc388f1dca7938bd65feca8b9b28313fd9ba51",
+    "docs/STAGE_GUIDANCE.md": "4fd16163cac16b04e778eb3af89386a22ea39b1f1c179a1db783f34fb1824c30",
+    "src/tracepatch/__init__.py": "8ac2e57925b11455a7a17258b344a9dd0f9c026fde5a8776eef69f8e42cc9e52",
+    "src/tracepatch/__main__.py": "b28679c7829eea4881d0450f5ec781cd049c5e31eaa307e292d3a1742c5ff2c0",
+    "src/tracepatch/actions.py": "46e9a0e0ba16ffd4e24d021d88933b3ffd676e396234250d67e540a678130003",
+    "src/tracepatch/analyze.py": "d319297893b2b7132d7dd8d3b32209c46dd9d1f038ab74f6ca11dbd6709a6783",
+    "src/tracepatch/budget.py": "1b01eec313421e8f457c54c37fd34924c5ab98df8ab045ea1788d9486a2724bf",
+    "src/tracepatch/checks.py": "d95d4f07f5f4110bf78d78d784771c7b716f1e53f3cba03b39407c567f21a4e3",
+    "src/tracepatch/cli.py": "3a6235e2778a19ccdc84749776b0cedbcd001a30d8528ef1c99ce454bb3322fb",
+    "src/tracepatch/context.py": "f6df7d8d3011e1ec1068c5cb6087a93b451b204d2e4e65cdca9cf9caec094ddc",
+    "src/tracepatch/lifecycle.py": "924ed1387360656fcbf5a077c3796db426074f541ca3079fd00edabfd3c66179",
+    "src/tracepatch/memory.py": "15ac245648130e46ff8138ca55a4e3c237fc586abb2b393aa245ddbd04411930",
+    "src/tracepatch/progress.py": "88da29540617ce2eebbdf9c122b8b51233d047b9f653ae0a9fc60005cd464f69",
+    "src/tracepatch/recovery.py": "1a98ce4a7d50b47f1878e69176a893db6a4e7650a2be72aa8f6d8f0e1079b939",
+    "src/tracepatch/repositories.py": "04f3c393332518b18c78fbc7a547ef2ebf39d61b5569483865f731da9d106581",
+    "src/tracepatch/stages.py": "e7aab5e159ba95ec9d469eb87bec9de0beea4123c55f856dbf0c8c69611ddb1f",
+    "src/tracepatch/symbols.py": "784d161ef20e497df9857be0f42421b8ce8e824188656ee90c59ceef9631016f",
+    "src/tracepatch/testing.py": "9aa13935e768ac2320c17eff8b52d952f7a3a0c4c25ee9eba42d1fc097cb8f8e",
+    "src/tracepatch/toolcalling.py": "cf55bb114f5820db425c41732c5569296511eef19876b7d7cb5b48df9000b032",
+    "src/tracepatch/window.py": "2aa2a49d5533c0979ffe6798a4ef29a9652f786c7116871686d2efae7b36cadf",
+    "tasks/repos/click-1840-v2/task.json": "682d8d63d3af62f9a14dd41cf37464cd7a1217913931a9f6f63527742d8e1f85",
+    "tasks/repos/click-1840-v2/verify.py": "6cbe1bc61695c698f05e5844a81df1c1865ed452edb361732ab65abac6b14b8a",
+    "tasks/repos/click-1840-v2/reproduce_issue.py": "03719a0827f07697a687a904c13bc7980a53f47725d54fc673663764f50e5d4f",
+    "tasks/repos/requests-2527-v2/task.json": "a5c5eb4c6b0a16907ffe3f6e92a79c84530d6435d0e6be2cae9125a55165ed3d",
+    "tasks/repos/requests-2527-v2/verify.py": "e10d646c605c3c4a8c59db51992a74551438d342cc48e848d90420d1a057ecf8",
+    "tasks/repos/requests-2527-v2/reproduce_issue.py": "b90f3904845b77411e372de9b978f20fef6d05acd1731cfcad8b4e670937e7a3"
+  }
+}

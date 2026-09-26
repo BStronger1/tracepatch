@@ -1,0 +1,41 @@
+{
+  "scope": "Synthetic model responses with real Docker; not repair-performance evidence",
+  "model_api_calls": 0,
+  "assertions_passed": true,
+  "image": "python@sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b",
+  "wrong_tool_rejected_before_execution": true,
+  "only_explicit_submission_finishes": true,
+  "stages": [
+    "check_hypothesis",
+    "check_hypothesis",
+    "implement",
+    "check_patch",
+    "review_submission"
+  ],
+  "tool_choices": [
+    {
+      "type": "function",
+      "function": {
+        "name": "python_check"
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "python_check"
+      }
+    },
+    "required",
+    {
+      "type": "function",
+      "function": {
+        "name": "python_check"
+      }
+    },
+    "required"
+  ],
+  "check_statuses": [
+    "process_failed",
+    "process_passed"
+  ]
+}

@@ -13,7 +13,7 @@
     "cache_hit": 0.095,
     "cache_billing_semantics_verified": false
   },
-  "first_run_budget_cny": 70,
+  "first_run_budget_cny": 80,
   "probe_max_output_tokens": 64,
   "probe_max_requests": 1
 }

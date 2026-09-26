@@ -25,6 +25,7 @@ from tracepatch.lifecycle import prepare_messages
 from tracepatch.window import request_payload, validate_output_limit
 from tracepatch.toolcalling import TOOL_OPTIONS, TEST_TOOL_OPTIONS, native_history, parse_tool_call
 from tracepatch.testing import observation_json
+from tracepatch.stages import decide_stage, stage_notice, stage_tool_options
 from minisweagent.agents.default import DefaultAgent
 from minisweagent.environments.docker import DockerEnvironment
 from minisweagent.exceptions import FormatError
@@ -75,6 +76,8 @@ class DmxModel:
         self.public_checks = None
         self.check_feedback = False
         self.test_tool = 'off'
+        self.stage_mode = 'off'
+        self.python_check_environment = None
 
     def format_message(self, **kwargs):
         return kwargs
@@ -109,8 +112,18 @@ class DmxModel:
             wire.append({'role': 'user', 'content': check_notice})
         if self.memory_mode == 'recall' and self.evidence_memory is not None:
             memory_notice, memory_cards = self.evidence_memory.recall(self.progress_monitor.previous, profile=self.memory_profile)
+        options = (TEST_TOOL_OPTIONS if self.test_tool == 'python' else TOOL_OPTIONS) if self.action_protocol == 'native' else None
+        stage, stage_feedback = None, None
+        if self.stage_mode != 'off':
+            stage = decide_stage(self.progress_monitor.initial, self.progress_monitor.previous,
+                self.python_check_environment.records, self.public_checks.current,
+                len(self.calls), self.max_calls)
+            if self.stage_mode == 'guide':
+                stage_feedback = stage_notice(stage)
+                wire.append({'role': 'user', 'content': stage_feedback})
+            options = stage_tool_options(options, stage, enabled=self.stage_mode == 'guide')
         payload, context_metadata = request_payload(self.config['model'], wire, self.context_policy,
-            tool_options=(TEST_TOOL_OPTIONS if self.test_tool == 'python' else TOOL_OPTIONS) if self.action_protocol == 'native' else None,
+            tool_options=options,
             max_output_tokens=self.max_output_tokens, memory_notice=memory_notice)
         # At quoted prices even input + cache creation per byte and full output
         # plus up to 1024 output tokens fits within 0.1 CNY/request.
@@ -121,6 +134,9 @@ class DmxModel:
         record['action_protocol'] = self.action_protocol
         record['max_output_tokens'] = self.max_output_tokens
         record['test_tool'] = self.test_tool
+        if self.stage_mode != 'off':
+            record.update(stage_mode=self.stage_mode, stage_decision=stage,
+                          stage_notice=stage_feedback, actual_tool_choice=options['tool_choice'])
         if self.public_checks is not None:
             record['public_check_notice'] = check_notice
             record['public_check_evidence'] = self.public_checks.current
@@ -170,6 +186,8 @@ class DmxModel:
             raw_message = data['choices'][0]['message']
             try:
                 command, call = parse_tool_call(raw_message, finish_reason, allow_python_check=self.test_tool == 'python')
+                if self.stage_mode == 'guide' and stage['required_tool'] and call['function']['name'] != stage['required_tool']:
+                    raise ValueError('stage_requires_python_check')
             except ValueError as error:
                 reason = str(error)
                 record.update(finish_reason=finish_reason, action_diagnosis=reason, policy=self.policy)
@@ -178,7 +196,9 @@ class DmxModel:
                             'extra': {'cost': record['estimated_no_cache_cny'], 'usage': usage, 'actions': [],
                                       'rejected_tool_calls': raw_message.get('tool_calls')}}
                 raise FormatError(rejected, {'role': 'user', 'content':
-                    ('No command was executed. Call exactly one function: bash with a nonempty command string, '
+                    ('No command was executed. This stage requires python_check with one nonempty code string. '
+                     'Use Python assertions, not shell syntax.' if self.stage_mode == 'guide' and stage['required_tool'] else
+                     'No command was executed. Call exactly one function: bash with a nonempty command string, '
                      'or python_check with a nonempty code string. Do not write XML or fenced actions.'
                      if self.test_tool == 'python' else
                      'No command was executed. Call the bash function once with a complete JSON object containing only a nonempty command string. Do not write XML or fenced actions. Keep the command short enough for the configured output limit.')})

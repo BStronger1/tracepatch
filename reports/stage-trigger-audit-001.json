@@ -1,0 +1,25 @@
+{
+  "model_api_calls": 0,
+  "records": [
+    {
+      "batch": "repo-forward-off-001",
+      "calls": 23,
+      "actions": 23,
+      "first_changed_action": 12,
+      "max_unchanged_streak": 11,
+      "structured_checks": 0,
+      "would_reach_six_call_inspection_boundary": true,
+      "scope": "Read-only observation; not a counterfactual outcome or proof that inspection was useless"
+    },
+    {
+      "batch": "repo-forward-python-001",
+      "calls": 24,
+      "actions": 24,
+      "first_changed_action": null,
+      "max_unchanged_streak": 24,
+      "structured_checks": 0,
+      "would_reach_six_call_inspection_boundary": true,
+      "scope": "Read-only observation; not a counterfactual outcome or proof that inspection was useless"
+    }
+  ]
+}
