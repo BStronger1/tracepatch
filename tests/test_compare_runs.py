@@ -104,3 +104,16 @@ class CompareRunsTests(unittest.TestCase):
         path.write_text(json.dumps(manifest))
         with self.assertRaisesRegex(ValueError, 'requires recall'):
             module.compare(self.left, self.right, intervention='structured-evidence')
+
+    def test_public_check_feedback_requires_identical_schedule_and_implementation(self):
+        for folder, mode in ((self.left, 'observe'), (self.right, 'feedback')):
+            path = folder / 'manifest.json'
+            manifest = json.loads(path.read_text())
+            manifest.update(check_mode=mode, check_schedule='every-new-version', max_output_tokens=1024)
+            path.write_text(json.dumps(manifest))
+            (folder / 'checks.snapshot.py').write_text('same')
+        result = module.compare(self.left, self.right, intervention='public-check-feedback')
+        self.assertEqual(result['intervention_fields'], ['check_mode'])
+        (self.right / 'checks.snapshot.py').write_text('different')
+        with self.assertRaisesRegex(ValueError, 'Different snapshot: checks'):
+            module.compare(self.left, self.right, intervention='public-check-feedback')

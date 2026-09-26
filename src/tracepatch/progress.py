@@ -52,12 +52,13 @@ def docker_snapshot(executable, container_id, paths):
 
 class ObservedEnvironment:
     """Same action behavior; save observations even when submission raises."""
-    def __init__(self, environment, monitor, snapshot, output, memory=None):
+    def __init__(self, environment, monitor, snapshot, output, memory=None, checks=None):
         self.environment = environment
         self.monitor = monitor
         self.snapshot = snapshot
         self.output = output
         self.memory = memory
+        self.checks = checks
         self.save()
 
     def __getattr__(self, name):
@@ -83,6 +84,8 @@ class ObservedEnvironment:
             if self.memory is not None:
                 self.memory.observe(len(self.monitor.events), action.get('command', ''),
                                     result, before, snapshot)
+            if self.checks is not None:
+                self.checks.observe(snapshot, len(self.monitor.events))
 
 
 class ProgressMonitor:

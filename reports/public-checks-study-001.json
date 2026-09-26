@@ -1,0 +1,453 @@
+{
+  "scope": "One pair on an existing development task; combined public-evidence and submission feedback; no general effect estimate",
+  "plan": "public-checks-plan-001.json",
+  "comparison": {
+    "scope": "Single run per development task per arm; not a benchmark or causal estimate.",
+    "controls_match": true,
+    "intervention_fields": [
+      "check_mode"
+    ],
+    "arms": [
+      {
+        "batch": "repo-checks-observe-001",
+        "policy": "recovery-submit",
+        "progress_mode": "observe",
+        "memory_mode": "recall",
+        "memory_profile": "structured",
+        "check_mode": "observe",
+        "max_output_tokens": 1024,
+        "context_policy": "recent-turns",
+        "verified": 0,
+        "submitted": 0,
+        "calls": 24,
+        "rejected_actions": 0,
+        "estimated_known_no_cache_cny": 0.10356615,
+        "unknown_cost_requests": 0,
+        "tasks": [
+          {
+            "task": "requests-2527-v2",
+            "verified_success": false,
+            "agent_exit": "LimitsExceeded",
+            "api_calls": 24,
+            "format_error_count": 0
+          }
+        ]
+      },
+      {
+        "batch": "repo-checks-feedback-001",
+        "policy": "recovery-submit",
+        "progress_mode": "observe",
+        "memory_mode": "recall",
+        "memory_profile": "structured",
+        "check_mode": "feedback",
+        "max_output_tokens": 1024,
+        "context_policy": "recent-turns",
+        "verified": 0,
+        "submitted": 0,
+        "calls": 24,
+        "rejected_actions": 0,
+        "estimated_known_no_cache_cny": 0.10460336,
+        "unknown_cost_requests": 0,
+        "tasks": [
+          {
+            "task": "requests-2527-v2",
+            "verified_success": false,
+            "agent_exit": "LimitsExceeded",
+            "api_calls": 24,
+            "format_error_count": 0
+          }
+        ]
+      }
+    ]
+  },
+  "arms": [
+    {
+      "batch": "repo-checks-observe-001",
+      "mode": "observe",
+      "result": {
+        "task": "requests-2527-v2",
+        "status": "verified",
+        "verified_success": false,
+        "agent_exit": "LimitsExceeded",
+        "verification": {
+          "output": "test_cookie_metadata_survives_prepared_copy (__main__.CookieContract) ... /workspace/requests/models.py:169: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\n  if isinstance(hook, collections.Callable):\n/workspace/requests/cookies.py:148: DeprecationWarning: inspect.getargspec() is deprecated since Python 3.0, use inspect.signature() or inspect.getfullargspec()\n  attrs = [a for a in inspect.getargspec(CookieClass.__init__).args[1:]\nok\ntest_empty_and_absent_cookiejar (__main__.CookieContract) ... ok\ntest_requests_cookie_objects_are_independent (__main__.CookieContract) ... ok\ntest_scope_and_request_fields_preserved (__main__.CookieContract) ... ok\ntest_standard_cookie_objects_are_independent (__main__.CookieContract) ... ok\ntest_standard_cookiejar_issue_reproduction (__main__.CookieContract) ... ok\ntest_standard_jar_policy_preserved (__main__.CookieContract) ... ok\ntest_subclass_required_constructor_and_state (__main__.CookieContract) ... ERROR\ntest_update_does_not_share_cookie_objects (__main__.CookieContract) ... ok\ntest_update_preserves_rfc2109 (__main__.CookieContract) ... ok\n\n======================================================================\nERROR: test_subclass_required_constructor_and_state (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 94, in test_subclass_required_constructor_and_state\n    copied = original.copy()\n  File \"/workspace/requests/models.py\", line 323, in copy\n    p._cookies = copy_jar(self._cookies) if self._cookies is not None else None\n  File \"/workspace/requests/cookies.py\", line 186, in copy_jar\n    new_jar = type(jar)(policy=policy)\nTypeError: __init__() got an unexpected keyword argument 'policy'\n\n----------------------------------------------------------------------\nRan 10 tests in 0.014s\n\nFAILED (errors=1)\n",
+          "returncode": 1,
+          "exception_info": ""
+        },
+        "completion": {
+          "state": "failed_unsubmitted",
+          "patch_verified": false,
+          "agent_submitted": false,
+          "agent_exit": "LimitsExceeded",
+          "verification_returncode": 1
+        },
+        "api_calls": 24,
+        "format_error_count": 0,
+        "estimated_known_no_cache_cny": 0.10356615,
+        "unknown_cost_requests": 0,
+        "elapsed_seconds": 146.312,
+        "budget": {
+          "limit_cny": "70",
+          "reserved_cny": "62.6",
+          "remaining_reservation_cny": "7.4",
+          "note": "Conservative planning reservations, not actual provider charges"
+        }
+      },
+      "progress": {
+        "actions": 24,
+        "changed_actions": 5,
+        "unknown_actions": 0,
+        "review_signals": 1,
+        "max_unchanged_streak": 11
+      },
+      "first_changed_action": 12,
+      "public_checks": {
+        "records": [
+          {
+            "action": 0,
+            "source_sha256": "2e1a8f5c4ffdded090c45bfa902a6304b89cc20f199b346f2cdf6d49e8a3690e",
+            "check_sha256": "b90f3904845b77411e372de9b978f20fef6d05acd1731cfcad8b4e670937e7a3",
+            "provenance": "frozen-public-reproducer",
+            "status": "failed",
+            "returncode": 1,
+            "error_type": null,
+            "output_sha256": "fffe8a2a533696bc5eeed5325bace53e36068f2ea5d300e52cf13fd8441136ad"
+          },
+          {
+            "action": 12,
+            "source_sha256": "f28d879d83c45e330c62debe30e67746047cf53afd7d2d872b4448ed93ff372a",
+            "check_sha256": "b90f3904845b77411e372de9b978f20fef6d05acd1731cfcad8b4e670937e7a3",
+            "provenance": "frozen-public-reproducer",
+            "status": "failed",
+            "returncode": 1,
+            "error_type": null,
+            "output_sha256": "fffe8a2a533696bc5eeed5325bace53e36068f2ea5d300e52cf13fd8441136ad"
+          },
+          {
+            "action": 16,
+            "source_sha256": "09e2f627cad9759e6240d7ae8347e81ec7d2ba30335d2f657b05132866c1f65f",
+            "check_sha256": "b90f3904845b77411e372de9b978f20fef6d05acd1731cfcad8b4e670937e7a3",
+            "provenance": "frozen-public-reproducer",
+            "status": "failed",
+            "returncode": 1,
+            "error_type": null,
+            "output_sha256": "572c3855a081124a8fc022e9ab3e45e79436cee7ab911f59a5f7d38eea85a180"
+          },
+          {
+            "action": 18,
+            "source_sha256": "b455a81f0494e5382f302f88eaa6d642216fe586ebd24be7d9c878a05b2ff91b",
+            "check_sha256": "b90f3904845b77411e372de9b978f20fef6d05acd1731cfcad8b4e670937e7a3",
+            "provenance": "frozen-public-reproducer",
+            "status": "failed",
+            "returncode": 1,
+            "error_type": null,
+            "output_sha256": "0fbe59b614c20f573b9868cacc1896ada883eb2783cc287bd8687ee082a9c6bb"
+          },
+          {
+            "action": 19,
+            "source_sha256": "9099f81d24940ca0f17ac63212d22b42b633c32f5b7aaec10024383fb8cedd03",
+            "check_sha256": "b90f3904845b77411e372de9b978f20fef6d05acd1731cfcad8b4e670937e7a3",
+            "provenance": "frozen-public-reproducer",
+            "status": "failed",
+            "returncode": 1,
+            "error_type": null,
+            "output_sha256": "38316538eed4ecd32b9e29d051b69a2f88a0392dffe8d891ab2b9f1603300b06"
+          },
+          {
+            "action": 20,
+            "source_sha256": "4486b459bb7ab8febc2c5460a6d9858b9e5ad16fef43811f41bb860b4a580943",
+            "check_sha256": "b90f3904845b77411e372de9b978f20fef6d05acd1731cfcad8b4e670937e7a3",
+            "provenance": "frozen-public-reproducer",
+            "status": "passed",
+            "returncode": 0,
+            "error_type": null,
+            "output_sha256": "0a9dde04a5547630fd8cd19ebac999eca8e2d0f03b6776103072e1d2de8508b5"
+          }
+        ],
+        "final": {
+          "action": 20,
+          "source_sha256": "4486b459bb7ab8febc2c5460a6d9858b9e5ad16fef43811f41bb860b4a580943",
+          "check_sha256": "b90f3904845b77411e372de9b978f20fef6d05acd1731cfcad8b4e670937e7a3",
+          "provenance": "frozen-public-reproducer",
+          "status": "passed",
+          "returncode": 0,
+          "error_type": null,
+          "output_sha256": "0a9dde04a5547630fd8cd19ebac999eca8e2d0f03b6776103072e1d2de8508b5"
+        },
+        "isolated_check_seconds": 25.984,
+        "injected_requests": 0,
+        "injections": [],
+        "all_injected_versions_match_latest_observation": true
+      },
+      "history_pruned_requests": 15,
+      "memory_injected_requests": 15,
+      "memory_budget_drops": 0,
+      "hashes": {
+        "requests.json": "8d7916ef5dd7e7f9c2b335a1f5df1ea19acd779fc2771f65bc8aa1056e2fedac",
+        "trajectory.json": "7320b402652890cf463a541ed062d57bbbc2389f0ed990dccdfd8caa7d9b687e",
+        "progress.json": "63f21b8a3abefd78fea74ce4e47bf836e833a37eae84a59f4b19c9887dc2cb28",
+        "patch.diff": "9149ad2b3db76257b0c06eb8913620cc3dbdd4d1bc0dabc585a414d9e33c3c17",
+        "public-checks/checks.json": "e22549a4bfa739e74efe53122241fa68b6a1af1aece56c7e08364dd7e72a8da9"
+      }
+    },
+    {
+      "batch": "repo-checks-feedback-001",
+      "mode": "feedback",
+      "result": {
+        "task": "requests-2527-v2",
+        "status": "verified",
+        "verified_success": false,
+        "agent_exit": "LimitsExceeded",
+        "verification": {
+          "output": "test_cookie_metadata_survives_prepared_copy (__main__.CookieContract) ... /workspace/requests/models.py:169: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\n  if isinstance(hook, collections.Callable):\nok\ntest_empty_and_absent_cookiejar (__main__.CookieContract) ... ok\ntest_requests_cookie_objects_are_independent (__main__.CookieContract) ... ok\ntest_scope_and_request_fields_preserved (__main__.CookieContract) ... ok\ntest_standard_cookie_objects_are_independent (__main__.CookieContract) ... ok\ntest_standard_cookiejar_issue_reproduction (__main__.CookieContract) ... ok\ntest_standard_jar_policy_preserved (__main__.CookieContract) ... ok\ntest_subclass_required_constructor_and_state (__main__.CookieContract) ... FAIL\ntest_update_does_not_share_cookie_objects (__main__.CookieContract) ... ok\ntest_update_preserves_rfc2109 (__main__.CookieContract) ... ok\n\n======================================================================\nFAIL: test_subclass_required_constructor_and_state (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 96, in test_subclass_required_constructor_and_state\n    self.assertEqual(copied._cookies.label, 'retain-me')\nAssertionError: <http.cookiejar.DefaultCookiePolicy object at 0x7fb984308700> != 'retain-me'\n\n----------------------------------------------------------------------\nRan 10 tests in 0.016s\n\nFAILED (failures=1)\n",
+          "returncode": 1,
+          "exception_info": ""
+        },
+        "completion": {
+          "state": "failed_unsubmitted",
+          "patch_verified": false,
+          "agent_submitted": false,
+          "agent_exit": "LimitsExceeded",
+          "verification_returncode": 1
+        },
+        "api_calls": 24,
+        "format_error_count": 0,
+        "estimated_known_no_cache_cny": 0.10460336,
+        "unknown_cost_requests": 0,
+        "elapsed_seconds": 164.343,
+        "budget": {
+          "limit_cny": "70",
+          "reserved_cny": "65.0",
+          "remaining_reservation_cny": "5.0",
+          "note": "Conservative planning reservations, not actual provider charges"
+        }
+      },
+      "progress": {
+        "actions": 24,
+        "changed_actions": 3,
+        "unknown_actions": 0,
+        "review_signals": 2,
+        "max_unchanged_streak": 7
+      },
+      "first_changed_action": 8,
+      "public_checks": {
+        "records": [
+          {
+            "action": 0,
+            "source_sha256": "2e1a8f5c4ffdded090c45bfa902a6304b89cc20f199b346f2cdf6d49e8a3690e",
+            "check_sha256": "b90f3904845b77411e372de9b978f20fef6d05acd1731cfcad8b4e670937e7a3",
+            "provenance": "frozen-public-reproducer",
+            "status": "failed",
+            "returncode": 1,
+            "error_type": null,
+            "output_sha256": "fffe8a2a533696bc5eeed5325bace53e36068f2ea5d300e52cf13fd8441136ad"
+          },
+          {
+            "action": 8,
+            "source_sha256": "69bf13f7765da0d619d85ae27429618ceddde7f3b34f655dcacbd7e154dd936b",
+            "check_sha256": "b90f3904845b77411e372de9b978f20fef6d05acd1731cfcad8b4e670937e7a3",
+            "provenance": "frozen-public-reproducer",
+            "status": "failed",
+            "returncode": 1,
+            "error_type": null,
+            "output_sha256": "fffe8a2a533696bc5eeed5325bace53e36068f2ea5d300e52cf13fd8441136ad"
+          },
+          {
+            "action": 11,
+            "source_sha256": "253b385100f60e86a9cc2838933e9f684ce9e6ad6eb3fa173e4e54e4fdaa59d2",
+            "check_sha256": "b90f3904845b77411e372de9b978f20fef6d05acd1731cfcad8b4e670937e7a3",
+            "provenance": "frozen-public-reproducer",
+            "status": "passed",
+            "returncode": 0,
+            "error_type": null,
+            "output_sha256": "0a9dde04a5547630fd8cd19ebac999eca8e2d0f03b6776103072e1d2de8508b5"
+          },
+          {
+            "action": 17,
+            "source_sha256": "3fbeeffe8684c452292038a9320ace005d4d4ab636e9c7f654e2a67f29d45019",
+            "check_sha256": "b90f3904845b77411e372de9b978f20fef6d05acd1731cfcad8b4e670937e7a3",
+            "provenance": "frozen-public-reproducer",
+            "status": "passed",
+            "returncode": 0,
+            "error_type": null,
+            "output_sha256": "0a9dde04a5547630fd8cd19ebac999eca8e2d0f03b6776103072e1d2de8508b5"
+          }
+        ],
+        "final": {
+          "action": 17,
+          "source_sha256": "3fbeeffe8684c452292038a9320ace005d4d4ab636e9c7f654e2a67f29d45019",
+          "check_sha256": "b90f3904845b77411e372de9b978f20fef6d05acd1731cfcad8b4e670937e7a3",
+          "provenance": "frozen-public-reproducer",
+          "status": "passed",
+          "returncode": 0,
+          "error_type": null,
+          "output_sha256": "0a9dde04a5547630fd8cd19ebac999eca8e2d0f03b6776103072e1d2de8508b5"
+        },
+        "isolated_check_seconds": 16.157,
+        "injected_requests": 24,
+        "injections": [
+          {
+            "call": 1,
+            "status": "failed",
+            "source_sha256": "2e1a8f5c4ffdded090c45bfa902a6304b89cc20f199b346f2cdf6d49e8a3690e",
+            "notice_sha256": "41da89f5b88de4b67076be499f28b9fbc72e6a6229c97fbf0c59aea59481b4e0"
+          },
+          {
+            "call": 2,
+            "status": "failed",
+            "source_sha256": "2e1a8f5c4ffdded090c45bfa902a6304b89cc20f199b346f2cdf6d49e8a3690e",
+            "notice_sha256": "41da89f5b88de4b67076be499f28b9fbc72e6a6229c97fbf0c59aea59481b4e0"
+          },
+          {
+            "call": 3,
+            "status": "failed",
+            "source_sha256": "2e1a8f5c4ffdded090c45bfa902a6304b89cc20f199b346f2cdf6d49e8a3690e",
+            "notice_sha256": "41da89f5b88de4b67076be499f28b9fbc72e6a6229c97fbf0c59aea59481b4e0"
+          },
+          {
+            "call": 4,
+            "status": "failed",
+            "source_sha256": "2e1a8f5c4ffdded090c45bfa902a6304b89cc20f199b346f2cdf6d49e8a3690e",
+            "notice_sha256": "41da89f5b88de4b67076be499f28b9fbc72e6a6229c97fbf0c59aea59481b4e0"
+          },
+          {
+            "call": 5,
+            "status": "failed",
+            "source_sha256": "2e1a8f5c4ffdded090c45bfa902a6304b89cc20f199b346f2cdf6d49e8a3690e",
+            "notice_sha256": "41da89f5b88de4b67076be499f28b9fbc72e6a6229c97fbf0c59aea59481b4e0"
+          },
+          {
+            "call": 6,
+            "status": "failed",
+            "source_sha256": "2e1a8f5c4ffdded090c45bfa902a6304b89cc20f199b346f2cdf6d49e8a3690e",
+            "notice_sha256": "41da89f5b88de4b67076be499f28b9fbc72e6a6229c97fbf0c59aea59481b4e0"
+          },
+          {
+            "call": 7,
+            "status": "failed",
+            "source_sha256": "2e1a8f5c4ffdded090c45bfa902a6304b89cc20f199b346f2cdf6d49e8a3690e",
+            "notice_sha256": "41da89f5b88de4b67076be499f28b9fbc72e6a6229c97fbf0c59aea59481b4e0"
+          },
+          {
+            "call": 8,
+            "status": "failed",
+            "source_sha256": "2e1a8f5c4ffdded090c45bfa902a6304b89cc20f199b346f2cdf6d49e8a3690e",
+            "notice_sha256": "41da89f5b88de4b67076be499f28b9fbc72e6a6229c97fbf0c59aea59481b4e0"
+          },
+          {
+            "call": 9,
+            "status": "failed",
+            "source_sha256": "69bf13f7765da0d619d85ae27429618ceddde7f3b34f655dcacbd7e154dd936b",
+            "notice_sha256": "c8c4036b35b4ccf34d1c1586dadc5074bea8b097216fb49e1788edc4a08288fa"
+          },
+          {
+            "call": 10,
+            "status": "failed",
+            "source_sha256": "69bf13f7765da0d619d85ae27429618ceddde7f3b34f655dcacbd7e154dd936b",
+            "notice_sha256": "c8c4036b35b4ccf34d1c1586dadc5074bea8b097216fb49e1788edc4a08288fa"
+          },
+          {
+            "call": 11,
+            "status": "failed",
+            "source_sha256": "69bf13f7765da0d619d85ae27429618ceddde7f3b34f655dcacbd7e154dd936b",
+            "notice_sha256": "c8c4036b35b4ccf34d1c1586dadc5074bea8b097216fb49e1788edc4a08288fa"
+          },
+          {
+            "call": 12,
+            "status": "passed",
+            "source_sha256": "253b385100f60e86a9cc2838933e9f684ce9e6ad6eb3fa173e4e54e4fdaa59d2",
+            "notice_sha256": "b80b50ba9b51e9603492aed39947946a680d640e0ecec631c352395b47ae63d9"
+          },
+          {
+            "call": 13,
+            "status": "passed",
+            "source_sha256": "253b385100f60e86a9cc2838933e9f684ce9e6ad6eb3fa173e4e54e4fdaa59d2",
+            "notice_sha256": "b80b50ba9b51e9603492aed39947946a680d640e0ecec631c352395b47ae63d9"
+          },
+          {
+            "call": 14,
+            "status": "passed",
+            "source_sha256": "253b385100f60e86a9cc2838933e9f684ce9e6ad6eb3fa173e4e54e4fdaa59d2",
+            "notice_sha256": "b80b50ba9b51e9603492aed39947946a680d640e0ecec631c352395b47ae63d9"
+          },
+          {
+            "call": 15,
+            "status": "passed",
+            "source_sha256": "253b385100f60e86a9cc2838933e9f684ce9e6ad6eb3fa173e4e54e4fdaa59d2",
+            "notice_sha256": "b80b50ba9b51e9603492aed39947946a680d640e0ecec631c352395b47ae63d9"
+          },
+          {
+            "call": 16,
+            "status": "passed",
+            "source_sha256": "253b385100f60e86a9cc2838933e9f684ce9e6ad6eb3fa173e4e54e4fdaa59d2",
+            "notice_sha256": "b80b50ba9b51e9603492aed39947946a680d640e0ecec631c352395b47ae63d9"
+          },
+          {
+            "call": 17,
+            "status": "passed",
+            "source_sha256": "253b385100f60e86a9cc2838933e9f684ce9e6ad6eb3fa173e4e54e4fdaa59d2",
+            "notice_sha256": "b80b50ba9b51e9603492aed39947946a680d640e0ecec631c352395b47ae63d9"
+          },
+          {
+            "call": 18,
+            "status": "passed",
+            "source_sha256": "3fbeeffe8684c452292038a9320ace005d4d4ab636e9c7f654e2a67f29d45019",
+            "notice_sha256": "a808be1dec6931309765037ca77c23903037b4bba43cfa7d6796ffcc6ef1b60a"
+          },
+          {
+            "call": 19,
+            "status": "passed",
+            "source_sha256": "3fbeeffe8684c452292038a9320ace005d4d4ab636e9c7f654e2a67f29d45019",
+            "notice_sha256": "a808be1dec6931309765037ca77c23903037b4bba43cfa7d6796ffcc6ef1b60a"
+          },
+          {
+            "call": 20,
+            "status": "passed",
+            "source_sha256": "3fbeeffe8684c452292038a9320ace005d4d4ab636e9c7f654e2a67f29d45019",
+            "notice_sha256": "a808be1dec6931309765037ca77c23903037b4bba43cfa7d6796ffcc6ef1b60a"
+          },
+          {
+            "call": 21,
+            "status": "passed",
+            "source_sha256": "3fbeeffe8684c452292038a9320ace005d4d4ab636e9c7f654e2a67f29d45019",
+            "notice_sha256": "a808be1dec6931309765037ca77c23903037b4bba43cfa7d6796ffcc6ef1b60a"
+          },
+          {
+            "call": 22,
+            "status": "passed",
+            "source_sha256": "3fbeeffe8684c452292038a9320ace005d4d4ab636e9c7f654e2a67f29d45019",
+            "notice_sha256": "a808be1dec6931309765037ca77c23903037b4bba43cfa7d6796ffcc6ef1b60a"
+          },
+          {
+            "call": 23,
+            "status": "passed",
+            "source_sha256": "3fbeeffe8684c452292038a9320ace005d4d4ab636e9c7f654e2a67f29d45019",
+            "notice_sha256": "a808be1dec6931309765037ca77c23903037b4bba43cfa7d6796ffcc6ef1b60a"
+          },
+          {
+            "call": 24,
+            "status": "passed",
+            "source_sha256": "3fbeeffe8684c452292038a9320ace005d4d4ab636e9c7f654e2a67f29d45019",
+            "notice_sha256": "a808be1dec6931309765037ca77c23903037b4bba43cfa7d6796ffcc6ef1b60a"
+          }
+        ],
+        "all_injected_versions_match_latest_observation": true
+      },
+      "history_pruned_requests": 14,
+      "memory_injected_requests": 14,
+      "memory_budget_drops": 0,
+      "hashes": {
+        "requests.json": "5a0c2962eefc1da8444f180fd7dfc71c2a2cd42a913c4a078a443ee62a249373",
+        "trajectory.json": "f2c4c9a78a926a59a601802ec0b3816638ee0d071e1c41d2ae3332c8bbb97d17",
+        "progress.json": "64a6744cd52e0a6c785f0b8c2466fbb8ca256a018feba27e63450acfa2755117",
+        "patch.diff": "e26c49292f19949238a00dc873c5b142aa3d37a6c7118b29b6b24969be52586d",
+        "public-checks/checks.json": "0a99ed11eac3cffe1fda7efe184d2d732e9b846cf1b6dbd1b84c58fe07bc6d00"
+      }
+    }
+  ],
+  "totals": {
+    "calls": 48,
+    "estimated_known_no_cache_cny": 0.20816951,
+    "unknown_cost_requests": 0
+  }
+}

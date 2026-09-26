@@ -71,6 +71,8 @@ class DmxModel:
         self.evidence_memory = None
         self.memory_mode = 'off'
         self.memory_profile = 'excerpts'
+        self.public_checks = None
+        self.check_feedback = False
 
     def format_message(self, **kwargs):
         return kwargs
@@ -99,6 +101,10 @@ class DmxModel:
                     wire.append({'role': 'user', 'content': progress_notice})
                     self.last_progress_notice_action = action_index
         memory_notice, memory_cards = None, []
+        check_notice = None
+        if self.check_feedback and self.public_checks is not None:
+            check_notice = self.public_checks.notice()
+            wire.append({'role': 'user', 'content': check_notice})
         if self.memory_mode == 'recall' and self.evidence_memory is not None:
             memory_notice, memory_cards = self.evidence_memory.recall(self.progress_monitor.previous, profile=self.memory_profile)
         payload, context_metadata = request_payload(self.config['model'], wire, self.context_policy,
@@ -112,6 +118,9 @@ class DmxModel:
         record.update(context_metadata)
         record['action_protocol'] = self.action_protocol
         record['max_output_tokens'] = self.max_output_tokens
+        if self.public_checks is not None:
+            record['public_check_notice'] = check_notice
+            record['public_check_evidence'] = self.public_checks.current
         if self.evidence_memory is not None:
             record['memory_mode'] = self.memory_mode
             record['memory_profile'] = self.memory_profile

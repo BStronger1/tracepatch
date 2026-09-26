@@ -16,8 +16,9 @@ sys.path.insert(0, str(ROOT / 'src'))
 from tracepatch.budget import BudgetLedger
 from tracepatch.lifecycle import completion_status
 from tracepatch.repositories import repository_layout, reconstruct_candidate
-from tracepatch.progress import ProgressMonitor, ObservedEnvironment, docker_snapshot
+from tracepatch.progress import ProgressMonitor, ObservedEnvironment, docker_snapshot, snapshot_digest
 from tracepatch.memory import EvidenceMemory, docker_read_ranges
+from tracepatch.checks import PublicChecks
 
 spec = importlib.util.spec_from_file_location('runtime', ROOT / 'scripts/run-smoke.py')
 runtime = importlib.util.module_from_spec(spec)
@@ -66,6 +67,54 @@ def verify(image, source, task, verifier='verify.py', *, import_directory='.'):
         env.cleanup()
 
 
+def public_check(image, source, check_file, *, import_directory='.'):
+    """No agent shell, marker parser, or agent-written test enters this check."""
+    if import_directory not in ('.', 'src'):
+        raise ValueError('Unsupported import directory')
+    env = environment(image)
+    try:
+        docker('cp', str(source) + '/.', env.container_id + ':/workspace')
+        docker('cp', str(check_file), env.container_id + ':/workspace/public_check.py')
+        import_path = '/workspace' if import_directory == '.' else '/workspace/src'
+        program = (f'import sys;sys.path.insert(0,{import_path!r});import runpy;'
+                   "runpy.run_path('/workspace/public_check.py',run_name='__main__')")
+        result = subprocess.run([runtime.DOCKER, 'exec', env.container_id, 'python', '-I', '-c', program],
+            capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=25)
+        return {'returncode': result.returncode, 'output': result.stdout + result.stderr}
+    finally:
+        env.cleanup()
+
+
+def make_public_checks(base, layout, paths, image, check_file, container_id, output_dir):
+    output_dir.mkdir(exist_ok=False)
+    frozen = output_dir / 'reproduce_issue.py'
+    shutil.copyfile(check_file, frozen)
+    check_hash = hashlib.sha256(frozen.read_bytes()).hexdigest()
+
+    def run_check(snapshot, index):
+        started = time.monotonic()
+        folder = output_dir / f'version-{index:03d}'
+        folder.mkdir()
+        exported = folder / 'export'
+        destination = exported / layout.source
+        destination.parent.mkdir(parents=True)
+        docker('cp', container_id + ':/workspace/' + layout.source, str(destination))
+        candidate = folder / 'candidate'
+        reconstruct_candidate(base, exported, candidate, layout)
+        actual = {name: hashlib.sha256((candidate / name).read_bytes()).hexdigest() for name in paths}
+        if actual != snapshot:
+            raise ValueError('Source changed during check capture')
+        if hashlib.sha256(frozen.read_bytes()).hexdigest() != check_hash:
+            raise ValueError('Public check changed')
+        result = public_check(image, candidate, frozen, import_directory=layout.imports)
+        result.update(source_sha256=snapshot_digest(actual), check_sha256=check_hash,
+                      elapsed_seconds=round(time.monotonic() - started, 3))
+        save(folder / 'result.json', result)
+        return result
+
+    return PublicChecks(paths, check_hash, run_check, output_dir / 'checks.json')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--batch', required=True)
@@ -81,9 +130,12 @@ def main():
     parser.add_argument('--progress-mode', choices=('off', 'observe', 'feedback'), default='off')
     parser.add_argument('--memory-mode', choices=('off', 'observe', 'recall'), default='off')
     parser.add_argument('--memory-profile', choices=('excerpts', 'structured'), default='excerpts')
+    parser.add_argument('--check-mode', choices=('off', 'observe', 'feedback'), default='off')
     args = parser.parse_args()
     if args.memory_mode != 'off' and args.progress_mode == 'off':
         parser.error('Evidence memory requires source observation')
+    if args.check_mode != 'off' and (args.progress_mode == 'off' or not args.visible_reproducer):
+        parser.error('Public checks require source observation and a visible reproducer')
     system = SYSTEM.replace('12 model calls', f'{args.max_calls} model calls')
     if args.action_protocol == 'native':
         system = system.replace('Return exactly one complete fenced bash action per reply.',
@@ -105,7 +157,7 @@ def main():
     batch = ROOT / 'runs' / args.batch
     batch.mkdir(parents=True, exist_ok=False)
     for name, path in {'runner': Path(__file__), 'runtime': ROOT / 'scripts/run-smoke.py',
-                       **{n: ROOT / f'src/tracepatch/{n}.py' for n in ('budget', 'actions', 'recovery', 'lifecycle', 'window', 'toolcalling', 'repositories', 'progress', 'memory', 'context', 'symbols')}}.items():
+                       **{n: ROOT / f'src/tracepatch/{n}.py' for n in ('budget', 'actions', 'recovery', 'lifecycle', 'window', 'toolcalling', 'repositories', 'progress', 'memory', 'context', 'symbols', 'checks')}}.items():
         shutil.copyfile(path, batch / f'{name}.snapshot.py')
     base, reference = batch / 'base', batch / 'reference'
     hashes = {'base_archive': archive_source(task_config['base_commit'], base, task_config['repository']),
@@ -125,6 +177,8 @@ def main():
                 'memory_mode': args.memory_mode, 'memory_schema': 'tracepatch-memory-0.1',
                 'memory_byte_limit': 4200,
                 'memory_profile': args.memory_profile,
+                'check_mode': args.check_mode, 'check_schema': 'tracepatch-public-checks-0.1',
+                'check_schedule': 'initial-and-each-new-observed-source-version',
                 'max_output_tokens': args.max_output_tokens, 'enable_thinking': False, 'observation_char_limit': 6000,
                 'input_json_byte_limit': 24000, 'reject_provider_truncation': True,
                 'tasks': {task_config['id']: hashes}, 'provenance': task_config}
@@ -184,7 +238,15 @@ def main():
                 model.evidence_memory = memory
                 model.memory_mode = args.memory_mode
                 model.memory_profile = args.memory_profile
-            env = ObservedEnvironment(env, monitor, snapshot, run / 'progress.json', memory=memory)
+            public_checks = None
+            if args.check_mode != 'off':
+                public_checks = make_public_checks(base, layout, paths, image,
+                    task / 'reproduce_issue.py', container_id, run / 'public-checks')
+                public_checks.observe(initial, 0)
+                model.public_checks = public_checks
+                model.check_feedback = args.check_mode == 'feedback'
+            env = ObservedEnvironment(env, monitor, snapshot, run / 'progress.json', memory=memory,
+                                      checks=public_checks)
             model.progress_monitor = monitor
             model.progress_feedback = args.progress_mode == 'feedback'
         agent = runtime.DefaultAgent(model, env, step_limit=args.max_calls, cost_limit=args.max_calls * 0.1,
