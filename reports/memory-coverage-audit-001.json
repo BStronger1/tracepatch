@@ -1,0 +1,190 @@
+{
+  "scope": "Retrospective audit of unique current source cards injected in the previous two recall runs; no replay or model calls",
+  "method": "Match card file hash against available base/candidate, identify smallest function enclosing range start, check complete original header in excerpt",
+  "limitations": [
+    "Not a task relevance label or causal diagnosis.",
+    "Unavailable intermediate file versions are unknown, not reconstructed.",
+    "Only function containing range start is assessed."
+  ],
+  "model_api_calls": 0,
+  "unique_cards": 16,
+  "counts": {
+    "enclosing_header_missing": 10,
+    "range_start_outside_function": 2,
+    "complete_header_present": 4
+  },
+  "cards": [
+    {
+      "path": "src/click/core.py",
+      "start": 2130,
+      "end": 2300,
+      "version": "ca3aaa998c5ba8359db0ded888221451a9bea9e5ad5256b7a87f7c117836b57a",
+      "task": "click-1687",
+      "action": 6,
+      "function": "__init__",
+      "function_line": 2124,
+      "classification": "enclosing_header_missing"
+    },
+    {
+      "path": "src/click/core.py",
+      "start": 1990,
+      "end": 2110,
+      "version": "ca3aaa998c5ba8359db0ded888221451a9bea9e5ad5256b7a87f7c117836b57a",
+      "task": "click-1687",
+      "action": 5,
+      "function": "full_process_value",
+      "function_line": 1975,
+      "classification": "enclosing_header_missing"
+    },
+    {
+      "path": "src/click/core.py",
+      "start": 1790,
+      "end": 1830,
+      "version": "ca3aaa998c5ba8359db0ded888221451a9bea9e5ad5256b7a87f7c117836b57a",
+      "task": "click-1687",
+      "action": 5,
+      "classification": "range_start_outside_function"
+    },
+    {
+      "path": "src/click/core.py",
+      "start": 1820,
+      "end": 1990,
+      "version": "ca3aaa998c5ba8359db0ded888221451a9bea9e5ad5256b7a87f7c117836b57a",
+      "task": "click-1687",
+      "action": 4,
+      "function": "__init__",
+      "function_line": 1795,
+      "classification": "enclosing_header_missing"
+    },
+    {
+      "path": "src/click/core.py",
+      "start": 1890,
+      "end": 2130,
+      "version": "ca3aaa998c5ba8359db0ded888221451a9bea9e5ad5256b7a87f7c117836b57a",
+      "task": "click-1687",
+      "action": 9,
+      "function": "human_readable_name",
+      "function_line": 1889,
+      "classification": "enclosing_header_missing"
+    },
+    {
+      "path": "src/click/core.py",
+      "start": 2130,
+      "end": 2500,
+      "version": "ca3aaa998c5ba8359db0ded888221451a9bea9e5ad5256b7a87f7c117836b57a",
+      "task": "click-1687",
+      "action": 10,
+      "function": "__init__",
+      "function_line": 2124,
+      "classification": "enclosing_header_missing"
+    },
+    {
+      "path": "src/click/core.py",
+      "start": 1795,
+      "end": 1890,
+      "version": "ca3aaa998c5ba8359db0ded888221451a9bea9e5ad5256b7a87f7c117836b57a",
+      "task": "click-1687",
+      "action": 13,
+      "function": "__init__",
+      "function_line": 1795,
+      "classification": "complete_header_present"
+    },
+    {
+      "path": "src/click/core.py",
+      "start": 2355,
+      "end": 2500,
+      "version": "ca3aaa998c5ba8359db0ded888221451a9bea9e5ad5256b7a87f7c117836b57a",
+      "task": "click-1687",
+      "action": 16,
+      "function": "get_help_record",
+      "function_line": 2303,
+      "classification": "enclosing_header_missing"
+    },
+    {
+      "path": "src/click/core.py",
+      "start": 1900,
+      "end": 2000,
+      "version": "ca3aaa998c5ba8359db0ded888221451a9bea9e5ad5256b7a87f7c117836b57a",
+      "task": "click-1687",
+      "action": 16,
+      "function": "make_metavar",
+      "function_line": 1895,
+      "classification": "enclosing_header_missing"
+    },
+    {
+      "path": "src/click/core.py",
+      "start": 1795,
+      "end": 1860,
+      "version": "ca3aaa998c5ba8359db0ded888221451a9bea9e5ad5256b7a87f7c117836b57a",
+      "task": "click-1687",
+      "action": 18,
+      "function": "__init__",
+      "function_line": 1795,
+      "classification": "complete_header_present"
+    },
+    {
+      "path": "src/click/core.py",
+      "start": 2405,
+      "end": 2439,
+      "version": "ca3aaa998c5ba8359db0ded888221451a9bea9e5ad5256b7a87f7c117836b57a",
+      "task": "click-1687",
+      "action": 20,
+      "function": "resolve_envvar_value",
+      "function_line": 2402,
+      "classification": "enclosing_header_missing"
+    },
+    {
+      "path": "src/click/core.py",
+      "start": 1934,
+      "end": 2016,
+      "version": "ca3aaa998c5ba8359db0ded888221451a9bea9e5ad5256b7a87f7c117836b57a",
+      "task": "click-1687",
+      "action": 21,
+      "function": "type_cast_value",
+      "function_line": 1934,
+      "classification": "complete_header_present"
+    },
+    {
+      "path": "src/click/types.py",
+      "start": 820,
+      "end": 870,
+      "version": "3cdf5cf7e12824fad3593704976bec732e300243b28d2c03618a0979a5c47cd6",
+      "task": "click-1687",
+      "action": 21,
+      "function": "convert_type",
+      "function_line": 820,
+      "classification": "complete_header_present"
+    },
+    {
+      "path": "requests/models.py",
+      "start": 310,
+      "end": 345,
+      "version": "70345b668e79cfe371599b52ae5b69f66c71204e188a56a44a085ae397881110",
+      "task": "requests-2527-v2",
+      "action": 21,
+      "function": "prepare",
+      "function_line": 298,
+      "classification": "enclosing_header_missing"
+    },
+    {
+      "path": "requests/cookies.py",
+      "start": 290,
+      "end": 380,
+      "version": "16366790a8536667e149f38cdc3f8f272cdfdbbc681b910a74fd26fb7d10f77d",
+      "task": "requests-2527-v2",
+      "action": 21,
+      "classification": "range_start_outside_function"
+    },
+    {
+      "path": "requests/cookies.py",
+      "start": 385,
+      "end": 400,
+      "version": "16366790a8536667e149f38cdc3f8f272cdfdbbc681b910a74fd26fb7d10f77d",
+      "task": "requests-2527-v2",
+      "action": 23,
+      "function": "copy_cookie",
+      "function_line": 362,
+      "classification": "enclosing_header_missing"
+    }
+  ]
+}

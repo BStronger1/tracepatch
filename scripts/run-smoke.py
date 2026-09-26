@@ -70,6 +70,7 @@ class DmxModel:
         self.last_progress_notice_action = 0
         self.evidence_memory = None
         self.memory_mode = 'off'
+        self.memory_profile = 'excerpts'
 
     def format_message(self, **kwargs):
         return kwargs
@@ -99,7 +100,7 @@ class DmxModel:
                     self.last_progress_notice_action = action_index
         memory_notice, memory_cards = None, []
         if self.memory_mode == 'recall' and self.evidence_memory is not None:
-            memory_notice, memory_cards = self.evidence_memory.recall(self.progress_monitor.previous)
+            memory_notice, memory_cards = self.evidence_memory.recall(self.progress_monitor.previous, profile=self.memory_profile)
         payload, context_metadata = request_payload(self.config['model'], wire, self.context_policy,
             tool_options=TOOL_OPTIONS if self.action_protocol == 'native' else None,
             max_output_tokens=self.max_output_tokens, memory_notice=memory_notice)
@@ -113,6 +114,7 @@ class DmxModel:
         record['max_output_tokens'] = self.max_output_tokens
         if self.evidence_memory is not None:
             record['memory_mode'] = self.memory_mode
+            record['memory_profile'] = self.memory_profile
             record['memory_cards'] = memory_cards if context_metadata.get('memory_included') else []
             if context_metadata.get('memory_included'):
                 self.evidence_memory.save_recall(memory_notice)

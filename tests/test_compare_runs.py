@@ -87,3 +87,20 @@ class CompareRunsTests(unittest.TestCase):
         (self.right / 'memory.snapshot.py').write_text('different collector')
         with self.assertRaisesRegex(ValueError, 'memory'):
             module.compare(self.left, self.right, intervention='evidence-memory')
+
+    def test_structured_intervention_keeps_memory_enabled_in_both_arms(self):
+        for folder, profile in ((self.left, 'excerpts'), (self.right, 'structured')):
+            path = folder / 'manifest.json'
+            manifest = json.loads(path.read_text())
+            manifest.update(memory_mode='recall', memory_profile=profile, max_output_tokens=1024)
+            path.write_text(json.dumps(manifest))
+            for name in ('memory', 'context', 'symbols'):
+                (folder / f'{name}.snapshot.py').write_text('same')
+        result = module.compare(self.left, self.right, intervention='structured-evidence')
+        self.assertEqual(result['intervention_fields'], ['memory_profile'])
+        path = self.right / 'manifest.json'
+        manifest = json.loads(path.read_text())
+        manifest['memory_mode'] = 'observe'
+        path.write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(ValueError, 'requires recall'):
+            module.compare(self.left, self.right, intervention='structured-evidence')

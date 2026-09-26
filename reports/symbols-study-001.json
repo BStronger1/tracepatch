@@ -1,0 +1,602 @@
+{
+  "scope": "One pair on a known development task; combined signature-and-task-cue intervention, not a general effect estimate",
+  "plan": "symbols-plan-001.json",
+  "comparison": {
+    "scope": "Single run per development task per arm; not a benchmark or causal estimate.",
+    "controls_match": true,
+    "intervention_fields": [
+      "memory_profile"
+    ],
+    "arms": [
+      {
+        "batch": "repo-symbols-excerpts-001",
+        "policy": "recovery-submit",
+        "progress_mode": "observe",
+        "memory_mode": "recall",
+        "memory_profile": "excerpts",
+        "max_output_tokens": 1024,
+        "context_policy": "recent-turns",
+        "verified": 0,
+        "submitted": 0,
+        "calls": 24,
+        "rejected_actions": 0,
+        "estimated_known_no_cache_cny": 0.10393323,
+        "unknown_cost_requests": 0,
+        "tasks": [
+          {
+            "task": "requests-2527-v2",
+            "verified_success": false,
+            "agent_exit": "LimitsExceeded",
+            "api_calls": 24,
+            "format_error_count": 0
+          }
+        ]
+      },
+      {
+        "batch": "repo-symbols-structured-001",
+        "policy": "recovery-submit",
+        "progress_mode": "observe",
+        "memory_mode": "recall",
+        "memory_profile": "structured",
+        "max_output_tokens": 1024,
+        "context_policy": "recent-turns",
+        "verified": 1,
+        "submitted": 0,
+        "calls": 24,
+        "rejected_actions": 0,
+        "estimated_known_no_cache_cny": 0.09741186,
+        "unknown_cost_requests": 0,
+        "tasks": [
+          {
+            "task": "requests-2527-v2",
+            "verified_success": true,
+            "agent_exit": "LimitsExceeded",
+            "api_calls": 24,
+            "format_error_count": 0
+          }
+        ]
+      }
+    ]
+  },
+  "arms": [
+    {
+      "batch": "repo-symbols-excerpts-001",
+      "profile": "excerpts",
+      "result": {
+        "task": "requests-2527-v2",
+        "status": "verified",
+        "verified_success": false,
+        "agent_exit": "LimitsExceeded",
+        "verification": {
+          "output": "test_cookie_metadata_survives_prepared_copy (__main__.CookieContract) ... /workspace/requests/models.py:169: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\n  if isinstance(hook, collections.Callable):\nok\ntest_empty_and_absent_cookiejar (__main__.CookieContract) ... ok\ntest_requests_cookie_objects_are_independent (__main__.CookieContract) ... ok\ntest_scope_and_request_fields_preserved (__main__.CookieContract) ... ok\ntest_standard_cookie_objects_are_independent (__main__.CookieContract) ... ok\ntest_standard_cookiejar_issue_reproduction (__main__.CookieContract) ... ok\ntest_standard_jar_policy_preserved (__main__.CookieContract) ... ok\ntest_subclass_required_constructor_and_state (__main__.CookieContract) ... ok\ntest_update_does_not_share_cookie_objects (__main__.CookieContract) ... ERROR\ntest_update_preserves_rfc2109 (__main__.CookieContract) ... ERROR\n\n======================================================================\nERROR: test_update_does_not_share_cookie_objects (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 42, in test_update_does_not_share_cookie_objects\n    destination.update(source)\n  File \"/workspace/requests/cookies.py\", line 306, in update\n    self._put_copy(cookie)\nAttributeError: 'RequestsCookieJar' object has no attribute '_put_copy'\n\n======================================================================\nERROR: test_update_preserves_rfc2109 (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 82, in test_update_preserves_rfc2109\n    target.update(source)\n  File \"/workspace/requests/cookies.py\", line 306, in update\n    self._put_copy(cookie)\nAttributeError: 'RequestsCookieJar' object has no attribute '_put_copy'\n\n----------------------------------------------------------------------\nRan 10 tests in 0.018s\n\nFAILED (errors=2)\n",
+          "returncode": 1,
+          "exception_info": ""
+        },
+        "completion": {
+          "state": "failed_unsubmitted",
+          "patch_verified": false,
+          "agent_submitted": false,
+          "agent_exit": "LimitsExceeded",
+          "verification_returncode": 1
+        },
+        "api_calls": 24,
+        "format_error_count": 0,
+        "estimated_known_no_cache_cny": 0.10393323,
+        "unknown_cost_requests": 0,
+        "elapsed_seconds": 165.25,
+        "budget": {
+          "limit_cny": "70",
+          "reserved_cny": "57.8",
+          "remaining_reservation_cny": "12.2",
+          "note": "Conservative planning reservations, not actual provider charges"
+        }
+      },
+      "progress": {
+        "actions": 24,
+        "changed_actions": 4,
+        "unknown_actions": 0,
+        "review_signals": 1,
+        "max_unchanged_streak": 10
+      },
+      "first_changed_action": 11,
+      "memory": {
+        "injected_requests": 13,
+        "signature_occurrences": 0,
+        "signature_names": [],
+        "task_card_occurrences": 0,
+        "card_kinds": {
+          "failure": 26,
+          "source": 48
+        },
+        "card_statuses": {
+          "stale": 52,
+          "current": 19,
+          "unknown": 3
+        },
+        "injections": [
+          {
+            "call": 12,
+            "memory_sha256": "cc04bddf73adfc8ecfaa3b8a3a714af4c6685e1cadf59b39141ef046f0caccc4",
+            "memory_bytes": 2639,
+            "signatures": [],
+            "task_clause_count": 0
+          },
+          {
+            "call": 13,
+            "memory_sha256": "cc04bddf73adfc8ecfaa3b8a3a714af4c6685e1cadf59b39141ef046f0caccc4",
+            "memory_bytes": 2639,
+            "signatures": [],
+            "task_clause_count": 0
+          },
+          {
+            "call": 14,
+            "memory_sha256": "6f262c0917f9b8a6c1aa5b1a2e6fc0c14d243f883888d5e16c90ca7e15efe596",
+            "memory_bytes": 3637,
+            "signatures": [],
+            "task_clause_count": 0
+          },
+          {
+            "call": 15,
+            "memory_sha256": "6f262c0917f9b8a6c1aa5b1a2e6fc0c14d243f883888d5e16c90ca7e15efe596",
+            "memory_bytes": 3637,
+            "signatures": [],
+            "task_clause_count": 0
+          },
+          {
+            "call": 16,
+            "memory_sha256": "6f262c0917f9b8a6c1aa5b1a2e6fc0c14d243f883888d5e16c90ca7e15efe596",
+            "memory_bytes": 3637,
+            "signatures": [],
+            "task_clause_count": 0
+          },
+          {
+            "call": 17,
+            "memory_sha256": "6f262c0917f9b8a6c1aa5b1a2e6fc0c14d243f883888d5e16c90ca7e15efe596",
+            "memory_bytes": 3637,
+            "signatures": [],
+            "task_clause_count": 0
+          },
+          {
+            "call": 18,
+            "memory_sha256": "4165b7fe39cd40231614ba9c7eb5b327e8742024f267d5df334a335172cebbc0",
+            "memory_bytes": 3305,
+            "signatures": [],
+            "task_clause_count": 0
+          },
+          {
+            "call": 19,
+            "memory_sha256": "4165b7fe39cd40231614ba9c7eb5b327e8742024f267d5df334a335172cebbc0",
+            "memory_bytes": 3305,
+            "signatures": [],
+            "task_clause_count": 0
+          },
+          {
+            "call": 20,
+            "memory_sha256": "53847afc307833e9830726711a414fb1b202d5c6fefa6e20cab844e5a3a7b66d",
+            "memory_bytes": 2517,
+            "signatures": [],
+            "task_clause_count": 0
+          },
+          {
+            "call": 21,
+            "memory_sha256": "53847afc307833e9830726711a414fb1b202d5c6fefa6e20cab844e5a3a7b66d",
+            "memory_bytes": 2517,
+            "signatures": [],
+            "task_clause_count": 0
+          },
+          {
+            "call": 22,
+            "memory_sha256": "b365119865375a2afe3de128e4ac2dff3489b58ea5ddb9377a91c91dba3b8ae6",
+            "memory_bytes": 2634,
+            "signatures": [],
+            "task_clause_count": 0
+          },
+          {
+            "call": 23,
+            "memory_sha256": "90b18629ae3c5ebd7f0f7231a37788056f2084b2df59bec5462ce53ef5f64357",
+            "memory_bytes": 2853,
+            "signatures": [],
+            "task_clause_count": 0
+          },
+          {
+            "call": 24,
+            "memory_sha256": "8963cf2de33706e492f07b8e2ff3b6e3efe0a013281508a25ca9ce8315ade288",
+            "memory_bytes": 3149,
+            "signatures": [],
+            "task_clause_count": 0
+          }
+        ],
+        "source_cards_captured": 4,
+        "source_collection_errors": 0,
+        "budget_drops": 0
+      },
+      "history_pruned_requests": 13,
+      "truncations": 0,
+      "hashes": {
+        "requests.json": "7ea2a144c7d48d9a6b5765f60206d074756b5181c7020d20a8209e87b23443c2",
+        "trajectory.json": "c63a1575bd11d4bebc14eee4641aa033ee2efec7ab02ab31253eab35249c36b9",
+        "memory.json": "3e2552b10cec90403c24c52ab448d8953a49b68a72f264a46895bea182137ea0",
+        "progress.json": "34cc328389de19ee3a37a4a9e0f9475aeb3393a141e8c60d5f488da9664db687",
+        "patch.diff": "330f6219999e451a923b9aeadbde0069eabc0554bc4937b40419cec6f57c0417"
+      }
+    },
+    {
+      "batch": "repo-symbols-structured-001",
+      "profile": "structured",
+      "result": {
+        "task": "requests-2527-v2",
+        "status": "verified",
+        "verified_success": true,
+        "agent_exit": "LimitsExceeded",
+        "verification": {
+          "output": "test_cookie_metadata_survives_prepared_copy (__main__.CookieContract) ... ok\ntest_empty_and_absent_cookiejar (__main__.CookieContract) ... ok\ntest_requests_cookie_objects_are_independent (__main__.CookieContract) ... ok\ntest_scope_and_request_fields_preserved (__main__.CookieContract) ... ok\ntest_standard_cookie_objects_are_independent (__main__.CookieContract) ... ok\ntest_standard_cookiejar_issue_reproduction (__main__.CookieContract) ... ok\ntest_standard_jar_policy_preserved (__main__.CookieContract) ... ok\ntest_subclass_required_constructor_and_state (__main__.CookieContract) ... ok\ntest_update_does_not_share_cookie_objects (__main__.CookieContract) ... ok\ntest_update_preserves_rfc2109 (__main__.CookieContract) ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 0.011s\n\nOK\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "completion": {
+          "state": "verified_unsubmitted",
+          "patch_verified": true,
+          "agent_submitted": false,
+          "agent_exit": "LimitsExceeded",
+          "verification_returncode": 0
+        },
+        "api_calls": 24,
+        "format_error_count": 0,
+        "estimated_known_no_cache_cny": 0.09741186,
+        "unknown_cost_requests": 0,
+        "elapsed_seconds": 102.047,
+        "budget": {
+          "limit_cny": "70",
+          "reserved_cny": "60.2",
+          "remaining_reservation_cny": "9.8",
+          "note": "Conservative planning reservations, not actual provider charges"
+        }
+      },
+      "progress": {
+        "actions": 24,
+        "changed_actions": 1,
+        "unknown_actions": 0,
+        "review_signals": 3,
+        "max_unchanged_streak": 16
+      },
+      "first_changed_action": 17,
+      "memory": {
+        "injected_requests": 15,
+        "signature_occurrences": 30,
+        "signature_names": [
+          "requests/cookies.py:MockRequest.__init__",
+          "requests/cookies.py:MockRequest.get_type",
+          "requests/cookies.py:RequestsCookieJar.set_cookie",
+          "requests/cookies.py:RequestsCookieJar.update",
+          "requests/cookies.py:create_cookie",
+          "requests/cookies.py:morsel_to_cookie",
+          "requests/models.py:RequestHooksMixin.deregister_hook",
+          "requests/models.py:RequestHooksMixin.register_hook"
+        ],
+        "task_card_occurrences": 15,
+        "card_kinds": {
+          "task_constraints": 15,
+          "failure": 20,
+          "source": 44
+        },
+        "card_statuses": {
+          "original_task": 15,
+          "current": 33,
+          "stale": 31
+        },
+        "injections": [
+          {
+            "call": 10,
+            "memory_sha256": "5c82dc22f37d898fa656456577275bf8b321511ea24441b739a0857a652ed4a6",
+            "memory_bytes": 3932,
+            "signatures": [
+              {
+                "path": "requests/cookies.py",
+                "name": "RequestsCookieJar.set_cookie",
+                "start": 296,
+                "end": 299
+              },
+              {
+                "path": "requests/cookies.py",
+                "name": "RequestsCookieJar.update",
+                "start": 301,
+                "end": 307
+              },
+              {
+                "path": "requests/cookies.py",
+                "name": "create_cookie",
+                "start": 362,
+                "end": 394
+              },
+              {
+                "path": "requests/cookies.py",
+                "name": "morsel_to_cookie",
+                "start": 397,
+                "end": 421
+              }
+            ],
+            "task_clause_count": 6
+          },
+          {
+            "call": 11,
+            "memory_sha256": "5c82dc22f37d898fa656456577275bf8b321511ea24441b739a0857a652ed4a6",
+            "memory_bytes": 3932,
+            "signatures": [
+              {
+                "path": "requests/cookies.py",
+                "name": "RequestsCookieJar.set_cookie",
+                "start": 296,
+                "end": 299
+              },
+              {
+                "path": "requests/cookies.py",
+                "name": "RequestsCookieJar.update",
+                "start": 301,
+                "end": 307
+              },
+              {
+                "path": "requests/cookies.py",
+                "name": "create_cookie",
+                "start": 362,
+                "end": 394
+              },
+              {
+                "path": "requests/cookies.py",
+                "name": "morsel_to_cookie",
+                "start": 397,
+                "end": 421
+              }
+            ],
+            "task_clause_count": 6
+          },
+          {
+            "call": 12,
+            "memory_sha256": "5c82dc22f37d898fa656456577275bf8b321511ea24441b739a0857a652ed4a6",
+            "memory_bytes": 3932,
+            "signatures": [
+              {
+                "path": "requests/cookies.py",
+                "name": "RequestsCookieJar.set_cookie",
+                "start": 296,
+                "end": 299
+              },
+              {
+                "path": "requests/cookies.py",
+                "name": "RequestsCookieJar.update",
+                "start": 301,
+                "end": 307
+              },
+              {
+                "path": "requests/cookies.py",
+                "name": "create_cookie",
+                "start": 362,
+                "end": 394
+              },
+              {
+                "path": "requests/cookies.py",
+                "name": "morsel_to_cookie",
+                "start": 397,
+                "end": 421
+              }
+            ],
+            "task_clause_count": 6
+          },
+          {
+            "call": 13,
+            "memory_sha256": "aa7283ce2805c1753afaa8024671e2bf6c251b1593142835a398f15ec834cc1d",
+            "memory_bytes": 3765,
+            "signatures": [
+              {
+                "path": "requests/models.py",
+                "name": "RequestHooksMixin.register_hook",
+                "start": 163,
+                "end": 172
+              },
+              {
+                "path": "requests/models.py",
+                "name": "RequestHooksMixin.deregister_hook",
+                "start": 174,
+                "end": 183
+              }
+            ],
+            "task_clause_count": 6
+          },
+          {
+            "call": 14,
+            "memory_sha256": "43d451e277b392293ba7f156ca41deb8645b0d4ed258efef1df2be98dd43c201",
+            "memory_bytes": 3946,
+            "signatures": [
+              {
+                "path": "requests/cookies.py",
+                "name": "MockRequest.__init__",
+                "start": 33,
+                "end": 36
+              },
+              {
+                "path": "requests/cookies.py",
+                "name": "MockRequest.get_type",
+                "start": 38,
+                "end": 39
+              },
+              {
+                "path": "requests/models.py",
+                "name": "RequestHooksMixin.register_hook",
+                "start": 163,
+                "end": 172
+              },
+              {
+                "path": "requests/models.py",
+                "name": "RequestHooksMixin.deregister_hook",
+                "start": 174,
+                "end": 183
+              }
+            ],
+            "task_clause_count": 6
+          },
+          {
+            "call": 15,
+            "memory_sha256": "43d451e277b392293ba7f156ca41deb8645b0d4ed258efef1df2be98dd43c201",
+            "memory_bytes": 3946,
+            "signatures": [
+              {
+                "path": "requests/cookies.py",
+                "name": "MockRequest.__init__",
+                "start": 33,
+                "end": 36
+              },
+              {
+                "path": "requests/cookies.py",
+                "name": "MockRequest.get_type",
+                "start": 38,
+                "end": 39
+              },
+              {
+                "path": "requests/models.py",
+                "name": "RequestHooksMixin.register_hook",
+                "start": 163,
+                "end": 172
+              },
+              {
+                "path": "requests/models.py",
+                "name": "RequestHooksMixin.deregister_hook",
+                "start": 174,
+                "end": 183
+              }
+            ],
+            "task_clause_count": 6
+          },
+          {
+            "call": 16,
+            "memory_sha256": "43d451e277b392293ba7f156ca41deb8645b0d4ed258efef1df2be98dd43c201",
+            "memory_bytes": 3946,
+            "signatures": [
+              {
+                "path": "requests/cookies.py",
+                "name": "MockRequest.__init__",
+                "start": 33,
+                "end": 36
+              },
+              {
+                "path": "requests/cookies.py",
+                "name": "MockRequest.get_type",
+                "start": 38,
+                "end": 39
+              },
+              {
+                "path": "requests/models.py",
+                "name": "RequestHooksMixin.register_hook",
+                "start": 163,
+                "end": 172
+              },
+              {
+                "path": "requests/models.py",
+                "name": "RequestHooksMixin.deregister_hook",
+                "start": 174,
+                "end": 183
+              }
+            ],
+            "task_clause_count": 6
+          },
+          {
+            "call": 17,
+            "memory_sha256": "43d451e277b392293ba7f156ca41deb8645b0d4ed258efef1df2be98dd43c201",
+            "memory_bytes": 3946,
+            "signatures": [
+              {
+                "path": "requests/cookies.py",
+                "name": "MockRequest.__init__",
+                "start": 33,
+                "end": 36
+              },
+              {
+                "path": "requests/cookies.py",
+                "name": "MockRequest.get_type",
+                "start": 38,
+                "end": 39
+              },
+              {
+                "path": "requests/models.py",
+                "name": "RequestHooksMixin.register_hook",
+                "start": 163,
+                "end": 172
+              },
+              {
+                "path": "requests/models.py",
+                "name": "RequestHooksMixin.deregister_hook",
+                "start": 174,
+                "end": 183
+              }
+            ],
+            "task_clause_count": 6
+          },
+          {
+            "call": 18,
+            "memory_sha256": "1772d2c933ee5cd8c54b957dd4a67388b77ccc8aa7631187aeeed7301593c393",
+            "memory_bytes": 2966,
+            "signatures": [],
+            "task_clause_count": 6
+          },
+          {
+            "call": 19,
+            "memory_sha256": "1772d2c933ee5cd8c54b957dd4a67388b77ccc8aa7631187aeeed7301593c393",
+            "memory_bytes": 2966,
+            "signatures": [],
+            "task_clause_count": 6
+          },
+          {
+            "call": 20,
+            "memory_sha256": "97a8293314b4138aee201a7b8426f0f04957367b2d81dd3afeb20fc26c784b05",
+            "memory_bytes": 3822,
+            "signatures": [],
+            "task_clause_count": 6
+          },
+          {
+            "call": 21,
+            "memory_sha256": "9899f5721fad718b7b332897f02907ffb116bb9cb83744b21112d1b677cd4915",
+            "memory_bytes": 3959,
+            "signatures": [],
+            "task_clause_count": 6
+          },
+          {
+            "call": 22,
+            "memory_sha256": "442428b8546392415a8a4153148630895f9ec8743ce232059b70b9f187f87485",
+            "memory_bytes": 3593,
+            "signatures": [],
+            "task_clause_count": 6
+          },
+          {
+            "call": 23,
+            "memory_sha256": "fd981eea832c52d2a35b54581fb3b81c4a45965aa86a34e4f0f4f428afb3bbc5",
+            "memory_bytes": 3658,
+            "signatures": [],
+            "task_clause_count": 6
+          },
+          {
+            "call": 24,
+            "memory_sha256": "c01ccaf1054559c9759d3b3f95e2c09fafba56b6d94a7f7f42b3173c7ecc11d1",
+            "memory_bytes": 3646,
+            "signatures": [],
+            "task_clause_count": 6
+          }
+        ],
+        "source_cards_captured": 8,
+        "source_collection_errors": 0,
+        "budget_drops": 0
+      },
+      "history_pruned_requests": 15,
+      "truncations": 0,
+      "hashes": {
+        "requests.json": "9971855114bafd8775d7f49e96548459fb3079063aac044b438b3edb7eaf454c",
+        "trajectory.json": "7255a2308a155f268aff89a312152e8d1014c7aaf9f863ee3a2e60692a585915",
+        "memory.json": "36429b0e6c1cc626b6cc475be72ae3b7a82d670005d6dfbc94062c67e3550122",
+        "progress.json": "4855b7bb9d3b18916fccc18f5155504e13fc7385b5f13151fd215c4e0ec27af4",
+        "patch.diff": "927034dac52563e523f3bca56dc05be1049596403a3e61fec704d0d2d2701fc3"
+      }
+    }
+  ],
+  "totals": {
+    "calls": 48,
+    "estimated_known_no_cache_cny": 0.20134509,
+    "unknown_cost_requests": 0
+  }
+}

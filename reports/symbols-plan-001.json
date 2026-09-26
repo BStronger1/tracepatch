@@ -1,0 +1,53 @@
+{
+  "frozen_at_utc": "2026-09-26T11:02:02.942812+00:00",
+  "task": "requests-2527-v2",
+  "scope": "One pair on a known development task; combined signature-and-task-cue intervention, not a general effect estimate",
+  "order": [
+    {
+      "batch": "repo-symbols-excerpts-001",
+      "profile": "excerpts"
+    },
+    {
+      "batch": "repo-symbols-structured-001",
+      "profile": "structured"
+    }
+  ],
+  "memory_mode": "recall",
+  "progress_mode": "observe",
+  "policy": "recovery-submit",
+  "max_output_tokens": 1024,
+  "max_calls": 24,
+  "memory_byte_limit": 4200,
+  "primary_outcome": "independent verification and submission separately",
+  "secondary_outcomes": [
+    "current signature injections",
+    "exact task cue injections",
+    "memory budget drops",
+    "calls",
+    "context pruning",
+    "known estimated cost"
+  ],
+  "stop_rule": "One run per arm; no automatic retries or tuning between runs; stop on infrastructure failure.",
+  "file_hashes": {
+    "scripts/run-repo.py": "190d55f33d611fb7f90d7096d68ffafbfcff93adec59275bf92818546e8f85b4",
+    "scripts/run-smoke.py": "db1f401c377eb7e69a6b9706c936c07e83829c4b5ddb5989c706c45428376128",
+    "scripts/compare-runs.py": "5b62363a52c06bc0b2ee8fbf788bc607caa2906952362f453990fa15f5caf374",
+    "scripts/check-symbols.py": "5955ece6ebe6e55f7860d63f4fdb01b128a6e2ac49372d6951ac847f16417b68",
+    "configs/model.json": "93ee9b3c0ec328db25595a4246d3021b260934d172068f8c375405ac76122d2d",
+    "docs/STRUCTURED_EVIDENCE.md": "0d9c70f98d08e60d1ac63c5a0f37d4a5d569f3a66c016cab10661f1cda27f3a9",
+    "src/tracepatch/budget.py": "1b01eec313421e8f457c54c37fd34924c5ab98df8ab045ea1788d9486a2724bf",
+    "src/tracepatch/actions.py": "46e9a0e0ba16ffd4e24d021d88933b3ffd676e396234250d67e540a678130003",
+    "src/tracepatch/recovery.py": "1a98ce4a7d50b47f1878e69176a893db6a4e7650a2be72aa8f6d8f0e1079b939",
+    "src/tracepatch/lifecycle.py": "924ed1387360656fcbf5a077c3796db426074f541ca3079fd00edabfd3c66179",
+    "src/tracepatch/window.py": "2aa2a49d5533c0979ffe6798a4ef29a9652f786c7116871686d2efae7b36cadf",
+    "src/tracepatch/toolcalling.py": "3b182f990998cdc8ff8a7744bf070b7cf63d296bb97c2518369a91309c950e9a",
+    "src/tracepatch/repositories.py": "04f3c393332518b18c78fbc7a547ef2ebf39d61b5569483865f731da9d106581",
+    "src/tracepatch/progress.py": "2cc628bb8d11bc5b87199a8ca60101790f79238ae78a0311f9cc6141c57f0c9d",
+    "src/tracepatch/memory.py": "15ac245648130e46ff8138ca55a4e3c237fc586abb2b393aa245ddbd04411930",
+    "src/tracepatch/context.py": "f6df7d8d3011e1ec1068c5cb6087a93b451b204d2e4e65cdca9cf9caec094ddc",
+    "src/tracepatch/symbols.py": "784d161ef20e497df9857be0f42421b8ce8e824188656ee90c59ceef9631016f",
+    "tasks/repos/requests-2527-v2/task.json": "a5c5eb4c6b0a16907ffe3f6e92a79c84530d6435d0e6be2cae9125a55165ed3d",
+    "tasks/repos/requests-2527-v2/verify.py": "e10d646c605c3c4a8c59db51992a74551438d342cc48e848d90420d1a057ecf8",
+    "tasks/repos/requests-2527-v2/reproduce_issue.py": "b90f3904845b77411e372de9b978f20fef6d05acd1731cfcad8b4e670937e7a3"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "scope": "Post-hoc diagnostic of an agent-written local assertion; frozen ten-test score unchanged",
+  "model_api_calls": 0,
+  "finding": "Agent created a cookie with path='/q' but asserted copied.path=='q'. Both frozen reference and candidate preserve '/q'.",
+  "limitation": "Only this path mismatch was isolated; not a validation of the entire agent-authored test script.",
+  "results": {
+    "reference": {
+      "output": "{\"input_path\": \"/q\", \"copied_path\": \"/q\", \"preserves_path\": true, \"agent_assertion_path_equals_q\": false}\n",
+      "returncode": 0,
+      "exception_info": ""
+    },
+    "candidate": {
+      "output": "{\"input_path\": \"/q\", \"copied_path\": \"/q\", \"preserves_path\": true, \"agent_assertion_path_equals_q\": false}\n",
+      "returncode": 0,
+      "exception_info": ""
+    }
+  }
+}

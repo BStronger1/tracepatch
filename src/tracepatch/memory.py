@@ -1,5 +1,6 @@
 """Bounded, version-aware evidence cards. No model summaries or hidden tests."""
 import hashlib
+import inspect
 import json
 import re
 import shlex
@@ -7,9 +8,11 @@ import subprocess
 
 from tracepatch.context import preserve_observation
 from tracepatch.progress import validate_snapshot
+from tracepatch.symbols import source_context, task_cues
 
 
-READ_PROGRAM = '''import hashlib,json,pathlib,sys
+READ_PROGRAM = 'import ast\n' + inspect.getsource(source_context) + '''
+import hashlib,json,pathlib,sys
 root=pathlib.Path('/workspace')
 cards=[]
 for spec in json.loads(sys.argv[1]):
@@ -23,6 +26,7 @@ for spec in json.loads(sys.argv[1]):
     lines=raw.decode('utf-8').splitlines()
     excerpt='\\n'.join(lines[spec['start']-1:min(spec['end'],spec['start']+15)])
     cards.append(dict(spec,version=hashlib.sha256(raw).hexdigest(),excerpt=excerpt[:700],
+        context=source_context(raw.decode('utf-8'),spec['start'],spec['end']),
         excerpt_truncated=len(excerpt)>700 or spec['end']>=spec['start']+16))
 print(json.dumps(cards))
 '''
@@ -79,7 +83,7 @@ def docker_read_ranges(executable, container_id, ranges):
 
 
 class EvidenceMemory:
-    def __init__(self, paths, output, read_ranges, *, max_cards=24):
+    def __init__(self, paths, output, read_ranges, *, max_cards=24, instruction=''):
         if not paths or type(max_cards) is not int or max_cards < 1:
             raise ValueError('Nonempty paths and positive card limit required')
         validate_snapshot(dict.fromkeys(paths), paths)
@@ -89,6 +93,7 @@ class EvidenceMemory:
         self.max_cards = max_cards
         self.cards = []
         self.events = []
+        self.task = task_cues(instruction)
 
     def _add(self, card):
         key = (card['kind'], card.get('path'), card.get('start'), card.get('end'))
@@ -137,10 +142,15 @@ class EvidenceMemory:
         self.output.write_text(json.dumps({'schema_version': 'tracepatch-memory-0.1',
                                'cards': self.cards, 'events': self.events}, indent=2), encoding='utf-8')
 
-    def recall(self, current, *, byte_limit=4200):
+    def recall(self, current, *, byte_limit=4200, profile='excerpts'):
+        if profile not in ('excerpts', 'structured'):
+            raise ValueError('Unknown memory profile')
         if byte_limit < 600:
             raise ValueError('Memory allowance too small')
         candidates = []
+        if profile == 'structured' and self.task['clauses']:
+            candidates.append({'kind': 'task_constraints', 'action': 0, 'source_status': 'original_task',
+                               'task_sha256': self.task['task_sha256'], 'clauses': self.task['clauses']})
         # Failure cards first, then newest source cards; selection is deterministic.
         selected = ([c for c in reversed(self.cards) if c['kind'] == 'failure'][:2]
                     + [c for c in reversed(self.cards) if c['kind'] == 'source'][:4])
@@ -150,8 +160,11 @@ class EvidenceMemory:
                     'current' if current.get(card['path']) == card['version'] else 'stale')
                 item = {k: card[k] for k in ('kind', 'action', 'path', 'start', 'end', 'version', 'output_sha256', 'excerpt_sha256')}
                 if status == 'current':
-                    item['excerpt'] = card['excerpt']
-                    item['excerpt_truncated'] = card['excerpt_truncated']
+                    if profile == 'structured' and card.get('context', {}).get('scopes'):
+                        item['context'] = card['context']
+                    else:
+                        item['excerpt'] = card['excerpt']
+                        item['excerpt_truncated'] = card['excerpt_truncated']
             else:
                 status = 'unknown' if current is None or card['versions'] is None else (
                     'current' if current == card['versions'] else 'stale')

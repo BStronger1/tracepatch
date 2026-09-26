@@ -80,6 +80,7 @@ def main():
     parser.add_argument('--action-protocol', choices=('text', 'native'), default='text')
     parser.add_argument('--progress-mode', choices=('off', 'observe', 'feedback'), default='off')
     parser.add_argument('--memory-mode', choices=('off', 'observe', 'recall'), default='off')
+    parser.add_argument('--memory-profile', choices=('excerpts', 'structured'), default='excerpts')
     args = parser.parse_args()
     if args.memory_mode != 'off' and args.progress_mode == 'off':
         parser.error('Evidence memory requires source observation')
@@ -104,7 +105,7 @@ def main():
     batch = ROOT / 'runs' / args.batch
     batch.mkdir(parents=True, exist_ok=False)
     for name, path in {'runner': Path(__file__), 'runtime': ROOT / 'scripts/run-smoke.py',
-                       **{n: ROOT / f'src/tracepatch/{n}.py' for n in ('budget', 'actions', 'recovery', 'lifecycle', 'window', 'toolcalling', 'repositories', 'progress', 'memory', 'context')}}.items():
+                       **{n: ROOT / f'src/tracepatch/{n}.py' for n in ('budget', 'actions', 'recovery', 'lifecycle', 'window', 'toolcalling', 'repositories', 'progress', 'memory', 'context', 'symbols')}}.items():
         shutil.copyfile(path, batch / f'{name}.snapshot.py')
     base, reference = batch / 'base', batch / 'reference'
     hashes = {'base_archive': archive_source(task_config['base_commit'], base, task_config['repository']),
@@ -123,6 +124,7 @@ def main():
                 'progress_threshold': 6, 'progress_schema': 'tracepatch-progress-0.1',
                 'memory_mode': args.memory_mode, 'memory_schema': 'tracepatch-memory-0.1',
                 'memory_byte_limit': 4200,
+                'memory_profile': args.memory_profile,
                 'max_output_tokens': args.max_output_tokens, 'enable_thinking': False, 'observation_char_limit': 6000,
                 'input_json_byte_limit': 24000, 'reject_provider_truncation': True,
                 'tasks': {task_config['id']: hashes}, 'provenance': task_config}
@@ -178,9 +180,10 @@ def main():
             memory = None
             if args.memory_mode != 'off':
                 reader = lambda ranges: docker_read_ranges(runtime.DOCKER, container_id, ranges)
-                memory = EvidenceMemory(paths, run / 'memory.json', reader)
+                memory = EvidenceMemory(paths, run / 'memory.json', reader, instruction=task_config['instruction'])
                 model.evidence_memory = memory
                 model.memory_mode = args.memory_mode
+                model.memory_profile = args.memory_profile
             env = ObservedEnvironment(env, monitor, snapshot, run / 'progress.json', memory=memory)
             model.progress_monitor = monitor
             model.progress_feedback = args.progress_mode == 'feedback'

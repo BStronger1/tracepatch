@@ -1,0 +1,29 @@
+{
+  "scope": "Synthetic Docker signature and task-cue integration; not model repair evidence",
+  "assertions_passed": true,
+  "model_api_calls": 0,
+  "image": "python@sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b",
+  "signature": "def __init__(self, label, *, policy=None):",
+  "parameters": [
+    "self",
+    "label",
+    "policy"
+  ],
+  "source_cards": 1,
+  "task_clauses": 6,
+  "structured_bytes": 1915,
+  "stale_signature_removed": true,
+  "task_spans_match_original": true,
+  "selected_cards": [
+    {
+      "kind": "task_constraints",
+      "action": 0,
+      "source_status": "original_task"
+    },
+    {
+      "kind": "source",
+      "action": 1,
+      "source_status": "current"
+    }
+  ]
+}
