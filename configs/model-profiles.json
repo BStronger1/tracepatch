@@ -1,0 +1,10 @@
+{
+  "qwen3.8-flash": {
+    "model": "qwen3.8-flash",
+    "pricing": {"source": "https://rmb.dmxapi.cn/ public rates fetched 2026-09-27; base*2 and base*2*completion_ratio", "currency": "CNY", "unit_tokens": 1000000, "input": 0.8, "output": 2.7, "cache_billing_semantics_verified": false}
+  },
+  "qwen3-coder-plus": {
+    "model": "qwen3-coder-plus",
+    "pricing": {"source": "https://rmb.dmxapi.cn/ public rates fetched 2026-09-27; base*2 and base*2*completion_ratio", "currency": "CNY", "unit_tokens": 1000000, "input": 4.75, "output": 19.0, "cache_billing_semantics_verified": false}
+  }
+}

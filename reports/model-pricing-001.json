@@ -1,0 +1,25 @@
+{
+  "retrieved_at_utc": "2026-09-26T18:07:00.806240+00:00",
+  "source": "https://rmb.dmxapi.cn/",
+  "endpoints": [
+    "https://rmb.dmxapi.cn/?api=moxingbeilv",
+    "https://rmb.dmxapi.cn/?api=buquanbeilv"
+  ],
+  "formula": "input=base*2; output=base*2*completion_ratio; CNY per million tokens",
+  "note": "Public no-cache estimates; no account discount or actual billing verification",
+  "page_sha256": "5cdc43e11fdb9d91ad0a1ccfc8ec5a82203ca45ff080e99575be15ec0ba76923",
+  "models": {
+    "qwen3.8-flash": {
+      "base": 0.4,
+      "completion_ratio": 3.375,
+      "input": 0.8,
+      "output": 2.7
+    },
+    "qwen3-coder-plus": {
+      "base": 2.375,
+      "completion_ratio": 4,
+      "input": 4.75,
+      "output": 19.0
+    }
+  }
+}

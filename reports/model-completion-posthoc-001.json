@@ -1,0 +1,87 @@
+{
+  "scope": "Post-hoc checks prompted by patch inspection; no change to frozen grades, no model calls",
+  "model_api_calls": 0,
+  "image": "python@sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b",
+  "probe": "import unittest\nfrom click import Choice, Command, Option\nfrom click.shell_completion import ShellComplete\n\ndef words(command, context_args):\n    result = ShellComplete(command, context_args, \"demo\", \"_DEMO_COMPLETE\").get_completions([\"-c\"], \"+\")\n    return [item.value for item in result]\n\nclass ContextPrefixes(unittest.TestCase):\n    def test_dynamic_get_params_option(self):\n        class DynamicCommand(Command):\n            def get_params(self, ctx):\n                return super().get_params(ctx) + [Option([\"+dynamic\"], is_flag=True)]\n        command = DynamicCommand(\"demo\", params=[Option([\"-c\"], type=Choice([\"+red\"]))])\n        self.assertEqual(words(command, {}), [\"+dynamic\"])\n\n    def test_help_option_from_context_arguments(self):\n        command = Command(\"demo\", params=[Option([\"-c\"], type=Choice([\"+red\"]))])\n        self.assertEqual(words(command, {\"help_option_names\": [\"+assist\"]}), [\"+assist\"])\n\nif __name__ == \"__main__\":\n    unittest.main(verbosity=2)\n",
+  "probe_sha256": "e4fdcda4b6abdaea55a6db6e60fd31a3fcb78fd270f577385bda0a47900f9dca",
+  "records": [
+    {
+      "source": "runs/repo-model-completion-flash-001/reference",
+      "source_hashes": {
+        "src/click/__init__.py": "8c03bf0a6f1bd8b646084177444c31cacfe46c2f8eabad6afa9fd9663eb40f28",
+        "src/click/_compat.py": "387344dcb681042cc90ee8865940b652ef83296942dc67c9e4bf9396d4fa26b9",
+        "src/click/_termui_impl.py": "9abede3a02a53cdfbdbdf4e60acec432b4d15c7ef1c9c8bb52390a89417db275",
+        "src/click/_textwrap.py": "7e35104d140be2645e6fc5c7625a7451039889e079392798b5ef687e431adfb1",
+        "src/click/_winconsole.py": "905675091284d696bc4e0767bdacbe8dd97d1068434f74dd68bdac84d8bc5eaa",
+        "src/click/core.py": "ade2dd46ab4b336e7049885035d04de05b7699d8ea2938b20b9910a61c44328b",
+        "src/click/decorators.py": "3e148cd196af4113e959321599abcf4871df37c2d89434e8f6d0b76ae215e20f",
+        "src/click/exceptions.py": "d534cab89bca43085fbec42ec6f6c756ed10bf6174d866eac2d1539a8d4c40c1",
+        "src/click/formatting.py": "ac56c21acfab5792027a1d10e06ac409d82b4b7c26526d385bf3a39156c611fb",
+        "src/click/globals.py": "45cda49531a1947b51caf838b2de37ca4214f13dd4c6acca5e68fb54856ca18e",
+        "src/click/parser.py": "68cbf1e5550482b8164b38d4b25d68c1824a120e6ddeb775f6200f8a06d71c88",
+        "src/click/shell_completion.py": "cbf672f6dfb639ea6c6da48e6443e7846da7f3a1b4ef45683549f94adfff7321",
+        "src/click/termui.py": "9d33f1b46b5c9ad793b285f4378d3815735cecac9da61c7c9ef83e95c41eb619",
+        "src/click/testing.py": "b66350dbfa832e3ae294aead0c9e026565c0254f51ea08c955b66583b5ae62a9",
+        "src/click/types.py": "bca58cb3a10b5a3bd2a2e0c3de39907e34bcbd316737331d11e2713824e97afa",
+        "src/click/utils.py": "4a53f7270e0465d2d94119f153f245ae322338c2e5d53211f3411d705eabca38"
+      },
+      "verification": {
+        "output": "test_dynamic_get_params_option (__main__.ContextPrefixes) ... ok\ntest_help_option_from_context_arguments (__main__.ContextPrefixes) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.003s\n\nOK\n",
+        "returncode": 0,
+        "exception_info": ""
+      }
+    },
+    {
+      "source": "runs/repo-model-completion-flash-001/repo-model-completion-flash-001--click-2040/candidate",
+      "source_hashes": {
+        "src/click/__init__.py": "8c03bf0a6f1bd8b646084177444c31cacfe46c2f8eabad6afa9fd9663eb40f28",
+        "src/click/_compat.py": "387344dcb681042cc90ee8865940b652ef83296942dc67c9e4bf9396d4fa26b9",
+        "src/click/_termui_impl.py": "9abede3a02a53cdfbdbdf4e60acec432b4d15c7ef1c9c8bb52390a89417db275",
+        "src/click/_textwrap.py": "7e35104d140be2645e6fc5c7625a7451039889e079392798b5ef687e431adfb1",
+        "src/click/_winconsole.py": "905675091284d696bc4e0767bdacbe8dd97d1068434f74dd68bdac84d8bc5eaa",
+        "src/click/core.py": "a713e37a1f6b458f014bb616a4e7ca5110f31edfdc5cb4ff4a810b4495943042",
+        "src/click/decorators.py": "3e148cd196af4113e959321599abcf4871df37c2d89434e8f6d0b76ae215e20f",
+        "src/click/exceptions.py": "d534cab89bca43085fbec42ec6f6c756ed10bf6174d866eac2d1539a8d4c40c1",
+        "src/click/formatting.py": "ac56c21acfab5792027a1d10e06ac409d82b4b7c26526d385bf3a39156c611fb",
+        "src/click/globals.py": "45cda49531a1947b51caf838b2de37ca4214f13dd4c6acca5e68fb54856ca18e",
+        "src/click/parser.py": "68cbf1e5550482b8164b38d4b25d68c1824a120e6ddeb775f6200f8a06d71c88",
+        "src/click/shell_completion.py": "876514708b871d1ff2e7ab531fedbce1084f84b6d4a1eee61e6e85326c639777",
+        "src/click/termui.py": "9d33f1b46b5c9ad793b285f4378d3815735cecac9da61c7c9ef83e95c41eb619",
+        "src/click/testing.py": "b66350dbfa832e3ae294aead0c9e026565c0254f51ea08c955b66583b5ae62a9",
+        "src/click/types.py": "bca58cb3a10b5a3bd2a2e0c3de39907e34bcbd316737331d11e2713824e97afa",
+        "src/click/utils.py": "4a53f7270e0465d2d94119f153f245ae322338c2e5d53211f3411d705eabca38"
+      },
+      "verification": {
+        "output": "test_dynamic_get_params_option (__main__.ContextPrefixes) ... FAIL\ntest_help_option_from_context_arguments (__main__.ContextPrefixes) ... FAIL\n\n======================================================================\nFAIL: test_dynamic_get_params_option (__main__.ContextPrefixes)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 15, in test_dynamic_get_params_option\n    self.assertEqual(words(command, {}), [\"+dynamic\"])\nAssertionError: Lists differ: ['+red'] != ['+dynamic']\n\nFirst differing element 0:\n'+red'\n'+dynamic'\n\n- ['+red']\n+ ['+dynamic']\n\n======================================================================\nFAIL: test_help_option_from_context_arguments (__main__.ContextPrefixes)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 19, in test_help_option_from_context_arguments\n    self.assertEqual(words(command, {\"help_option_names\": [\"+assist\"]}), [\"+assist\"])\nAssertionError: Lists differ: ['+red'] != ['+assist']\n\nFirst differing element 0:\n'+red'\n'+assist'\n\n- ['+red']\n+ ['+assist']\n\n----------------------------------------------------------------------\nRan 2 tests in 0.003s\n\nFAILED (failures=2)\n",
+        "returncode": 1,
+        "exception_info": ""
+      }
+    },
+    {
+      "source": "runs/repo-model-completion-coder-001/repo-model-completion-coder-001--click-2040/candidate",
+      "source_hashes": {
+        "src/click/__init__.py": "8c03bf0a6f1bd8b646084177444c31cacfe46c2f8eabad6afa9fd9663eb40f28",
+        "src/click/_compat.py": "387344dcb681042cc90ee8865940b652ef83296942dc67c9e4bf9396d4fa26b9",
+        "src/click/_termui_impl.py": "9abede3a02a53cdfbdbdf4e60acec432b4d15c7ef1c9c8bb52390a89417db275",
+        "src/click/_textwrap.py": "7e35104d140be2645e6fc5c7625a7451039889e079392798b5ef687e431adfb1",
+        "src/click/_winconsole.py": "905675091284d696bc4e0767bdacbe8dd97d1068434f74dd68bdac84d8bc5eaa",
+        "src/click/core.py": "a713e37a1f6b458f014bb616a4e7ca5110f31edfdc5cb4ff4a810b4495943042",
+        "src/click/decorators.py": "3e148cd196af4113e959321599abcf4871df37c2d89434e8f6d0b76ae215e20f",
+        "src/click/exceptions.py": "d534cab89bca43085fbec42ec6f6c756ed10bf6174d866eac2d1539a8d4c40c1",
+        "src/click/formatting.py": "ac56c21acfab5792027a1d10e06ac409d82b4b7c26526d385bf3a39156c611fb",
+        "src/click/globals.py": "45cda49531a1947b51caf838b2de37ca4214f13dd4c6acca5e68fb54856ca18e",
+        "src/click/parser.py": "68cbf1e5550482b8164b38d4b25d68c1824a120e6ddeb775f6200f8a06d71c88",
+        "src/click/shell_completion.py": "e3648c95c03b4f8fea6616ba2cda74133ae8b4e5d07070e0e633fe2b8a47f35b",
+        "src/click/termui.py": "9d33f1b46b5c9ad793b285f4378d3815735cecac9da61c7c9ef83e95c41eb619",
+        "src/click/testing.py": "b66350dbfa832e3ae294aead0c9e026565c0254f51ea08c955b66583b5ae62a9",
+        "src/click/types.py": "bca58cb3a10b5a3bd2a2e0c3de39907e34bcbd316737331d11e2713824e97afa",
+        "src/click/utils.py": "4a53f7270e0465d2d94119f153f245ae322338c2e5d53211f3411d705eabca38"
+      },
+      "verification": {
+        "output": "test_dynamic_get_params_option (__main__.ContextPrefixes) ... ok\ntest_help_option_from_context_arguments (__main__.ContextPrefixes) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.002s\n\nOK\n",
+        "returncode": 0,
+        "exception_info": ""
+      }
+    }
+  ]
+}

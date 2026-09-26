@@ -168,6 +168,7 @@ class DmxModel:
             raise RuntimeError('Provider request failed; inspect request metadata, no automatic retry') from None
         record['elapsed_seconds'] = round(time.monotonic() - started, 3)
         usage = data.get('usage', {})
+        record['response_model'] = data.get('model')
         if any(type(usage.get(k)) is not int for k in ('prompt_tokens', 'completion_tokens')):
             record['status'] = 'missing_usage'
             self.save_calls()

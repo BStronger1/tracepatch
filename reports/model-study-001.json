@@ -1,0 +1,645 @@
+{
+  "scope": "Two known development tasks; one fresh run per model per task. Model configuration comparison, not general model ranking or harness improvement evidence.",
+  "plan": "model-plan-001.json",
+  "pairs": [
+    {
+      "task": "click-2040",
+      "comparison": {
+        "scope": "Single run per development task per arm; not a benchmark or causal estimate.",
+        "controls_match": true,
+        "intervention_fields": [
+          "model"
+        ],
+        "arms": [
+          {
+            "batch": "repo-model-completion-flash-001",
+            "policy": "recovery-submit",
+            "model": "qwen3.8-flash",
+            "model_profile": "qwen3.8-flash",
+            "progress_mode": "observe",
+            "memory_mode": "recall",
+            "memory_profile": "structured",
+            "check_mode": "feedback",
+            "test_tool": "python",
+            "stage_mode": "observe",
+            "max_output_tokens": 1024,
+            "context_policy": "recent-turns",
+            "verified": 1,
+            "submitted": 1,
+            "calls": 23,
+            "rejected_actions": 0,
+            "estimated_known_no_cache_cny": 0.10679630000000001,
+            "unknown_cost_requests": 0,
+            "tasks": [
+              {
+                "task": "click-2040",
+                "verified_success": true,
+                "agent_exit": "Submitted",
+                "api_calls": 23,
+                "format_error_count": 0
+              }
+            ]
+          },
+          {
+            "batch": "repo-model-completion-coder-001",
+            "policy": "recovery-submit",
+            "model": "qwen3-coder-plus",
+            "model_profile": "qwen3-coder-plus",
+            "progress_mode": "observe",
+            "memory_mode": "recall",
+            "memory_profile": "structured",
+            "check_mode": "feedback",
+            "test_tool": "python",
+            "stage_mode": "observe",
+            "max_output_tokens": 1024,
+            "context_policy": "recent-turns",
+            "verified": 0,
+            "submitted": 0,
+            "calls": 24,
+            "rejected_actions": 0,
+            "estimated_known_no_cache_cny": 0.5017425,
+            "unknown_cost_requests": 0,
+            "tasks": [
+              {
+                "task": "click-2040",
+                "verified_success": false,
+                "agent_exit": "LimitsExceeded",
+                "api_calls": 24,
+                "format_error_count": 0
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "task": "requests-2527-v2",
+      "comparison": {
+        "scope": "Single run per development task per arm; not a benchmark or causal estimate.",
+        "controls_match": true,
+        "intervention_fields": [
+          "model"
+        ],
+        "arms": [
+          {
+            "batch": "repo-model-cookie-coder-001",
+            "policy": "recovery-submit",
+            "model": "qwen3-coder-plus",
+            "model_profile": "qwen3-coder-plus",
+            "progress_mode": "observe",
+            "memory_mode": "recall",
+            "memory_profile": "structured",
+            "check_mode": "feedback",
+            "test_tool": "python",
+            "stage_mode": "observe",
+            "max_output_tokens": 1024,
+            "context_policy": "recent-turns",
+            "verified": 0,
+            "submitted": 0,
+            "calls": 24,
+            "rejected_actions": 0,
+            "estimated_known_no_cache_cny": 0.530195,
+            "unknown_cost_requests": 0,
+            "tasks": [
+              {
+                "task": "requests-2527-v2",
+                "verified_success": false,
+                "agent_exit": "LimitsExceeded",
+                "api_calls": 24,
+                "format_error_count": 0
+              }
+            ]
+          },
+          {
+            "batch": "repo-model-cookie-flash-001",
+            "policy": "recovery-submit",
+            "model": "qwen3.8-flash",
+            "model_profile": "qwen3.8-flash",
+            "progress_mode": "observe",
+            "memory_mode": "recall",
+            "memory_profile": "structured",
+            "check_mode": "feedback",
+            "test_tool": "python",
+            "stage_mode": "observe",
+            "max_output_tokens": 1024,
+            "context_policy": "recent-turns",
+            "verified": 1,
+            "submitted": 0,
+            "calls": 24,
+            "rejected_actions": 2,
+            "estimated_known_no_cache_cny": 0.10733390000000001,
+            "unknown_cost_requests": 0,
+            "tasks": [
+              {
+                "task": "requests-2527-v2",
+                "verified_success": true,
+                "agent_exit": "LimitsExceeded",
+                "api_calls": 24,
+                "format_error_count": 2
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "arms": [
+    {
+      "batch": "repo-model-completion-flash-001",
+      "task": "click-2040",
+      "requested_model": "qwen3.8-flash",
+      "response_models": [
+        "qwen3.8-flash"
+      ],
+      "result": {
+        "task": "click-2040",
+        "status": "verified",
+        "verified_success": true,
+        "agent_exit": "Submitted",
+        "verification": {
+          "output": "test_absolute_path_completion_metadata (__main__.CompletionContract) ... ok\ntest_boolean_flag_does_not_request_a_value (__main__.CompletionContract) ... ok\ntest_count_option_does_not_request_a_value (__main__.CompletionContract) ... ok\ntest_custom_completion_and_regular_option_names (__main__.CompletionContract) ... ok\ntest_double_dash_preserves_positional_values (__main__.CompletionContract) ... ok\ntest_equals_syntax_preserves_symbol_value (__main__.CompletionContract) ... ok\ntest_multivalue_symbol_argument_scanning (__main__.CompletionContract) ... ok\ntest_nested_context_prefixes_do_not_leak_from_siblings (__main__.CompletionContract) ... ok\ntest_registered_plus_prefix_keeps_option_precedence (__main__.CompletionContract) ... ok\ntest_registered_slash_prefix_keeps_option_precedence (__main__.CompletionContract) ... ok\ntest_repeat_option_still_accepts_values (__main__.CompletionContract) ... ok\ntest_symbol_value_reproduction (__main__.CompletionContract) ... ok\n\n----------------------------------------------------------------------\nRan 12 tests in 0.024s\n\nOK\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "completion": {
+          "state": "verified_submitted",
+          "patch_verified": true,
+          "agent_submitted": true,
+          "agent_exit": "Submitted",
+          "verification_returncode": 0
+        },
+        "api_calls": 23,
+        "format_error_count": 0,
+        "estimated_known_no_cache_cny": 0.10679630000000001,
+        "unknown_cost_requests": 0,
+        "elapsed_seconds": 113.094,
+        "budget": {
+          "limit_cny": "100",
+          "reserved_cny": "86.1",
+          "remaining_reservation_cny": "13.9",
+          "note": "Conservative planning reservations, not actual provider charges"
+        }
+      },
+      "tool_calls": {
+        "bash": 23
+      },
+      "python_checks": [],
+      "rejections": [],
+      "progress": {
+        "actions": 23,
+        "changed_actions": 3,
+        "unknown_actions": 0,
+        "review_signals": 2,
+        "max_unchanged_streak": 16
+      },
+      "first_changed_action": 17,
+      "history_pruned_requests": 18,
+      "prompt_tokens": 120586,
+      "completion_tokens": 3825,
+      "all_stage_decisions_replayed": true,
+      "triage": {
+        "run": "repo-model-completion-flash-001--click-2040",
+        "task": "click-2040",
+        "observations": {
+          "category": "verified_submitted",
+          "acceptance_passed": true,
+          "agent_submitted": true,
+          "observed_changed_actions": 3,
+          "unknown_observation_actions": 0,
+          "final_net_source_change": true,
+          "final_source_sha256": "553114c67fd4b31b703d648496ade8f430d8ed7b9985cdfac18e0d0f24befbca",
+          "current_public_status": "passed",
+          "current_python_status": null,
+          "python_check_count": 0,
+          "source_changing_python_checks": 0,
+          "public_pass_but_acceptance_failed": false,
+          "python_pass_but_acceptance_failed": false
+        },
+        "source_file_hashes": {
+          "result.json": "a66151e860c497a1105bd156f4edace464851ea6ee756f180880109886591414",
+          "progress.json": "91dab66bb7249d6d655f5d719308ebc825a1b425a8d98e532f1ebb6d06395d68",
+          "public-checks/checks.json": "980a76bdcc8906e86b36b5ac9f59ac4a568dc5631ed8747a8cc6d165da4acec3"
+        }
+      },
+      "hashes": {
+        "requests.json": "ba4a61499b2d858084a2125e6e72dd549e196ab98e8fbf310f343024fc8a9fa7",
+        "trajectory.json": "e6317e207ce770c5e7de840749e96917d665f919e4f31e4682d6b40cea58827d",
+        "patch.diff": "8abdc4ac7e23b89b0c77c93dc50621085a5333075065de37af228125fe46f9b8"
+      }
+    },
+    {
+      "batch": "repo-model-completion-coder-001",
+      "task": "click-2040",
+      "requested_model": "qwen3-coder-plus",
+      "response_models": [
+        "qwen3-coder-plus"
+      ],
+      "result": {
+        "task": "click-2040",
+        "status": "verified",
+        "verified_success": false,
+        "agent_exit": "LimitsExceeded",
+        "verification": {
+          "output": "test_absolute_path_completion_metadata (__main__.CompletionContract) ... ok\ntest_boolean_flag_does_not_request_a_value (__main__.CompletionContract) ... ok\ntest_count_option_does_not_request_a_value (__main__.CompletionContract) ... FAIL\ntest_custom_completion_and_regular_option_names (__main__.CompletionContract) ... FAIL\ntest_double_dash_preserves_positional_values (__main__.CompletionContract) ... ok\ntest_equals_syntax_preserves_symbol_value (__main__.CompletionContract) ... FAIL\ntest_multivalue_symbol_argument_scanning (__main__.CompletionContract) ... FAIL\ntest_nested_context_prefixes_do_not_leak_from_siblings (__main__.CompletionContract) ... FAIL\ntest_registered_plus_prefix_keeps_option_precedence (__main__.CompletionContract) ... ok\ntest_registered_slash_prefix_keeps_option_precedence (__main__.CompletionContract) ... FAIL\ntest_repeat_option_still_accepts_values (__main__.CompletionContract) ... FAIL\ntest_symbol_value_reproduction (__main__.CompletionContract) ... \n======================================================================\nFAIL: test_count_option_does_not_request_a_value (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 36, in test_count_option_does_not_request_a_value\n    self.assertEqual(words(command, ['-v'], ''), ['north', 'south'])\nAssertionError: Lists differ: ['WRONG-count-value'] != ['north', 'south']\n\nFirst differing element 0:\n'WRONG-count-value'\n'north'\n\nSecond list contains 1 additional elements.\nFirst extra element 1:\n'south'\n\n- ['WRONG-count-value']\n+ ['north', 'south']\n\n======================================================================\nFAIL: test_custom_completion_and_regular_option_names (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 79, in test_custom_completion_and_regular_option_names\n    self.assertEqual([(x.value, x.help) for x in result], [('!done', 'custom help')])\nAssertionError: Lists differ: [] != [('!done', 'custom help')]\n\nSecond list contains 1 additional elements.\nFirst extra element 0:\n('!done', 'custom help')\n\n- []\n+ [('!done', 'custom help')]\n\n======================================================================\nFAIL: test_equals_syntax_preserves_symbol_value (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 56, in test_equals_syntax_preserves_symbol_value\n    self.assertEqual(words(command, [], '--color=!r'), ['!red', '!rose'])\nAssertionError: Lists differ: [] != ['!red', '!rose']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'!red'\n\n- []\n+ ['!red', '!rose']\n\n======================================================================\nFAIL: test_multivalue_symbol_argument_scanning (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 46, in test_multivalue_symbol_argument_scanning\n    self.assertEqual(words(command, ['-c', '!one'], '!'), ['!one', '!two'])\nAssertionError: Lists differ: [] != ['!one', '!two']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'!one'\n\n- []\n+ ['!one', '!two']\n\n======================================================================\nFAIL: test_nested_context_prefixes_do_not_leak_from_siblings (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 71, in test_nested_context_prefixes_do_not_leak_from_siblings\n    self.assertEqual(words(command, ['plain', '-c'], '+'), ['+red', '+rose'])\nAssertionError: Lists differ: [] != ['+red', '+rose']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'+red'\n\n- []\n+ ['+red', '+rose']\n\n======================================================================\nFAIL: test_registered_slash_prefix_keeps_option_precedence (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 30, in test_registered_slash_prefix_keeps_option_precedence\n    self.assertEqual(words(command, ['-c'], '/'), ['/extra'])\nAssertionError: Lists differ: ['/red'] != ['/extra']\n\nFirst differing element 0:\n'/red'\n'/extra'\n\n- ['/red']\n+ ['/extra']\n\n======================================================================\nFAIL: test_repeat_option_still_accepts_values (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 51, in test_repeat_option_still_accepts_values\n    self.assertEqual(words(command, ['-c', '+one', '-c'], '+'), ['+one', '+two'])\nAssertionError: Lists differ: [] != ['+one', '+two']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'+one'\n\n- []\n+ ['+one', '+two']\n\n======================================================================\nFAIL: test_symbol_value_reproduction (__main__.CompletionContract) (prefix='+')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 21, in test_symbol_value_reproduction\n    self.assertEqual(words(command, ['-c'], prefix), choices[:2])\nAssertionError: Lists differ: [] != ['+red', '+blue']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'+red'\n\n- []\n+ ['+red', '+blue']\n\n======================================================================\nFAIL: test_symbol_value_reproduction (__main__.CompletionContract) (prefix='!')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 21, in test_symbol_value_reproduction\n    self.assertEqual(words(command, ['-c'], prefix), choices[:2])\nAssertionError: Lists differ: [] != ['!red', '!blue']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'!red'\n\n- []\n+ ['!red', '!blue']\n\n======================================================================\nFAIL: test_symbol_value_reproduction (__main__.CompletionContract) (prefix='~')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 21, in test_symbol_value_reproduction\n    self.assertEqual(words(command, ['-c'], prefix), choices[:2])\nAssertionError: Lists differ: [] != ['~red', '~blue']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'~red'\n\n- []\n+ ['~red', '~blue']\n\n======================================================================\nFAIL: test_symbol_value_reproduction (__main__.CompletionContract) (prefix='@')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 21, in test_symbol_value_reproduction\n    self.assertEqual(words(command, ['-c'], prefix), choices[:2])\nAssertionError: Lists differ: [] != ['@red', '@blue']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'@red'\n\n- []\n+ ['@red', '@blue']\n\n----------------------------------------------------------------------\nRan 12 tests in 0.023s\n\nFAILED (failures=11)\n",
+          "returncode": 1,
+          "exception_info": ""
+        },
+        "completion": {
+          "state": "failed_unsubmitted",
+          "patch_verified": false,
+          "agent_submitted": false,
+          "agent_exit": "LimitsExceeded",
+          "verification_returncode": 1
+        },
+        "api_calls": 24,
+        "format_error_count": 0,
+        "estimated_known_no_cache_cny": 0.5017425,
+        "unknown_cost_requests": 0,
+        "elapsed_seconds": 64.234,
+        "budget": {
+          "limit_cny": "100",
+          "reserved_cny": "88.5",
+          "remaining_reservation_cny": "11.5",
+          "note": "Conservative planning reservations, not actual provider charges"
+        }
+      },
+      "tool_calls": {
+        "bash": 22,
+        "python_check": 2
+      },
+      "python_checks": [
+        {
+          "action": 4,
+          "schema": "tracepatch-python-check-0.1",
+          "provenance": "agent-authored-python",
+          "check_sha256": "3bc99a609844db12b511e7199ce8d21100c9c95f74327a6b3a827c58a35f5c26",
+          "source_before_sha256": "6499cdd78de4a4bdea3bfc6468def2d4bc63f5112b609281271942576fab0a44",
+          "acceptance_verified": null,
+          "error_type": null,
+          "status": "process_failed",
+          "returncode": 1,
+          "timed_out": false,
+          "source_after_sha256": "6499cdd78de4a4bdea3bfc6468def2d4bc63f5112b609281271942576fab0a44",
+          "source_state": "unchanged",
+          "output_sha256": "abede9d59093b80be2c84ba003fdc588d6c8e7d85a76a8172f33c961a63dfbbc"
+        },
+        {
+          "action": 16,
+          "schema": "tracepatch-python-check-0.1",
+          "provenance": "agent-authored-python",
+          "check_sha256": "d9218353a9070589a9911ed56804844d3f8c552700480ffa6b3f234ade1ef168",
+          "source_before_sha256": "6499cdd78de4a4bdea3bfc6468def2d4bc63f5112b609281271942576fab0a44",
+          "acceptance_verified": null,
+          "error_type": null,
+          "status": "process_failed",
+          "returncode": 1,
+          "timed_out": false,
+          "source_after_sha256": "6499cdd78de4a4bdea3bfc6468def2d4bc63f5112b609281271942576fab0a44",
+          "source_state": "unchanged",
+          "output_sha256": "abede9d59093b80be2c84ba003fdc588d6c8e7d85a76a8172f33c961a63dfbbc"
+        }
+      ],
+      "rejections": [],
+      "progress": {
+        "actions": 24,
+        "changed_actions": 0,
+        "unknown_actions": 0,
+        "review_signals": 4,
+        "max_unchanged_streak": 24
+      },
+      "first_changed_action": null,
+      "history_pruned_requests": 15,
+      "prompt_tokens": 101178,
+      "completion_tokens": 1113,
+      "all_stage_decisions_replayed": true,
+      "triage": {
+        "run": "repo-model-completion-coder-001--click-2040",
+        "task": "click-2040",
+        "observations": {
+          "category": "acceptance_failed_without_observed_edits",
+          "acceptance_passed": false,
+          "agent_submitted": false,
+          "observed_changed_actions": 0,
+          "unknown_observation_actions": 0,
+          "final_net_source_change": false,
+          "final_source_sha256": "6499cdd78de4a4bdea3bfc6468def2d4bc63f5112b609281271942576fab0a44",
+          "current_public_status": "failed",
+          "current_python_status": "process_failed",
+          "python_check_count": 2,
+          "source_changing_python_checks": 0,
+          "public_pass_but_acceptance_failed": false,
+          "python_pass_but_acceptance_failed": false
+        },
+        "source_file_hashes": {
+          "result.json": "95bb83037318eca20b80691102a4e5e39689e8552e3dfd5cdf699a4bd3d6b07c",
+          "progress.json": "7bbf0fe6b2f8b57df4e6602f0992880847b45ef1fd136d27518c07265622ba54",
+          "public-checks/checks.json": "4acc33be5dccc7299bf77416523c1dff8bd2158ed724f41a14d294bafce9aac3",
+          "python-checks/001.json": "9dfbc13572813c742b2fdf209257095004ed941dc3a69240136f3beaad1646ae",
+          "python-checks/002.json": "071817edeaf3714abb727a8df87bdb0747bf0e9b0915c8c5712d16d570363016"
+        }
+      },
+      "hashes": {
+        "requests.json": "aca6a63d791b6c7deef4adfa8bd0ea04bc46be722e21224623fd9f9badeca7f7",
+        "trajectory.json": "717cf1979ae7ab04efe26b3e598655732fd1120d5982622cf25688a5ce7f0b8a",
+        "patch.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "batch": "repo-model-cookie-coder-001",
+      "task": "requests-2527-v2",
+      "requested_model": "qwen3-coder-plus",
+      "response_models": [
+        "qwen3-coder-plus"
+      ],
+      "result": {
+        "task": "requests-2527-v2",
+        "status": "verified",
+        "verified_success": false,
+        "agent_exit": "LimitsExceeded",
+        "verification": {
+          "output": "test_cookie_metadata_survives_prepared_copy (__main__.CookieContract) ... /workspace/requests/models.py:169: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\n  if isinstance(hook, collections.Callable):\nFAIL\ntest_empty_and_absent_cookiejar (__main__.CookieContract) ... FAIL\ntest_requests_cookie_objects_are_independent (__main__.CookieContract) ... FAIL\ntest_scope_and_request_fields_preserved (__main__.CookieContract) ... ok\ntest_standard_cookie_objects_are_independent (__main__.CookieContract) ... FAIL\ntest_standard_cookiejar_issue_reproduction (__main__.CookieContract) ... FAIL\ntest_standard_jar_policy_preserved (__main__.CookieContract) ... ok\ntest_subclass_required_constructor_and_state (__main__.CookieContract) ... FAIL\ntest_update_does_not_share_cookie_objects (__main__.CookieContract) ... FAIL\ntest_update_preserves_rfc2109 (__main__.CookieContract) ... ok\n\n======================================================================\nFAIL: test_cookie_metadata_survives_prepared_copy (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 114, in test_cookie_metadata_survives_prepared_copy\n    self.assertIsNot(copied, cookie)\nAssertionError: unexpectedly identical: Cookie(version=1, name='token', value='one', port=None, port_specified=False, domain='.example.invalid', domain_specified=True, domain_initial_dot=True, path='/sub', path_specified=True, secure=True, expires=2000000000, discard=False, comment='retain-comment', comment_url='https://example.invalid/policy', rest={'HttpOnly': None, 'Extra': 'retain-extra'}, rfc2109=True)\n\n======================================================================\nFAIL: test_empty_and_absent_cookiejar (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 64, in test_empty_and_absent_cookiejar\n    self.assertIsNot(copied._cookies, jar)\nAssertionError: unexpectedly identical: <CookieJar[]>\n\n======================================================================\nFAIL: test_requests_cookie_objects_are_independent (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 37, in test_requests_cookie_objects_are_independent\n    self.assertEqual([c.value for c in original._cookies], ['one', 'two'])\nAssertionError: Lists differ: ['changed', 'two'] != ['one', 'two']\n\nFirst differing element 0:\n'changed'\n'one'\n\n- ['changed', 'two']\n?   ^^^ - -\n\n+ ['one', 'two']\n?   ^\n\n\n======================================================================\nFAIL: test_standard_cookie_objects_are_independent (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 29, in test_standard_cookie_objects_are_independent\n    self.assertEqual([c.value for c in original._cookies], ['one', 'two'])\nAssertionError: Lists differ: ['changed', 'two'] != ['one', 'two']\n\nFirst differing element 0:\n'changed'\n'one'\n\n- ['changed', 'two']\n?   ^^^ - -\n\n+ ['one', 'two']\n?   ^\n\n\n======================================================================\nFAIL: test_standard_cookiejar_issue_reproduction (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 22, in test_standard_cookiejar_issue_reproduction\n    self.assertIsNot(copied._cookies, original._cookies)\nAssertionError: unexpectedly identical: <CookieJar[Cookie(version=0, name='token', value='one', port=None, port_specified=False, domain='example.invalid', domain_specified=True, domain_initial_dot=False, path='/', path_specified=True, secure=False, expires=None, discard=True, comment=None, comment_url=None, rest={'HttpOnly': None}, rfc2109=False), Cookie(version=0, name='token', value='two', port=None, port_specified=False, domain='example.invalid', domain_specified=True, domain_initial_dot=False, path='/sub', path_specified=True, secure=False, expires=None, discard=True, comment=None, comment_url=None, rest={'HttpOnly': None}, rfc2109=False)]>\n\n======================================================================\nFAIL: test_subclass_required_constructor_and_state (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 97, in test_subclass_required_constructor_and_state\n    self.assertIsNot(list(copied._cookies)[0], list(original._cookies)[0])\nAssertionError: unexpectedly identical: Cookie(version=0, name='token', value='one', port=None, port_specified=False, domain='', domain_specified=False, domain_initial_dot=False, path='/', path_specified=True, secure=False, expires=None, discard=True, comment=None, comment_url=None, rest={'HttpOnly': None}, rfc2109=False)\n\n======================================================================\nFAIL: test_update_does_not_share_cookie_objects (__main__.CookieContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 44, in test_update_does_not_share_cookie_objects\n    self.assertEqual([c.value for c in source], ['one', 'two'])\nAssertionError: Lists differ: ['changed', 'two'] != ['one', 'two']\n\nFirst differing element 0:\n'changed'\n'one'\n\n- ['changed', 'two']\n?   ^^^ - -\n\n+ ['one', 'two']\n?   ^\n\n\n----------------------------------------------------------------------\nRan 10 tests in 0.015s\n\nFAILED (failures=7)\n",
+          "returncode": 1,
+          "exception_info": ""
+        },
+        "completion": {
+          "state": "failed_unsubmitted",
+          "patch_verified": false,
+          "agent_submitted": false,
+          "agent_exit": "LimitsExceeded",
+          "verification_returncode": 1
+        },
+        "api_calls": 24,
+        "format_error_count": 0,
+        "estimated_known_no_cache_cny": 0.530195,
+        "unknown_cost_requests": 0,
+        "elapsed_seconds": 65.719,
+        "budget": {
+          "limit_cny": "100",
+          "reserved_cny": "90.9",
+          "remaining_reservation_cny": "9.1",
+          "note": "Conservative planning reservations, not actual provider charges"
+        }
+      },
+      "tool_calls": {
+        "bash": 21,
+        "python_check": 3
+      },
+      "python_checks": [
+        {
+          "action": 4,
+          "schema": "tracepatch-python-check-0.1",
+          "provenance": "agent-authored-python",
+          "check_sha256": "e086c8dcf6abb785208385e32193a71d315a9c5526a115437674db90961f271a",
+          "source_before_sha256": "2e1a8f5c4ffdded090c45bfa902a6304b89cc20f199b346f2cdf6d49e8a3690e",
+          "acceptance_verified": null,
+          "error_type": null,
+          "status": "process_failed",
+          "returncode": 1,
+          "timed_out": false,
+          "source_after_sha256": "2e1a8f5c4ffdded090c45bfa902a6304b89cc20f199b346f2cdf6d49e8a3690e",
+          "source_state": "unchanged",
+          "output_sha256": "7ab5a99c0e441c914b60d6c87136ba6a70dd0733564e850a27a96f8a2da78e94"
+        },
+        {
+          "action": 15,
+          "schema": "tracepatch-python-check-0.1",
+          "provenance": "agent-authored-python",
+          "check_sha256": "ef5a20f2f6cf7debc5e52b5c010f962862f643d7444e49feb4bab99b8a733c09",
+          "source_before_sha256": "2e1a8f5c4ffdded090c45bfa902a6304b89cc20f199b346f2cdf6d49e8a3690e",
+          "acceptance_verified": null,
+          "error_type": null,
+          "status": "process_passed",
+          "returncode": 0,
+          "timed_out": false,
+          "source_after_sha256": "2e1a8f5c4ffdded090c45bfa902a6304b89cc20f199b346f2cdf6d49e8a3690e",
+          "source_state": "unchanged",
+          "output_sha256": "933ecbf5bb281d102f01d490db174a949dd05e41dfc1266b33fc10ddaffc4cd1"
+        },
+        {
+          "action": 22,
+          "schema": "tracepatch-python-check-0.1",
+          "provenance": "agent-authored-python",
+          "check_sha256": "de98e3d94266a85bb81d4d4b495aaea4e908986d508b138309b660950d95c87b",
+          "source_before_sha256": "78a29fc0bf656df4c3cbcb763fe3f4fd401e53fbc844ae07e99543cd308d0046",
+          "acceptance_verified": null,
+          "error_type": null,
+          "status": "process_failed",
+          "returncode": 1,
+          "timed_out": false,
+          "source_after_sha256": "78a29fc0bf656df4c3cbcb763fe3f4fd401e53fbc844ae07e99543cd308d0046",
+          "source_state": "unchanged",
+          "output_sha256": "2ba2657a016304c741205ff2ae3bf5570a138f61f10732c1ae86e59d0e2ea1f3"
+        }
+      ],
+      "rejections": [],
+      "progress": {
+        "actions": 24,
+        "changed_actions": 1,
+        "unknown_actions": 0,
+        "review_signals": 3,
+        "max_unchanged_streak": 20
+      },
+      "first_changed_action": 21,
+      "history_pruned_requests": 17,
+      "prompt_tokens": 107360,
+      "completion_tokens": 1065,
+      "all_stage_decisions_replayed": true,
+      "triage": {
+        "run": "repo-model-cookie-coder-001--requests-2527-v2",
+        "task": "requests-2527-v2",
+        "observations": {
+          "category": "acceptance_failed_after_observed_edits",
+          "acceptance_passed": false,
+          "agent_submitted": false,
+          "observed_changed_actions": 1,
+          "unknown_observation_actions": 0,
+          "final_net_source_change": true,
+          "final_source_sha256": "78a29fc0bf656df4c3cbcb763fe3f4fd401e53fbc844ae07e99543cd308d0046",
+          "current_public_status": "failed",
+          "current_python_status": "process_failed",
+          "python_check_count": 3,
+          "source_changing_python_checks": 0,
+          "public_pass_but_acceptance_failed": false,
+          "python_pass_but_acceptance_failed": false
+        },
+        "source_file_hashes": {
+          "result.json": "fc3bbe50615180fdbaaaf24838a3d86248dc3d275bf91843a4dd1df2701a2bab",
+          "progress.json": "d56429e2bee293808cea6f7976febb2ead9a9b34112b7c1497e638376b2d72d1",
+          "public-checks/checks.json": "f158993d5e925dad93f288cde9d0644215109e13e0d8332ce27bfd35891b41d1",
+          "python-checks/001.json": "f0fdb7adbae4260dbc30b47da40bbded719a5d08e526d2b57b117fff1bc5810f",
+          "python-checks/002.json": "92665a962d857250de8f5c8dc38f017506408b2aa237bc932e27c245be24ede3",
+          "python-checks/003.json": "6e3bc0b2bb7025044177e68d2fde94c6cd4f38c1877c7a6c2955cc8fd5dac65b"
+        }
+      },
+      "hashes": {
+        "requests.json": "8f0a418507a449d6389400f609ae21b7d0409b145e710b2f2fe12a8e13128884",
+        "trajectory.json": "dcf233425c9e7497d3a477eb2d874a7133040cd3ce83b99f992e6f7d1f427309",
+        "patch.diff": "d2b33829730cb0abd7450b5234b88b137e6fac3d369d4d7d29b7d9e51f80279f"
+      }
+    },
+    {
+      "batch": "repo-model-cookie-flash-001",
+      "task": "requests-2527-v2",
+      "requested_model": "qwen3.8-flash",
+      "response_models": [
+        "qwen3.8-flash"
+      ],
+      "result": {
+        "task": "requests-2527-v2",
+        "status": "verified",
+        "verified_success": true,
+        "agent_exit": "LimitsExceeded",
+        "verification": {
+          "output": "test_cookie_metadata_survives_prepared_copy (__main__.CookieContract) ... /workspace/requests/models.py:169: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working\n  if isinstance(hook, collections.Callable):\nok\ntest_empty_and_absent_cookiejar (__main__.CookieContract) ... ok\ntest_requests_cookie_objects_are_independent (__main__.CookieContract) ... ok\ntest_scope_and_request_fields_preserved (__main__.CookieContract) ... ok\ntest_standard_cookie_objects_are_independent (__main__.CookieContract) ... ok\ntest_standard_cookiejar_issue_reproduction (__main__.CookieContract) ... ok\ntest_standard_jar_policy_preserved (__main__.CookieContract) ... ok\ntest_subclass_required_constructor_and_state (__main__.CookieContract) ... ok\ntest_update_does_not_share_cookie_objects (__main__.CookieContract) ... ok\ntest_update_preserves_rfc2109 (__main__.CookieContract) ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 0.023s\n\nOK\n",
+          "returncode": 0,
+          "exception_info": ""
+        },
+        "completion": {
+          "state": "verified_unsubmitted",
+          "patch_verified": true,
+          "agent_submitted": false,
+          "agent_exit": "LimitsExceeded",
+          "verification_returncode": 0
+        },
+        "api_calls": 24,
+        "format_error_count": 2,
+        "estimated_known_no_cache_cny": 0.10733390000000001,
+        "unknown_cost_requests": 0,
+        "elapsed_seconds": 145.281,
+        "budget": {
+          "limit_cny": "100",
+          "reserved_cny": "93.3",
+          "remaining_reservation_cny": "6.7",
+          "note": "Conservative planning reservations, not actual provider charges"
+        }
+      },
+      "tool_calls": {
+        "bash": 18,
+        "python_check": 4
+      },
+      "python_checks": [
+        {
+          "action": 14,
+          "schema": "tracepatch-python-check-0.1",
+          "provenance": "agent-authored-python",
+          "check_sha256": "610aca58b85ffd1147a96775b124b4a9ee4ef4be4779a10119475c367e50a723",
+          "source_before_sha256": "41d12333c4ec151d589dcff6533fbc4fbdf42ddfc25bf425f8629ef33ca63db7",
+          "acceptance_verified": null,
+          "error_type": null,
+          "status": "process_failed",
+          "returncode": 1,
+          "timed_out": false,
+          "source_after_sha256": "41d12333c4ec151d589dcff6533fbc4fbdf42ddfc25bf425f8629ef33ca63db7",
+          "source_state": "unchanged",
+          "output_sha256": "c3fafde7e31e06b99f302e3c53d64cbde6a0c3afff036c357bd7489522a8c153"
+        },
+        {
+          "action": 15,
+          "schema": "tracepatch-python-check-0.1",
+          "provenance": "agent-authored-python",
+          "check_sha256": "7a4000b3c64f9ec6ddfc38b791834b3229070d06097bb0cbe7fce770a029e0a2",
+          "source_before_sha256": "41d12333c4ec151d589dcff6533fbc4fbdf42ddfc25bf425f8629ef33ca63db7",
+          "acceptance_verified": null,
+          "error_type": null,
+          "status": "process_passed",
+          "returncode": 0,
+          "timed_out": false,
+          "source_after_sha256": "41d12333c4ec151d589dcff6533fbc4fbdf42ddfc25bf425f8629ef33ca63db7",
+          "source_state": "unchanged",
+          "output_sha256": "627c8e40ec14fd48f758e5dcabbe9bbfc0bf91cafa465f93b6051f58a60c6ae6"
+        },
+        {
+          "action": 16,
+          "schema": "tracepatch-python-check-0.1",
+          "provenance": "agent-authored-python",
+          "check_sha256": "951047d3331e1e09088796f3eb32a98c430421e51b8034dbbbefaedff3f6f9c4",
+          "source_before_sha256": "41d12333c4ec151d589dcff6533fbc4fbdf42ddfc25bf425f8629ef33ca63db7",
+          "acceptance_verified": null,
+          "error_type": null,
+          "status": "process_passed",
+          "returncode": 0,
+          "timed_out": false,
+          "source_after_sha256": "41d12333c4ec151d589dcff6533fbc4fbdf42ddfc25bf425f8629ef33ca63db7",
+          "source_state": "unchanged",
+          "output_sha256": "8b7130773111054518505bab698444c02ce3239ceee2a8714ed8afab22984ece"
+        },
+        {
+          "action": 17,
+          "schema": "tracepatch-python-check-0.1",
+          "provenance": "agent-authored-python",
+          "check_sha256": "6f52e4f0d2f40c2f419caef08f258a0141e864d4872275d4e64d524eed934271",
+          "source_before_sha256": "41d12333c4ec151d589dcff6533fbc4fbdf42ddfc25bf425f8629ef33ca63db7",
+          "acceptance_verified": null,
+          "error_type": null,
+          "status": "process_passed",
+          "returncode": 0,
+          "timed_out": false,
+          "source_after_sha256": "41d12333c4ec151d589dcff6533fbc4fbdf42ddfc25bf425f8629ef33ca63db7",
+          "source_state": "unchanged",
+          "output_sha256": "e31af0a465786ec68ea1a3373bf084e61d80376f67598bc45a700a864c31845a"
+        }
+      ],
+      "rejections": [
+        {
+          "call": 1,
+          "reason": "expected_one_tool_call",
+          "finish_reason": "tool_calls"
+        },
+        {
+          "call": 15,
+          "reason": "invalid_arguments_json",
+          "finish_reason": "tool_calls"
+        }
+      ],
+      "progress": {
+        "actions": 22,
+        "changed_actions": 2,
+        "unknown_actions": 0,
+        "review_signals": 2,
+        "max_unchanged_streak": 10
+      },
+      "first_changed_action": 10,
+      "history_pruned_requests": 15,
+      "prompt_tokens": 113995,
+      "completion_tokens": 5977,
+      "all_stage_decisions_replayed": true,
+      "triage": {
+        "run": "repo-model-cookie-flash-001--requests-2527-v2",
+        "task": "requests-2527-v2",
+        "observations": {
+          "category": "verified_without_submission",
+          "acceptance_passed": true,
+          "agent_submitted": false,
+          "observed_changed_actions": 2,
+          "unknown_observation_actions": 0,
+          "final_net_source_change": true,
+          "final_source_sha256": "41d12333c4ec151d589dcff6533fbc4fbdf42ddfc25bf425f8629ef33ca63db7",
+          "current_public_status": "passed",
+          "current_python_status": "process_passed",
+          "python_check_count": 4,
+          "source_changing_python_checks": 0,
+          "public_pass_but_acceptance_failed": false,
+          "python_pass_but_acceptance_failed": false
+        },
+        "source_file_hashes": {
+          "result.json": "f71e5fcc3bb43104f15b48d78a18fe547dd09cacedb08f6a4b009366687a808a",
+          "progress.json": "aa959e281c4e7b8686048e17a1b896cf81b3f3ec92560b00c2787ddb44f96caf",
+          "public-checks/checks.json": "9d9adcf0416333be7debd0d3f5ca8802ba8f02823e35f3e43c65b5585518bd4f",
+          "python-checks/001.json": "0088fbaa3f4779c85a3d86df55ccce4e5e01aa219607ad8d1c94ba0b4e3520ab",
+          "python-checks/002.json": "2789ef132e1d2adfed5835471b4c50fbf43167404f3adf9db8f822e93e44f167",
+          "python-checks/003.json": "a73c678780aaa90e6548c3ea75d251a0310168345c77f533c69646dd18a2aeec",
+          "python-checks/004.json": "017af92e79f2530d0fd4650fd01c5f72665c5c9862aab6ecbdefa4f01695a745"
+        }
+      },
+      "hashes": {
+        "requests.json": "fd63949a938bec0a054ecbdd5ff0da33f974a913fb354644fc2cddf66005c7b3",
+        "trajectory.json": "ba5d36ffd87185ba44987166a054f708e1e748691dc20f9fd0fe912943098a4d",
+        "patch.diff": "4d943d257e29cee045a8c20f746f93213175550686ce456f4d9197a184b256a2"
+      }
+    }
+  ],
+  "totals": {
+    "calls": 95,
+    "estimated_known_no_cache_cny": 1.2460677
+  }
+}

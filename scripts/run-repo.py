@@ -20,6 +20,7 @@ from tracepatch.progress import ProgressMonitor, ObservedEnvironment, docker_sna
 from tracepatch.memory import EvidenceMemory, docker_read_ranges
 from tracepatch.checks import PublicChecks
 from tracepatch.testing import PythonCheckEnvironment, docker_python_check, python_tool_prompt
+from tracepatch.modelconfig import select_profile
 
 spec = importlib.util.spec_from_file_location('runtime', ROOT / 'scripts/run-smoke.py')
 runtime = importlib.util.module_from_spec(spec)
@@ -134,6 +135,7 @@ def main():
     parser.add_argument('--check-mode', choices=('off', 'observe', 'feedback'), default='off')
     parser.add_argument('--test-tool', choices=('off', 'python'), default='off')
     parser.add_argument('--stage-mode', choices=('off', 'observe', 'guide'), default='off')
+    parser.add_argument('--model-profile', default='default', help='Versioned entry in configs/model-profiles.json; default preserves configs/model.json')
     args = parser.parse_args()
     if args.memory_mode != 'off' and args.progress_mode == 'off':
         parser.error('Evidence memory requires source observation')
@@ -156,6 +158,7 @@ def main():
     layout = repository_layout(task_config['repository'])
     system = system.replace('under requests/', f'under {layout.source}/')
     config = json.loads((ROOT / 'configs/model.json').read_text())
+    config = select_profile(config, json.loads((ROOT / 'configs/model-profiles.json').read_text()), args.model_profile)
     ledger = BudgetLedger(ROOT / 'artifacts/budget-ledger.json', str(config['first_run_budget_cny']))
     commit = subprocess.check_output(['git', '-c', f'safe.directory={runtime.UPSTREAM.as_posix()}',
         '-C', str(runtime.UPSTREAM), 'rev-parse', 'HEAD'], text=True).strip()
@@ -166,7 +169,7 @@ def main():
     batch = ROOT / 'runs' / args.batch
     batch.mkdir(parents=True, exist_ok=False)
     for name, path in {'runner': Path(__file__), 'runtime': ROOT / 'scripts/run-smoke.py',
-                       **{n: ROOT / f'src/tracepatch/{n}.py' for n in ('budget', 'actions', 'recovery', 'lifecycle', 'window', 'toolcalling', 'repositories', 'progress', 'memory', 'context', 'symbols', 'checks', 'testing', 'stages')}}.items():
+                       **{n: ROOT / f'src/tracepatch/{n}.py' for n in ('budget', 'actions', 'recovery', 'lifecycle', 'window', 'toolcalling', 'repositories', 'progress', 'memory', 'context', 'symbols', 'checks', 'testing', 'stages', 'modelconfig')}}.items():
         shutil.copyfile(path, batch / f'{name}.snapshot.py')
     base, reference = batch / 'base', batch / 'reference'
     hashes = {'base_archive': archive_source(task_config['base_commit'], base, task_config['repository']),
@@ -178,6 +181,8 @@ def main():
     manifest = {'split': 'development', 'suite': 'real-repo-custom', 'benchmark_result': False,
                 'upstream_commit': commit, 'image': image, 'system_prompt': system,
                 'policy': args.policy, 'model': config['model'], 'max_calls_per_task': args.max_calls,
+                'model_profile': args.model_profile, 'provider_base_url': config['base_url'],
+                'pricing': config['pricing'], 'sampling_policy': 'provider-default', 'wall_time_limit_seconds': 300,
                 'context_policy': args.context_policy,
                 'action_protocol': args.action_protocol,
                 'source_layout': {'vendor': layout.vendor, 'source': layout.source, 'imports': layout.imports},

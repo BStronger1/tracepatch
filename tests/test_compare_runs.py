@@ -10,6 +10,36 @@ spec.loader.exec_module(module)
 
 
 class CompareRunsTests(unittest.TestCase):
+    def model_pair(self):
+        for folder, model in ((self.left, 'flash'), (self.right, 'coder')):
+            path = folder / 'manifest.json'
+            manifest = json.loads(path.read_text())
+            manifest.update(model=model, max_output_tokens=1024, provider_base_url='https://example.invalid/v1',
+                            sampling_policy='provider-default', wall_time_limit_seconds=300)
+            path.write_text(json.dumps(manifest))
+            (folder / 'modelconfig.snapshot.py').write_text('same')
+
+    def test_model_comparison_requires_same_controls_and_explicit_model_change(self):
+        self.model_pair()
+        result = module.compare(self.left, self.right, intervention='model')
+        self.assertEqual(result['intervention_fields'], ['model'])
+        self.assertEqual([a['model'] for a in result['arms']], ['flash', 'coder'])
+        with self.assertRaisesRegex(ValueError, 'model'):
+            module.compare(self.left, self.right)
+
+    def test_model_comparison_rejects_changed_endpoint_budget_and_stage(self):
+        for key, value in [('provider_base_url', 'https://other.invalid'), ('max_output_tokens', 512),
+                           ('stage_mode', 'guide'), ('wall_time_limit_seconds', 600)]:
+            self.model_pair()
+            path = self.right / 'manifest.json'
+            manifest = json.loads(path.read_text())
+            manifest[key] = value
+            path.write_text(json.dumps(manifest))
+            with self.assertRaisesRegex(ValueError, key):
+                module.compare(self.left, self.right, intervention='model')
+            manifest.pop(key)
+            path.write_text(json.dumps(manifest))
+
     def test_stage_comparison_keeps_tools_and_thresholds_equal(self):
         for folder, mode in ((self.left, 'observe'), (self.right, 'guide')):
             path = folder / 'manifest.json'
