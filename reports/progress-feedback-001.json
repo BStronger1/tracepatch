@@ -1,0 +1,355 @@
+{
+  "schema_version": "tracepatch-progress-0.1",
+  "threshold": 6,
+  "initial": {
+    "src/click/__init__.py": "4798914f23fe8cd5defe7f8028c65a017fa062e056fa4ee0c43aac306ece6282",
+    "src/click/_compat.py": "479dad31601e2fbd2e92f724e351f9cb3d47245adbb19f4ca3ed110b480a228f",
+    "src/click/_termui_impl.py": "0d4f92ad8b06581f2fed51798b6ce14e7f6684cac4e9ae0f08c30404ce115e88",
+    "src/click/_textwrap.py": "804af557af70a5160d07325d5f65e1d84c3e4ed94f9a902984db08ac00ad5e45",
+    "src/click/_unicodefun.py": "01d89a66165c04582648710a6350af8b9368fa63ab05cc602ba567de1e5a4c0e",
+    "src/click/_winconsole.py": "57c3e2599b00d535ffd2a45fab304cbf4adc898b2cce8022655957556ac4bdeb",
+    "src/click/core.py": "ca3aaa998c5ba8359db0ded888221451a9bea9e5ad5256b7a87f7c117836b57a",
+    "src/click/decorators.py": "49a86ee33c90d95039009ee37d85a8521c8f88ac6521b07af9bbc98dac4917a8",
+    "src/click/exceptions.py": "1405a04b8d9609a950a5277d73e390b711c94dc0a103872033aeb1c794f4e98c",
+    "src/click/formatting.py": "fd7af49373d477ef7cce873b52a33d21193932ba1402424b93ab6f739e3028ca",
+    "src/click/globals.py": "314a9e4dbeb8753bb7c385cd257e3c8cb3a598ddfeb932ba9a92224fc596b594",
+    "src/click/parser.py": "019e2eb97ac801812908e82160254885b90b2a248807a768e7a11b8e926bcbd7",
+    "src/click/shell_completion.py": "032c2fc50d8a5a4bf1649367ee1943c2ed60ea7dfa57f3cc1965e4cf23dda385",
+    "src/click/termui.py": "d35989139b0f8c29f3ecde3edef1a1ecc18829d69da706aea46f6ee6c9999862",
+    "src/click/testing.py": "48f24d4439fe8f42005c8364d030d7f8af6ac669d5b88f04405eb8b958f25901",
+    "src/click/types.py": "3cdf5cf7e12824fad3593704976bec732e300243b28d2c03618a0979a5c47cd6",
+    "src/click/utils.py": "bd668e95faeadd4d1fb7b32d14a906398917d5c6a7a165a991a97889b2f82171"
+  },
+  "initial_sha256": "ae01fdf7348883fe9e592a876469dbad26d491fa392483d40d456d98ab8ec030",
+  "events": [
+    {
+      "action": 1,
+      "command_sha256": "e61cbd0d8c3fed83bd0959cbd175d2ffef81ec4df0653f227c796c8bc4493a61",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "ae01fdf7348883fe9e592a876469dbad26d491fa392483d40d456d98ab8ec030",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 1
+    },
+    {
+      "action": 2,
+      "command_sha256": "643c3f60f9429b562d83ae3133d62465a7b1aba371b17513cc249686cca05fc6",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "ae01fdf7348883fe9e592a876469dbad26d491fa392483d40d456d98ab8ec030",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 2
+    },
+    {
+      "action": 3,
+      "command_sha256": "34ffab61acd8c77450b750accc5c72500be30b88551bbd2ed982ecbd3cd38e17",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "ae01fdf7348883fe9e592a876469dbad26d491fa392483d40d456d98ab8ec030",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 3
+    },
+    {
+      "action": 4,
+      "command_sha256": "435b608022cbde427ef45ba32a204f4d168f9b1ee72a6c536ca0e6dab6431acd",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "ae01fdf7348883fe9e592a876469dbad26d491fa392483d40d456d98ab8ec030",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 4
+    },
+    {
+      "action": 5,
+      "command_sha256": "b6606eae3b42d953b67f5ce077afb04c498e771df6f0c49eaae488e6036edcba",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "ae01fdf7348883fe9e592a876469dbad26d491fa392483d40d456d98ab8ec030",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 5
+    },
+    {
+      "action": 6,
+      "command_sha256": "b7a123ccca1070ec32d0938dcb46655874b75a2ee6c435d458975707670134df",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "ae01fdf7348883fe9e592a876469dbad26d491fa392483d40d456d98ab8ec030",
+      "signal": "unchanged_source_review",
+      "state": "unchanged",
+      "unchanged_streak": 6
+    },
+    {
+      "action": 7,
+      "command_sha256": "d641ca6b85fbd9b49f1c5b28d6a64bca040ad9780132fe198d7d45475dad3a9a",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "ae01fdf7348883fe9e592a876469dbad26d491fa392483d40d456d98ab8ec030",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 7
+    },
+    {
+      "action": 8,
+      "command_sha256": "21eb8ac42f1f5054b3c5863ad070742f2aa21d7db6ed9326c37460c8a204ce33",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "ae01fdf7348883fe9e592a876469dbad26d491fa392483d40d456d98ab8ec030",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 8
+    },
+    {
+      "action": 9,
+      "command_sha256": "50f9077efbebda8c1686b951a392f1e075d9dfe2fbbbd802cd368a817cd0c4d8",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "ae01fdf7348883fe9e592a876469dbad26d491fa392483d40d456d98ab8ec030",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 9
+    },
+    {
+      "action": 10,
+      "command_sha256": "15602b78b600f890c892a4e69a858364263567188daed795abeef8dd4d342f5c",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "ae01fdf7348883fe9e592a876469dbad26d491fa392483d40d456d98ab8ec030",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 10
+    },
+    {
+      "action": 11,
+      "command_sha256": "3dcf478887e98acdcef0c8613b1a550a5dfa178ec3f15a492a633c6d04317ebb",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "ae01fdf7348883fe9e592a876469dbad26d491fa392483d40d456d98ab8ec030",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 11
+    },
+    {
+      "action": 12,
+      "command_sha256": "8363fcb0b699313a6a20fb387dfd3a8fad241d04a6beeae6865896c391ff4952",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "ae01fdf7348883fe9e592a876469dbad26d491fa392483d40d456d98ab8ec030",
+      "signal": "unchanged_source_review",
+      "state": "unchanged",
+      "unchanged_streak": 12
+    },
+    {
+      "action": 13,
+      "command_sha256": "0b9b8416debd9e9cc310ee3e08d23a0fcbce8c79dc32528ef8dd2602ef6ae6b4",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "ae01fdf7348883fe9e592a876469dbad26d491fa392483d40d456d98ab8ec030",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 13
+    },
+    {
+      "action": 14,
+      "command_sha256": "2065ef787b85675b8c0c79808d91a240f4a960d42349cf62ff6203b13ea220db",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "ae01fdf7348883fe9e592a876469dbad26d491fa392483d40d456d98ab8ec030",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 14
+    },
+    {
+      "action": 15,
+      "command_sha256": "c4761003e1009323e32070e35901bb936eaacbdf3a337cea681c3db7e239b1a3",
+      "tool_returncode": 1,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "ae01fdf7348883fe9e592a876469dbad26d491fa392483d40d456d98ab8ec030",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 15
+    },
+    {
+      "action": 16,
+      "command_sha256": "a9bbe2187aeb7c50ec30f3491ff2642fe9aa35df1272f8d4d47203e28fd60e8b",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "ae01fdf7348883fe9e592a876469dbad26d491fa392483d40d456d98ab8ec030",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 16
+    },
+    {
+      "action": 17,
+      "command_sha256": "d45527c8f15394f03fcd90b8dd496648cbba9b61ebfd535ed255da8612d8ce7e",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "ae01fdf7348883fe9e592a876469dbad26d491fa392483d40d456d98ab8ec030",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 17
+    },
+    {
+      "action": 18,
+      "command_sha256": "9827eb1f5583cdea9fb3f02925d09192eb705dfc8411a801ca9647d3594b1170",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "ae01fdf7348883fe9e592a876469dbad26d491fa392483d40d456d98ab8ec030",
+      "signal": "unchanged_source_review",
+      "state": "unchanged",
+      "unchanged_streak": 18
+    },
+    {
+      "action": 19,
+      "command_sha256": "b9eab414105ba148702a7ac5e800debf67f85d6ff42fb44d50fcf1c565ee5d02",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [
+        "src/click/core.py"
+      ],
+      "net_changed_paths": [
+        "src/click/core.py"
+      ],
+      "snapshot_sha256": "8aba8cb23bae2a457c0a1bd96027fe961f02708d1ed0532d953c40ec26533f70",
+      "signal": null,
+      "state": "changed",
+      "unchanged_streak": 0
+    },
+    {
+      "action": 20,
+      "command_sha256": "e3445527033ee237e2e9c0b80f79a349ebea33f9eed2f3f04ed18d8c30ff7573",
+      "tool_returncode": 1,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [
+        "src/click/core.py"
+      ],
+      "net_changed_paths": [
+        "src/click/core.py"
+      ],
+      "snapshot_sha256": "0442ac6df6aea4918c608de26e9d9464caa5840bd4f1ccd4747e3505d2e6979b",
+      "signal": null,
+      "state": "changed",
+      "unchanged_streak": 0
+    },
+    {
+      "action": 21,
+      "command_sha256": "640f55dbcc46e02684116c3e5ab3c437352b5916f6f8541aee88850ac1dbe343",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [
+        "src/click/core.py"
+      ],
+      "snapshot_sha256": "0442ac6df6aea4918c608de26e9d9464caa5840bd4f1ccd4747e3505d2e6979b",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 1
+    },
+    {
+      "action": 22,
+      "command_sha256": "1edfe362f8f07a119b37b423be0165e242533bff5a025ae2617e1dd0e3071e1f",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [
+        "src/click/core.py"
+      ],
+      "net_changed_paths": [
+        "src/click/core.py"
+      ],
+      "snapshot_sha256": "cae76ec0d60260853fc0e44dc290f4a6950e808a55fc50630d46e6059cbe6f44",
+      "signal": null,
+      "state": "changed",
+      "unchanged_streak": 0
+    },
+    {
+      "action": 23,
+      "command_sha256": "59bffd5efe108a5ed8ac2c394f1a1029592899b373559bd8ba8f4f6de8cb7a42",
+      "tool_returncode": 1,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [
+        "src/click/core.py"
+      ],
+      "snapshot_sha256": "cae76ec0d60260853fc0e44dc290f4a6950e808a55fc50630d46e6059cbe6f44",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 1
+    }
+  ],
+  "summary": {
+    "actions": 23,
+    "changed_actions": 3,
+    "unknown_actions": 0,
+    "review_signals": 3,
+    "max_unchanged_streak": 18
+  },
+  "limitations": [
+    "Source changes do not establish correctness or useful progress.",
+    "Only existing exported Python files are tracked, at action boundaries.",
+    "Temporary edits reverted within an action are invisible.",
+    "Tool return codes are not trusted test results; test_passed remains unknown.",
+    "Observations inside an agent-writable container are not adversarially tamper-proof."
+  ]
+}

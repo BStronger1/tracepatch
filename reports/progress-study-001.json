@@ -1,0 +1,183 @@
+{
+  "scope": "One prospective pair on an already used development task, no general effect estimate",
+  "plan": "progress-plan-001.json",
+  "comparison": {
+    "scope": "Single run per development task per arm; not a benchmark or causal estimate.",
+    "controls_match": true,
+    "intervention_fields": [
+      "progress_mode"
+    ],
+    "arms": [
+      {
+        "batch": "repo-progress-observe-001",
+        "policy": "recovery-submit",
+        "progress_mode": "observe",
+        "max_output_tokens": 1024,
+        "context_policy": "recent-turns",
+        "verified": 0,
+        "submitted": 0,
+        "calls": 24,
+        "rejected_actions": 1,
+        "estimated_known_no_cache_cny": 0.095412395,
+        "unknown_cost_requests": 0,
+        "tasks": [
+          {
+            "task": "click-1687",
+            "verified_success": false,
+            "agent_exit": "LimitsExceeded",
+            "api_calls": 24,
+            "format_error_count": 1
+          }
+        ]
+      },
+      {
+        "batch": "repo-progress-feedback-001",
+        "policy": "recovery-submit",
+        "progress_mode": "feedback",
+        "max_output_tokens": 1024,
+        "context_policy": "recent-turns",
+        "verified": 0,
+        "submitted": 0,
+        "calls": 24,
+        "rejected_actions": 1,
+        "estimated_known_no_cache_cny": 0.094075365,
+        "unknown_cost_requests": 0,
+        "tasks": [
+          {
+            "task": "click-1687",
+            "verified_success": false,
+            "agent_exit": "LimitsExceeded",
+            "api_calls": 24,
+            "format_error_count": 1
+          }
+        ]
+      }
+    ]
+  },
+  "arms": [
+    {
+      "batch": "repo-progress-observe-001",
+      "mode": "observe",
+      "result": {
+        "task": "click-1687",
+        "status": "verified",
+        "verified_success": false,
+        "agent_exit": "LimitsExceeded",
+        "verification": {
+          "output": "test_bad_numeric_input_is_usage_error (__main__.DefaultContract) ... ERROR\ntest_composite_command_line_overrides_default (__main__.DefaultContract) ... ERROR\ntest_composite_default_inference (__main__.DefaultContract) ... ERROR\ntest_default_map_precedence_and_casting (__main__.DefaultContract) ... ERROR\ntest_environment_precedence_and_casting (__main__.DefaultContract) ... ERROR\ntest_explicit_composite_type_casts_default (__main__.DefaultContract) ... ERROR\ntest_list_and_string_scalar_defaults (__main__.DefaultContract) ... test_missing_defaults_and_optional_nargs (__main__.DefaultContract) ... test_repeated_scalar_issue_reproduction (__main__.DefaultContract) ... ERROR\ntest_scalar_command_line_overrides_default (__main__.DefaultContract) ... ERROR\n\n======================================================================\nERROR: test_bad_numeric_input_is_usage_error (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 54, in test_bad_numeric_input_is_usage_error\n    option=click.Option(['--count'],multiple=True,default=(2,5))\n  File \"/workspace/src/click/core.py\", line 2151, in __init__\n    super().__init__(param_decls, type=type, **attrs)\n  File \"/workspace/src/click/core.py\", line 1825, in __init__\n    if multiple := attrs.get(\"multiple\", False):\nNameError: name 'attrs' is not defined\n\n======================================================================\nERROR: test_composite_command_line_overrides_default (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 39, in test_composite_command_line_overrides_default\n    option=click.Option(['--pair'],multiple=True,default=[(1,'north')])\n  File \"/workspace/src/click/core.py\", line 2151, in __init__\n    super().__init__(param_decls, type=type, **attrs)\n  File \"/workspace/src/click/core.py\", line 1825, in __init__\n    if multiple := attrs.get(\"multiple\", False):\nNameError: name 'attrs' is not defined\n\n======================================================================\nERROR: test_composite_default_inference (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 28, in test_composite_default_inference\n    option=click.Option(['--pair'],multiple=True,default=[(1,'north'),(3,'south')])\n  File \"/workspace/src/click/core.py\", line 2151, in __init__\n    super().__init__(param_decls, type=type, **attrs)\n  File \"/workspace/src/click/core.py\", line 1825, in __init__\n    if multiple := attrs.get(\"multiple\", False):\nNameError: name 'attrs' is not defined\n\n======================================================================\nERROR: test_default_map_precedence_and_casting (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 62, in test_default_map_precedence_and_casting\n    option=click.Option(['--count'],multiple=True,default=(2,5))\n  File \"/workspace/src/click/core.py\", line 2151, in __init__\n    super().__init__(param_decls, type=type, **attrs)\n  File \"/workspace/src/click/core.py\", line 1825, in __init__\n    if multiple := attrs.get(\"multiple\", False):\nNameError: name 'attrs' is not defined\n\n======================================================================\nERROR: test_environment_precedence_and_casting (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 66, in test_environment_precedence_and_casting\n    option=click.Option(['--count'],multiple=True,default=(2,5),envvar='TRACEPATCH_COUNTS')\n  File \"/workspace/src/click/core.py\", line 2151, in __init__\n    super().__init__(param_decls, type=type, **attrs)\n  File \"/workspace/src/click/core.py\", line 1825, in __init__\n    if multiple := attrs.get(\"multiple\", False):\nNameError: name 'attrs' is not defined\n\n======================================================================\nERROR: test_explicit_composite_type_casts_default (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 50, in test_explicit_composite_type_casts_default\n    option=click.Option(['--pair'],type=(int,str),multiple=True,default=[('2','east')])\n  File \"/workspace/src/click/core.py\", line 2151, in __init__\n    super().__init__(param_decls, type=type, **attrs)\n  File \"/workspace/src/click/core.py\", line 1825, in __init__\n    if multiple := attrs.get(\"multiple\", False):\nNameError: name 'attrs' is not defined\n\n======================================================================\nERROR: test_list_and_string_scalar_defaults (__main__.DefaultContract) (default=[3, 7])\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 23, in test_list_and_string_scalar_defaults\n    option=click.Option(['--value'],multiple=True,default=default)\n  File \"/workspace/src/click/core.py\", line 2151, in __init__\n    super().__init__(param_decls, type=type, **attrs)\n  File \"/workspace/src/click/core.py\", line 1825, in __init__\n    if multiple := attrs.get(\"multiple\", False):\nNameError: name 'attrs' is not defined\n\n======================================================================\nERROR: test_list_and_string_scalar_defaults (__main__.DefaultContract) (default=('north', 'south'))\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 23, in test_list_and_string_scalar_defaults\n    option=click.Option(['--value'],multiple=True,default=default)\n  File \"/workspace/src/click/core.py\", line 2151, in __init__\n    super().__init__(param_decls, type=type, **attrs)\n  File \"/workspace/src/click/core.py\", line 1825, in __init__\n    if multiple := attrs.get(\"multiple\", False):\nNameError: name 'attrs' is not defined\n\n======================================================================\nERROR: test_missing_defaults_and_optional_nargs (__main__.DefaultContract) (settings={'multiple': True})\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 46, in test_missing_defaults_and_optional_nargs\n    option=click.Option(['--value'],default=None,**settings)\n  File \"/workspace/src/click/core.py\", line 2151, in __init__\n    super().__init__(param_decls, type=type, **attrs)\n  File \"/workspace/src/click/core.py\", line 1825, in __init__\n    if multiple := attrs.get(\"multiple\", False):\nNameError: name 'attrs' is not defined\n\n======================================================================\nERROR: test_missing_defaults_and_optional_nargs (__main__.DefaultContract) (settings={'nargs': 2})\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 46, in test_missing_defaults_and_optional_nargs\n    option=click.Option(['--value'],default=None,**settings)\n  File \"/workspace/src/click/core.py\", line 2151, in __init__\n    super().__init__(param_decls, type=type, **attrs)\n  File \"/workspace/src/click/core.py\", line 1825, in __init__\n    if multiple := attrs.get(\"multiple\", False):\nNameError: name 'attrs' is not defined\n\n======================================================================\nERROR: test_missing_defaults_and_optional_nargs (__main__.DefaultContract) (settings={'nargs': 2, 'multiple': True})\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 46, in test_missing_defaults_and_optional_nargs\n    option=click.Option(['--value'],default=None,**settings)\n  File \"/workspace/src/click/core.py\", line 2151, in __init__\n    super().__init__(param_decls, type=type, **attrs)\n  File \"/workspace/src/click/core.py\", line 1825, in __init__\n    if multiple := attrs.get(\"multiple\", False):\nNameError: name 'attrs' is not defined\n\n======================================================================\nERROR: test_repeated_scalar_issue_reproduction (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 15, in test_repeated_scalar_issue_reproduction\n    option=click.Option(['--count'],multiple=True,default=(2,5))\n  File \"/workspace/src/click/core.py\", line 2151, in __init__\n    super().__init__(param_decls, type=type, **attrs)\n  File \"/workspace/src/click/core.py\", line 1825, in __init__\n    if multiple := attrs.get(\"multiple\", False):\nNameError: name 'attrs' is not defined\n\n======================================================================\nERROR: test_scalar_command_line_overrides_default (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 35, in test_scalar_command_line_overrides_default\n    option=click.Option(['--count'],multiple=True,default=(2,5))\n  File \"/workspace/src/click/core.py\", line 2151, in __init__\n    super().__init__(param_decls, type=type, **attrs)\n  File \"/workspace/src/click/core.py\", line 1825, in __init__\n    if multiple := attrs.get(\"multiple\", False):\nNameError: name 'attrs' is not defined\n\n----------------------------------------------------------------------\nRan 10 tests in 0.003s\n\nFAILED (errors=13)\n",
+          "returncode": 1,
+          "exception_info": ""
+        },
+        "completion": {
+          "state": "failed_unsubmitted",
+          "patch_verified": false,
+          "agent_submitted": false,
+          "agent_exit": "LimitsExceeded",
+          "verification_returncode": 1
+        },
+        "api_calls": 24,
+        "format_error_count": 1,
+        "estimated_known_no_cache_cny": 0.095412395,
+        "unknown_cost_requests": 0,
+        "elapsed_seconds": 108.984,
+        "budget": {
+          "limit_cny": "50",
+          "reserved_cny": "43.4",
+          "remaining_reservation_cny": "6.6",
+          "note": "Conservative planning reservations, not actual provider charges"
+        }
+      },
+      "progress": {
+        "actions": 23,
+        "changed_actions": 1,
+        "unknown_actions": 0,
+        "review_signals": 3,
+        "max_unchanged_streak": 21
+      },
+      "first_changed_action": 22,
+      "final_net_changed_paths": [
+        "src/click/core.py",
+        "src/click/types.py"
+      ],
+      "notice_call_indices": [],
+      "notice_action_indices": [],
+      "history_pruned_requests": 18,
+      "truncations": 1,
+      "hashes": {
+        "trajectory.json": "37684fc0ca3b47d3f00005693d2e4c2b299517a5f460ba496f5e39a7d2179d3d",
+        "requests.json": "11d70498963aca90b018e1588f58b3a7e04826b4f8e1080f4879a8a612c1099d",
+        "progress.json": "156ccb90c47af40a9889305751761ff159d2907adb6e1042c1d1f5cf78e16032",
+        "patch.diff": "0287a57b48c1973149cc39a29086a64c2c752a39db48e68682a02e3961243687"
+      },
+      "public_progress_report": "progress-observe-001.json"
+    },
+    {
+      "batch": "repo-progress-feedback-001",
+      "mode": "feedback",
+      "result": {
+        "task": "click-1687",
+        "status": "verified",
+        "verified_success": false,
+        "agent_exit": "LimitsExceeded",
+        "verification": {
+          "output": "test_bad_numeric_input_is_usage_error (__main__.DefaultContract) ... ERROR\ntest_composite_command_line_overrides_default (__main__.DefaultContract) ... ERROR\ntest_composite_default_inference (__main__.DefaultContract) ... ERROR\ntest_default_map_precedence_and_casting (__main__.DefaultContract) ... ERROR\ntest_environment_precedence_and_casting (__main__.DefaultContract) ... ERROR\ntest_explicit_composite_type_casts_default (__main__.DefaultContract) ... ERROR\ntest_list_and_string_scalar_defaults (__main__.DefaultContract) ... test_missing_defaults_and_optional_nargs (__main__.DefaultContract) ... test_repeated_scalar_issue_reproduction (__main__.DefaultContract) ... ERROR\ntest_scalar_command_line_overrides_default (__main__.DefaultContract) ... ERROR\n\n======================================================================\nERROR: test_bad_numeric_input_is_usage_error (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 54, in test_bad_numeric_input_is_usage_error\n    option=click.Option(['--count'],multiple=True,default=(2,5))\n  File \"/workspace/src/click/core.py\", line 2199, in __init__\n    if type is None and nargs == 1 and multiple and isinstance(default, (tuple, list)):\nNameError: name 'nargs' is not defined\n\n======================================================================\nERROR: test_composite_command_line_overrides_default (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 39, in test_composite_command_line_overrides_default\n    option=click.Option(['--pair'],multiple=True,default=[(1,'north')])\n  File \"/workspace/src/click/core.py\", line 2199, in __init__\n    if type is None and nargs == 1 and multiple and isinstance(default, (tuple, list)):\nNameError: name 'nargs' is not defined\n\n======================================================================\nERROR: test_composite_default_inference (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 28, in test_composite_default_inference\n    option=click.Option(['--pair'],multiple=True,default=[(1,'north'),(3,'south')])\n  File \"/workspace/src/click/core.py\", line 2199, in __init__\n    if type is None and nargs == 1 and multiple and isinstance(default, (tuple, list)):\nNameError: name 'nargs' is not defined\n\n======================================================================\nERROR: test_default_map_precedence_and_casting (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 62, in test_default_map_precedence_and_casting\n    option=click.Option(['--count'],multiple=True,default=(2,5))\n  File \"/workspace/src/click/core.py\", line 2199, in __init__\n    if type is None and nargs == 1 and multiple and isinstance(default, (tuple, list)):\nNameError: name 'nargs' is not defined\n\n======================================================================\nERROR: test_environment_precedence_and_casting (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 66, in test_environment_precedence_and_casting\n    option=click.Option(['--count'],multiple=True,default=(2,5),envvar='TRACEPATCH_COUNTS')\n  File \"/workspace/src/click/core.py\", line 2199, in __init__\n    if type is None and nargs == 1 and multiple and isinstance(default, (tuple, list)):\nNameError: name 'nargs' is not defined\n\n======================================================================\nERROR: test_explicit_composite_type_casts_default (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 50, in test_explicit_composite_type_casts_default\n    option=click.Option(['--pair'],type=(int,str),multiple=True,default=[('2','east')])\n  File \"/workspace/src/click/core.py\", line 2202, in __init__\n    infer_default = default\nNameError: name 'default' is not defined\n\n======================================================================\nERROR: test_list_and_string_scalar_defaults (__main__.DefaultContract) (default=[3, 7])\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 23, in test_list_and_string_scalar_defaults\n    option=click.Option(['--value'],multiple=True,default=default)\n  File \"/workspace/src/click/core.py\", line 2199, in __init__\n    if type is None and nargs == 1 and multiple and isinstance(default, (tuple, list)):\nNameError: name 'nargs' is not defined\n\n======================================================================\nERROR: test_list_and_string_scalar_defaults (__main__.DefaultContract) (default=('north', 'south'))\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 23, in test_list_and_string_scalar_defaults\n    option=click.Option(['--value'],multiple=True,default=default)\n  File \"/workspace/src/click/core.py\", line 2199, in __init__\n    if type is None and nargs == 1 and multiple and isinstance(default, (tuple, list)):\nNameError: name 'nargs' is not defined\n\n======================================================================\nERROR: test_missing_defaults_and_optional_nargs (__main__.DefaultContract) (settings={'multiple': True})\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 46, in test_missing_defaults_and_optional_nargs\n    option=click.Option(['--value'],default=None,**settings)\n  File \"/workspace/src/click/core.py\", line 2199, in __init__\n    if type is None and nargs == 1 and multiple and isinstance(default, (tuple, list)):\nNameError: name 'nargs' is not defined\n\n======================================================================\nERROR: test_missing_defaults_and_optional_nargs (__main__.DefaultContract) (settings={'nargs': 2})\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 46, in test_missing_defaults_and_optional_nargs\n    option=click.Option(['--value'],default=None,**settings)\n  File \"/workspace/src/click/core.py\", line 2199, in __init__\n    if type is None and nargs == 1 and multiple and isinstance(default, (tuple, list)):\nNameError: name 'nargs' is not defined\n\n======================================================================\nERROR: test_missing_defaults_and_optional_nargs (__main__.DefaultContract) (settings={'nargs': 2, 'multiple': True})\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 46, in test_missing_defaults_and_optional_nargs\n    option=click.Option(['--value'],default=None,**settings)\n  File \"/workspace/src/click/core.py\", line 2199, in __init__\n    if type is None and nargs == 1 and multiple and isinstance(default, (tuple, list)):\nNameError: name 'nargs' is not defined\n\n======================================================================\nERROR: test_repeated_scalar_issue_reproduction (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 15, in test_repeated_scalar_issue_reproduction\n    option=click.Option(['--count'],multiple=True,default=(2,5))\n  File \"/workspace/src/click/core.py\", line 2199, in __init__\n    if type is None and nargs == 1 and multiple and isinstance(default, (tuple, list)):\nNameError: name 'nargs' is not defined\n\n======================================================================\nERROR: test_scalar_command_line_overrides_default (__main__.DefaultContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 35, in test_scalar_command_line_overrides_default\n    option=click.Option(['--count'],multiple=True,default=(2,5))\n  File \"/workspace/src/click/core.py\", line 2199, in __init__\n    if type is None and nargs == 1 and multiple and isinstance(default, (tuple, list)):\nNameError: name 'nargs' is not defined\n\n----------------------------------------------------------------------\nRan 10 tests in 0.003s\n\nFAILED (errors=13)\n",
+          "returncode": 1,
+          "exception_info": ""
+        },
+        "completion": {
+          "state": "failed_unsubmitted",
+          "patch_verified": false,
+          "agent_submitted": false,
+          "agent_exit": "LimitsExceeded",
+          "verification_returncode": 1
+        },
+        "api_calls": 24,
+        "format_error_count": 1,
+        "estimated_known_no_cache_cny": 0.094075365,
+        "unknown_cost_requests": 0,
+        "elapsed_seconds": 116.734,
+        "budget": {
+          "limit_cny": "50",
+          "reserved_cny": "45.8",
+          "remaining_reservation_cny": "4.2",
+          "note": "Conservative planning reservations, not actual provider charges"
+        }
+      },
+      "progress": {
+        "actions": 23,
+        "changed_actions": 3,
+        "unknown_actions": 0,
+        "review_signals": 3,
+        "max_unchanged_streak": 18
+      },
+      "first_changed_action": 19,
+      "final_net_changed_paths": [
+        "src/click/core.py"
+      ],
+      "notice_call_indices": [
+        7,
+        14,
+        20
+      ],
+      "notice_action_indices": [
+        6,
+        12,
+        18
+      ],
+      "history_pruned_requests": 18,
+      "truncations": 1,
+      "hashes": {
+        "trajectory.json": "68714dda4236009979937e4c6ddb2dec42251742e8eaf0da09228b07e7b13c1f",
+        "requests.json": "7cbb646601bb22de7e0a89a723c543909e16c22f0b97eaf527a37d9d321b13ad",
+        "progress.json": "bf0715eb857d0f4590cdb6676a3acfa11ca26851b7e9944584486a8700692ae8",
+        "patch.diff": "ed34501c29b11c57c8c762f94ea5f900bf8071df45c6a9371d8891c0befb77b6"
+      },
+      "public_progress_report": "progress-feedback-001.json"
+    }
+  ],
+  "totals": {
+    "calls": 48,
+    "estimated_known_no_cache_cny": 0.18948776,
+    "unknown_cost_requests": 0
+  }
+}

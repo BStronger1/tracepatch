@@ -55,3 +55,21 @@ class CompareRunsTests(unittest.TestCase):
         (self.right/'repositories.snapshot.py').write_text('changed layout code')
         with self.assertRaisesRegex(ValueError,'Different repository'):
             module.compare(self.left,self.right,intervention='output-budget')
+
+    def test_progress_intervention_keeps_observation_and_controls_equal(self):
+        for folder, mode in ((self.left, 'observe'), (self.right, 'feedback')):
+            path = folder / 'manifest.json'
+            manifest = json.loads(path.read_text())
+            manifest.update(progress_mode=mode, max_output_tokens=1024, progress_threshold=6)
+            path.write_text(json.dumps(manifest))
+            (folder / 'progress.snapshot.py').write_text('same sensor')
+        result = module.compare(self.left, self.right, intervention='progress-feedback')
+        self.assertEqual(result['intervention_fields'], ['progress_mode'])
+        with self.assertRaisesRegex(ValueError, 'progress_mode'):
+            module.compare(self.left, self.right)
+        path = self.right / 'manifest.json'
+        manifest = json.loads(path.read_text())
+        manifest['progress_threshold'] = 3
+        path.write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(ValueError, 'progress_threshold'):
+            module.compare(self.left, self.right, intervention='progress-feedback')

@@ -48,7 +48,7 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
 
 class DmxModel:
     """Thin adapter; fixed model, no retries, no secrets in serialization."""
-    def __init__(self, config, key, *, run_dir=None, ledger=None, policy='baseline', max_calls=8, context_policy='none', action_protocol='text', max_output_tokens=512):
+    def __init__(self, config, key, *, run_dir=None, ledger=None, policy='baseline', max_calls=8, context_policy='none', action_protocol='text', max_output_tokens=512, progress_monitor=None, progress_feedback=False):
         self.config = config
         self.key = key
         self.calls = []
@@ -65,6 +65,9 @@ class DmxModel:
         if policy not in ('baseline', 'recovery', 'recovery-budget', 'recovery-submit'):
             raise ValueError('Unknown policy')
         self.policy = policy
+        self.progress_monitor = progress_monitor
+        self.progress_feedback = progress_feedback
+        self.last_progress_notice_action = 0
 
     def format_message(self, **kwargs):
         return kwargs
@@ -84,6 +87,14 @@ class DmxModel:
             wire = native_history(messages)
             if notice:
                 wire.append({'role': 'user', 'content': notice})
+        progress_notice = None
+        if self.progress_feedback and self.progress_monitor is not None:
+            action_index = len(self.progress_monitor.events)
+            if action_index > self.last_progress_notice_action:
+                progress_notice = self.progress_monitor.notice()
+                if progress_notice:
+                    wire.append({'role': 'user', 'content': progress_notice})
+                    self.last_progress_notice_action = action_index
         payload, context_metadata = request_payload(self.config['model'], wire, self.context_policy,
             tool_options=TOOL_OPTIONS if self.action_protocol == 'native' else None,
             max_output_tokens=self.max_output_tokens)
@@ -95,6 +106,9 @@ class DmxModel:
         record.update(context_metadata)
         record['action_protocol'] = self.action_protocol
         record['max_output_tokens'] = self.max_output_tokens
+        if self.progress_monitor is not None:
+            record['progress_notice'] = progress_notice
+            record['progress_action_index'] = len(self.progress_monitor.events)
         if self.ledger:
             self.ledger.reserve(f'{self.run_dir.name}:{record["index"]}')
         self.calls.append(record)

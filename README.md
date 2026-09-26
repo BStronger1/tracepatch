@@ -15,12 +15,13 @@ Diagnose coding-agent failures, preserve evidence, and evaluate recovery with in
 - 完整工具输出按哈希留存，并生成保留退出码的有界首尾预览；此独立模块已测试，尚未接入付费实验。
 - [版本化离线重评](docs/REVERIFY.md)：对已有补丁应用新版验证，核对源码来源并记录哈希，保留原始成绩和提交状态，不调用模型 API。
 - 明确登记 Requests 和 Click 两种源码布局，按包内既有 Python 文件重建候选；布局配置及实现快照参与对照检查。
+- [逐步源码进展观测](docs/PROGRESS.md)：记录动作前后变化、相对初始版本的净变化和采集异常；可选发送复查提示，不将未改动认定为停滞或将改动认定为修复。
 
 ## 实验现状
 
 3 个自建开发任务首次配对实验：基线验证通过 2/3，恢复组 3/3；正常提交分别 1/3、2/3，调用分别 21、22 次。任务少、未重复且已用于开发，不能推断通用提升。见 [完整报告](reports/dev-paired-003.md) 和 [复现说明](docs/REPRODUCE.md)。
 
-已新增 [三文件任务队列修复](docs/MULTIFILE.md)：基线未通过，恢复组通过全部 8 组独立测试，但仍因步数耗尽未正常提交。见 [多文件对照报告](reports/multifile-paired-001.md)。此任务也是自建开发题，不是真实企业 issue 或独立保留集。39 项本地离线测试覆盖诊断、预算、证据留存、任务验证器、结束状态、有界历史、原生工具协议、输出额度对照及多仓库源码导出。
+已新增 [三文件任务队列修复](docs/MULTIFILE.md)：基线未通过，恢复组通过全部 8 组独立测试，但仍因步数耗尽未正常提交。见 [多文件对照报告](reports/multifile-paired-001.md)。此任务也是自建开发题，不是真实企业 issue 或独立保留集。47 项本地离线测试覆盖诊断、预算、证据留存、任务验证器、结束状态、有界历史、原生工具协议、输出额度对照、多仓库源码导出及进展观测。
 
 `recovery-budget` 增加逐轮剩余调用提醒，并明确区分补丁验证与正常提交；历史设计见[轨迹审计](reports/completion-audit-001.md)。现已在真实仓库试跑，尚无稳定效果结论。
 
@@ -32,7 +33,9 @@ Diagnose coding-agent failures, preserve evidence, and evaluate recovery with in
 
 [Cookie v2 与提交协议修正](reports/cookie-v2-study-001.md)将独立回归扩展至 10 组，并修正收尾提示与底座提交协议不一致的问题。两次新运行一次通过并提交、一次失败；保留全部结果。新增[离线重评工具](docs/REVERIFY.md)，历史成绩保持不变。v2 仍是同一开发题，不是新增独立问题或策略因果对照。
 
-最新：[第二个仓库 Click](reports/click-study-001.md)已完成从源码导入、Agent 执行到独立验证与离线重评的完整流程。两次修复均失败，分别暴露实现错误和长期检查后未形成有效修改的问题。当前共 **2 个仓库、4 个不同历史问题**，尚无可靠跨仓库修复结论；[Click 复现步骤](docs/CLICK_TASK.md)完整公开。
+[第二个仓库 Click](reports/click-study-001.md)已完成从源码导入、Agent 执行到独立验证与离线重评的完整流程。首次两次修复均失败，分别暴露实现错误和长期检查后未形成有效修改的问题。当前共 **2 个仓库、4 个不同历史问题**，尚无可靠跨仓库修复结论；[Click 复现步骤](docs/CLICK_TASK.md)完整公开。
+
+最新：[源码进展提示配对实验](reports/progress-study-001.md)对“只记录”和“发送提示”各运行一次。首次修改发生在动作 22 / 19，但两份补丁均有未定义变量错误，均未通过独立验证。逐步证据和三次提示发送可查；不将修改提前解释为修复质量提升。
 
 此前五次未成功的开发尝试和条件变化完整保留在[历史报告](reports/requests-study-001.md)。不将失败隐藏，也不把协议改动前后不同条件的结果当作严格因果对照。
 
@@ -54,4 +57,4 @@ python -m unittest discover -s tests -v
 
 第三阶段已新增带预算账本的 `scripts/run-dev.py`。阅读 [第三课](docs/LESSON_03.md) 和 [首批开发集报告](reports/dev-baseline-002.md)：3 个补丁通过，2 个正常提交，发现 4 个动作格式问题。该开发集很小且已参与调试，不能当作泛化成绩。未来付费实验统一从带账本的入口运行，不直接重跑旧教学脚本。
 
-本项目实现诊断与恢复策略。Agent 底座来自 [mini-swe-agent](https://github.com/SWE-agent/mini-swe-agent)。已支持清单内多个 Python 源文件及 Requests 整仓实验中的源码导出与独立验证；Harbor 集成和停滞恢复尚未实现。见 [上游归属](THIRD_PARTY_NOTICES.md)、[贡献指南](CONTRIBUTING.md) 与 [MIT License](LICENSE)。
+本项目实现诊断与恢复策略。Agent 底座来自 [mini-swe-agent](https://github.com/SWE-agent/mini-swe-agent)。已支持清单内多个 Python 源文件、真实仓库源码导出与独立验证，并提供源码变化观测及复查提示；Harbor 集成尚未实现。见 [上游归属](THIRD_PARTY_NOTICES.md)、[贡献指南](CONTRIBUTING.md) 与 [MIT License](LICENSE)。

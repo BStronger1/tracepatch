@@ -16,6 +16,7 @@ sys.path.insert(0, str(ROOT / 'src'))
 from tracepatch.budget import BudgetLedger
 from tracepatch.lifecycle import completion_status
 from tracepatch.repositories import repository_layout, reconstruct_candidate
+from tracepatch.progress import ProgressMonitor, ObservedEnvironment, docker_snapshot
 
 spec = importlib.util.spec_from_file_location('runtime', ROOT / 'scripts/run-smoke.py')
 runtime = importlib.util.module_from_spec(spec)
@@ -76,6 +77,7 @@ def main():
     parser.add_argument('--max-calls', type=int, choices=(12, 24), default=12)
     parser.add_argument('--max-output-tokens', type=int, choices=(512, 1024), default=512)
     parser.add_argument('--action-protocol', choices=('text', 'native'), default='text')
+    parser.add_argument('--progress-mode', choices=('off', 'observe', 'feedback'), default='off')
     args = parser.parse_args()
     system = SYSTEM.replace('12 model calls', f'{args.max_calls} model calls')
     if args.action_protocol == 'native':
@@ -98,7 +100,7 @@ def main():
     batch = ROOT / 'runs' / args.batch
     batch.mkdir(parents=True, exist_ok=False)
     for name, path in {'runner': Path(__file__), 'runtime': ROOT / 'scripts/run-smoke.py',
-                       **{n: ROOT / f'src/tracepatch/{n}.py' for n in ('budget', 'actions', 'recovery', 'lifecycle', 'window', 'toolcalling', 'repositories')}}.items():
+                       **{n: ROOT / f'src/tracepatch/{n}.py' for n in ('budget', 'actions', 'recovery', 'lifecycle', 'window', 'toolcalling', 'repositories', 'progress')}}.items():
         shutil.copyfile(path, batch / f'{name}.snapshot.py')
     base, reference = batch / 'base', batch / 'reference'
     hashes = {'base_archive': archive_source(task_config['base_commit'], base, task_config['repository']),
@@ -113,6 +115,8 @@ def main():
                 'context_policy': args.context_policy,
                 'action_protocol': args.action_protocol,
                 'source_layout': {'vendor': layout.vendor, 'source': layout.source, 'imports': layout.imports},
+                'progress_mode': args.progress_mode,
+                'progress_threshold': 6, 'progress_schema': 'tracepatch-progress-0.1',
                 'max_output_tokens': args.max_output_tokens, 'enable_thinking': False, 'observation_char_limit': 6000,
                 'input_json_byte_limit': 24000, 'reject_provider_truncation': True,
                 'tasks': {task_config['id']: hashes}, 'provenance': task_config}
@@ -156,6 +160,18 @@ def main():
         if args.visible_reproducer:
             docker('cp', str(task / 'reproduce_issue.py'), env.container_id + ':/workspace/reproduce_issue.py')
             instruction += ' A public-issue offline reproducer is provided: run python reproduce_issue.py before and after your fix. Do not modify it.'
+        if args.progress_mode != 'off':
+            paths = [p.relative_to(base).as_posix() for p in sorted((base / layout.source).rglob('*.py'))]
+            container_id = env.container_id
+            snapshot = lambda: docker_snapshot(runtime.DOCKER, container_id, paths)
+            initial = snapshot()
+            expected = {name: hashlib.sha256((base / name).read_bytes()).hexdigest() for name in paths}
+            if initial != expected:
+                raise ValueError('Initial source observation does not match the frozen base')
+            monitor = ProgressMonitor(initial)
+            env = ObservedEnvironment(env, monitor, snapshot, run / 'progress.json')
+            model.progress_monitor = monitor
+            model.progress_feedback = args.progress_mode == 'feedback'
         agent = runtime.DefaultAgent(model, env, step_limit=args.max_calls, cost_limit=args.max_calls * 0.1,
             wall_time_limit_seconds=300, output_path=run / 'trajectory.json',
             system_template=system, instance_template='{{task}}')

@@ -1,0 +1,209 @@
+{
+  "schema_version": "tracepatch-progress-0.1",
+  "threshold": 6,
+  "initial": {
+    "probe.py": "9e26bf369911c45c243c684147b23fc9e1dcfcf257d299a1c632016a6fcd33f4"
+  },
+  "initial_sha256": "9b3c06a0ef45420ebf6f0dfe0214357451a7b7b9ce6c4562b3be8463088ac60b",
+  "events": [
+    {
+      "action": 1,
+      "command_sha256": "7d031d66ff3110e4c4f6f7f31ebca7816197849d6e0c2280e9818381c644d81e",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "9b3c06a0ef45420ebf6f0dfe0214357451a7b7b9ce6c4562b3be8463088ac60b",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 1
+    },
+    {
+      "action": 2,
+      "command_sha256": "a833b3b87678d41a5295ec2b3715d02957cab8e9ba1d12ed1d2b51027911bb30",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "9b3c06a0ef45420ebf6f0dfe0214357451a7b7b9ce6c4562b3be8463088ac60b",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 2
+    },
+    {
+      "action": 3,
+      "command_sha256": "3bcd9f2fad0692ba147416c8af6ef66fbb6ff03124cc316874a7476e5f973217",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "9b3c06a0ef45420ebf6f0dfe0214357451a7b7b9ce6c4562b3be8463088ac60b",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 3
+    },
+    {
+      "action": 4,
+      "command_sha256": "b37b379de64368f8f3372bc4e4b4614a28ce2f750ac4320c6ab9cac7c31530cf",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "9b3c06a0ef45420ebf6f0dfe0214357451a7b7b9ce6c4562b3be8463088ac60b",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 4
+    },
+    {
+      "action": 5,
+      "command_sha256": "274a786a02e24012063d1cca49f6cb74b25181cb6037802c7cf31128397433d5",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "9b3c06a0ef45420ebf6f0dfe0214357451a7b7b9ce6c4562b3be8463088ac60b",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 5
+    },
+    {
+      "action": 6,
+      "command_sha256": "7edc8b07524bd567883c7f1dd549d15b35b606b1e9c01854a6e1b3bedfdb13de",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "9b3c06a0ef45420ebf6f0dfe0214357451a7b7b9ce6c4562b3be8463088ac60b",
+      "signal": "unchanged_source_review",
+      "state": "unchanged",
+      "unchanged_streak": 6
+    },
+    {
+      "action": 7,
+      "command_sha256": "072c08a7043858979bc4ad76b2b4b579f244af9b9190fd459a13613c4d17d927",
+      "tool_returncode": 1,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [
+        "probe.py"
+      ],
+      "net_changed_paths": [
+        "probe.py"
+      ],
+      "snapshot_sha256": "4a91156a09fa0f33630bd055a4bef0a3751e37c0d9d6686e68ba8710b72cfd2c",
+      "signal": null,
+      "state": "changed",
+      "unchanged_streak": 0
+    },
+    {
+      "action": 8,
+      "command_sha256": "364ab1f6b5fe270f9a7cc77cafab42e4d0c1e8e99ec0025be752d4a24ebaf905",
+      "tool_returncode": 1,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [
+        "probe.py"
+      ],
+      "snapshot_sha256": "4a91156a09fa0f33630bd055a4bef0a3751e37c0d9d6686e68ba8710b72cfd2c",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 1
+    },
+    {
+      "action": 9,
+      "command_sha256": "d7e9a1852e06890951432978a0c7c5e9a7fa8bdaf8a7c547fee1767f041fc3f8",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [
+        "probe.py"
+      ],
+      "net_changed_paths": [],
+      "snapshot_sha256": "9b3c06a0ef45420ebf6f0dfe0214357451a7b7b9ce6c4562b3be8463088ac60b",
+      "signal": null,
+      "state": "changed",
+      "unchanged_streak": 0
+    },
+    {
+      "action": 10,
+      "command_sha256": "8afd4501408ec800b3b65e452f6bc7d2957281e6e7297b6bf511fe398c131390",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [
+        "probe.py"
+      ],
+      "net_changed_paths": [
+        "probe.py"
+      ],
+      "snapshot_sha256": "d78c7d57b68cfa7c5f179cad56e00fa13b986ed80a9cfe0eeac5850c3a0b2561",
+      "signal": null,
+      "state": "changed",
+      "unchanged_streak": 0
+    },
+    {
+      "action": 11,
+      "command_sha256": "da094ae6b6c47a661f59d219cc662756c1f733b206ef1c280d0fcded7c0cd886",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": "CalledProcessError",
+      "changed_paths": null,
+      "net_changed_paths": null,
+      "snapshot_sha256": null,
+      "signal": null,
+      "state": "unknown",
+      "unchanged_streak": 0
+    },
+    {
+      "action": 12,
+      "command_sha256": "70d406fe493701c2e5d99d30eb1ade91171fc450823eacb261ebe54f99168bea",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": null,
+      "net_changed_paths": [],
+      "snapshot_sha256": "9b3c06a0ef45420ebf6f0dfe0214357451a7b7b9ce6c4562b3be8463088ac60b",
+      "signal": null,
+      "state": "reanchored",
+      "unchanged_streak": 0
+    },
+    {
+      "action": 13,
+      "command_sha256": "2e2577cea459e468a3c7237d52cfd7c074569f65082e4f900514a7f20923eecd",
+      "tool_returncode": null,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "9b3c06a0ef45420ebf6f0dfe0214357451a7b7b9ce6c4562b3be8463088ac60b",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 1
+    }
+  ],
+  "summary": {
+    "actions": 13,
+    "changed_actions": 3,
+    "unknown_actions": 1,
+    "review_signals": 1,
+    "max_unchanged_streak": 6
+  },
+  "limitations": [
+    "Source changes do not establish correctness or useful progress.",
+    "Only existing exported Python files are tracked, at action boundaries.",
+    "Temporary edits reverted within an action are invisible.",
+    "Tool return codes are not trusted test results; test_passed remains unknown.",
+    "Observations inside an agent-writable container are not adversarially tamper-proof."
+  ],
+  "scope": "Synthetic Docker sensor integration; not a model repair experiment",
+  "image": "python@sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b",
+  "model_api_calls": 0,
+  "assertions_passed": true
+}

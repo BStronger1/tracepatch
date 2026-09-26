@@ -1,0 +1,48 @@
+{
+  "frozen_at_utc": "2026-09-26T09:56:27.906368+00:00",
+  "task": "click-1687",
+  "scope": "One prospective pair on an already used development task, no general effect estimate",
+  "order": [
+    {
+      "batch": "repo-progress-observe-001",
+      "mode": "observe"
+    },
+    {
+      "batch": "repo-progress-feedback-001",
+      "mode": "feedback"
+    }
+  ],
+  "policy": "recovery-submit",
+  "threshold": 6,
+  "max_output_tokens": 1024,
+  "max_calls": 24,
+  "primary_outcome": "independent verification and submission reported separately",
+  "secondary_outcomes": [
+    "first changed action",
+    "longest unchanged streak",
+    "review signals",
+    "delivered notices",
+    "calls",
+    "known estimated cost"
+  ],
+  "stop_rule": "One run per arm, no automatic retries; stop on infrastructure failure",
+  "file_hashes": {
+    "scripts/run-repo.py": "cc4e25cd36401e43717bb8c47fa8509a7294b54b61788938d6bfbee6e8e9e88b",
+    "scripts/run-smoke.py": "d41fc4c9d87e99b975fcfa48dbe92586ef97f82d106077e1cf1527c774242fd0",
+    "scripts/compare-runs.py": "b1fe0c2531fd016de5dcea73ed7e429942272d7a9b006eff27a6edd01c0a09ad",
+    "scripts/check-progress.py": "32bb9dde6ac530273670169fd8920539b3c1ce6eeb298bdebda61e26d7431718",
+    "configs/model.json": "021407109d9b2411db4bca4aef63a273c7106bdd233a28dee20e5906fa90cf6f",
+    "docs/PROGRESS.md": "3b80d9f8149e64e61ecfba8cc6dbce2756056203b1daec9c95274a3dbcf39feb",
+    "src/tracepatch/budget.py": "1b01eec313421e8f457c54c37fd34924c5ab98df8ab045ea1788d9486a2724bf",
+    "src/tracepatch/actions.py": "46e9a0e0ba16ffd4e24d021d88933b3ffd676e396234250d67e540a678130003",
+    "src/tracepatch/recovery.py": "1a98ce4a7d50b47f1878e69176a893db6a4e7650a2be72aa8f6d8f0e1079b939",
+    "src/tracepatch/lifecycle.py": "924ed1387360656fcbf5a077c3796db426074f541ca3079fd00edabfd3c66179",
+    "src/tracepatch/window.py": "4612cbba4b060863eae2a3a958af33a3d44ccdddc43dae2276585b7e71b8e706",
+    "src/tracepatch/toolcalling.py": "3b182f990998cdc8ff8a7744bf070b7cf63d296bb97c2518369a91309c950e9a",
+    "src/tracepatch/repositories.py": "04f3c393332518b18c78fbc7a547ef2ebf39d61b5569483865f731da9d106581",
+    "src/tracepatch/progress.py": "f783dc3a60a19b1f1eb0bff9be027e61d783e45b58b3a2a69222689dcfc4bc5d",
+    "tasks/repos/click-1687/task.json": "98146ee0e4ddf686eec9c8be99389cb9b5556d156e3f7c71d404385918192784",
+    "tasks/repos/click-1687/verify.py": "0baf5fd5d409f6c05a05854bd11805b76ee5a21a42d5e19ee73271fb34ae1880",
+    "tasks/repos/click-1687/reproduce_issue.py": "e4f7b6a0cc86ee13c50af892196f7113f83455789fb36b81a0f3a5a51664171f"
+  }
+}
