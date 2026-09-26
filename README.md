@@ -12,16 +12,17 @@ Diagnose coding-agent failures, preserve evidence, and evaluate recovery with in
 - 样例明确为合成数据，不属于实验成果。
 - 识别输出截断、不完整动作和缺失提交动作，生成定向恢复反馈；不执行残缺命令。
 - 请求预算账本、Docker 独立验证、冻结实验快照和双组比较。
-- 完整工具输出按哈希留存，并生成保留退出码的有界首尾预览；此独立模块已测试，尚未接入付费实验。
+- 完整工具输出在证据记忆采集链路中按哈希留存；有界首尾预览模块已测试，模型当前工具预览仍沿用旧格式。
 - [版本化离线重评](docs/REVERIFY.md)：对已有补丁应用新版验证，核对源码来源并记录哈希，保留原始成绩和提交状态，不调用模型 API。
 - 明确登记 Requests 和 Click 两种源码布局，按包内既有 Python 文件重建候选；布局配置及实现快照参与对照检查。
 - [逐步源码进展观测](docs/PROGRESS.md)：记录动作前后变化、相对初始版本的净变化和采集异常；可选发送复查提示，不将未改动认定为停滞或将改动认定为修复。
+- [有版本的证据记忆](docs/EVIDENCE_MEMORY.md)：保存有限源码位置、片段和失败记录，按当前源码指纹标记有效、过期或未知；历史删减时可补回卡片，仍遵守原上下文上限。
 
 ## 实验现状
 
 3 个自建开发任务首次配对实验：基线验证通过 2/3，恢复组 3/3；正常提交分别 1/3、2/3，调用分别 21、22 次。任务少、未重复且已用于开发，不能推断通用提升。见 [完整报告](reports/dev-paired-003.md) 和 [复现说明](docs/REPRODUCE.md)。
 
-已新增 [三文件任务队列修复](docs/MULTIFILE.md)：基线未通过，恢复组通过全部 8 组独立测试，但仍因步数耗尽未正常提交。见 [多文件对照报告](reports/multifile-paired-001.md)。此任务也是自建开发题，不是真实企业 issue 或独立保留集。47 项本地离线测试覆盖诊断、预算、证据留存、任务验证器、结束状态、有界历史、原生工具协议、输出额度对照、多仓库源码导出及进展观测。
+已新增 [三文件任务队列修复](docs/MULTIFILE.md)：基线未通过，恢复组通过全部 8 组独立测试，但仍因步数耗尽未正常提交。见 [多文件对照报告](reports/multifile-paired-001.md)。此任务也是自建开发题，不是真实企业 issue 或独立保留集。57 项本地离线测试覆盖诊断、预算、证据留存、任务验证器、结束状态、有界历史、原生工具协议、输出额度对照、多仓库源码导出、进展观测及证据记忆失效。
 
 `recovery-budget` 增加逐轮剩余调用提醒，并明确区分补丁验证与正常提交；历史设计见[轨迹审计](reports/completion-audit-001.md)。现已在真实仓库试跑，尚无稳定效果结论。
 
@@ -35,7 +36,9 @@ Diagnose coding-agent failures, preserve evidence, and evaluate recovery with in
 
 [第二个仓库 Click](reports/click-study-001.md)已完成从源码导入、Agent 执行到独立验证与离线重评的完整流程。首次两次修复均失败，分别暴露实现错误和长期检查后未形成有效修改的问题。当前共 **2 个仓库、4 个不同历史问题**，尚无可靠跨仓库修复结论；[Click 复现步骤](docs/CLICK_TASK.md)完整公开。
 
-最新：[源码进展提示配对实验](reports/progress-study-001.md)对“只记录”和“发送提示”各运行一次。首次修改发生在动作 22 / 19，但两份补丁均有未定义变量错误，均未通过独立验证。逐步证据和三次提示发送可查；不将修改提前解释为修复质量提升。
+[源码进展提示配对实验](reports/progress-study-001.md)对“只记录”和“发送提示”各运行一次。首次修改发生在动作 22 / 19，但两份补丁均有未定义变量错误，均未通过独立验证。逐步证据和三次提示发送可查；不将修改提前解释为修复质量提升。
+
+最新：[版本化证据记忆实验](reports/memory-study-001.md)在 Click、Requests 各完成一组对照，34 次请求实际补回卡片，并区分匹配、过期和未知版本。四次修复均未全部通过独立回归；已提交的 Requests 补丁仍有兼容性缺陷。功能及审计链路已验证，尚无修复成功率提升结论。
 
 此前五次未成功的开发尝试和条件变化完整保留在[历史报告](reports/requests-study-001.md)。不将失败隐藏，也不把协议改动前后不同条件的结果当作严格因果对照。
 
@@ -45,7 +48,11 @@ Diagnose coding-agent failures, preserve evidence, and evaluate recovery with in
 $env:PYTHONPATH = 'src'
 python -m tracepatch examples/synthetic.traj.json --output artifacts/demo-report.json
 python -m unittest discover -s tests -v
+python scripts/demo-memory.py --output-dir artifacts/memory-demo-new
 ```
+
+最后一条是无需 Docker 或 API 的合成演示：展示记忆从有效变为过期、重新读取后更新，
+以及在固定字节预算内补回卡片。输出目录必须是新目录，演示结果不属于模型修复成绩。
 
 正式接入模型后，使用相同命令分析真实轨迹。完整日志与报告默认仅保存在本地；分享前检查敏感内容。
 

@@ -5,19 +5,24 @@ from pathlib import Path
 
 
 def compare(left: Path, right: Path, *, intervention='policy') -> dict:
-    if intervention not in ('policy', 'output-budget', 'progress-feedback'):
+    if intervention not in ('policy', 'output-budget', 'progress-feedback', 'evidence-memory'):
         raise ValueError('Unknown intervention')
     manifests = [json.loads((p / 'manifest.json').read_text(encoding='utf-8')) for p in (left, right)]
     controlled = ('split', 'suite', 'upstream_commit', 'image', 'system_prompt', 'model', 'action_protocol',
                   'max_calls_per_task', 'max_output_tokens', 'enable_thinking',
                   'observation_char_limit', 'input_json_byte_limit', 'tasks', 'reject_provider_truncation', 'source_layout',
-                  'progress_mode', 'progress_threshold', 'progress_schema')
+                  'progress_mode', 'progress_threshold', 'progress_schema',
+                  'memory_mode', 'memory_schema', 'memory_byte_limit')
     if intervention == 'output-budget':
         controlled = tuple(k for k in controlled if k != 'max_output_tokens') + ('policy', 'context_policy')
     if intervention == 'progress-feedback':
         controlled = tuple(k for k in controlled if k != 'progress_mode') + ('policy', 'context_policy')
         if {m.get('progress_mode') for m in manifests} != {'observe', 'feedback'}:
             raise ValueError('Progress comparison requires observe and feedback modes')
+    if intervention == 'evidence-memory':
+        controlled = tuple(k for k in controlled if k != 'memory_mode') + ('policy', 'context_policy')
+        if {m.get('memory_mode') for m in manifests} != {'observe', 'recall'}:
+            raise ValueError('Memory comparison requires observe and recall modes')
     differences = [key for key in controlled if manifests[0].get(key) != manifests[1].get(key)]
     if differences:
         raise ValueError('Uncontrolled differences: ' + ', '.join(differences))
@@ -31,6 +36,12 @@ def compare(left: Path, right: Path, *, intervention='policy') -> dict:
         if (left / 'lifecycle.snapshot.py').read_bytes() != (right / 'lifecycle.snapshot.py').read_bytes():
             raise ValueError('Different lifecycle snapshot')
     arms = []
+    for name in ('memory', 'context'):
+        if intervention == 'evidence-memory' or any((p / f'{name}.snapshot.py').exists() for p in (left, right)):
+            if not all((p / f'{name}.snapshot.py').exists() for p in (left, right)):
+                raise ValueError('Missing snapshot: ' + name)
+            if (left / f'{name}.snapshot.py').read_bytes() != (right / f'{name}.snapshot.py').read_bytes():
+                raise ValueError('Different snapshot: ' + name)
     if any((p / 'progress.snapshot.py').exists() for p in (left, right)):
         if not all((p / 'progress.snapshot.py').exists() for p in (left, right)):
             raise ValueError('Missing progress snapshot')
@@ -58,6 +69,7 @@ def compare(left: Path, right: Path, *, intervention='policy') -> dict:
             raise ValueError('Incomplete batch')
         arms.append({'batch': folder.name, 'policy': manifest['policy'],
                      'progress_mode': manifest.get('progress_mode', 'off'),
+                     'memory_mode': manifest.get('memory_mode', 'off'),
                      'max_output_tokens': manifest.get('max_output_tokens'),
                      'context_policy': manifest.get('context_policy', 'none'),
                      'verified': sum(t['verified_success'] for t in tasks),
@@ -68,7 +80,7 @@ def compare(left: Path, right: Path, *, intervention='policy') -> dict:
                      'unknown_cost_requests': sum(t['unknown_cost_requests'] for t in tasks),
                      'tasks': [{k: t.get(k) for k in ('task', 'verified_success', 'agent_exit',
                                 'api_calls', 'format_error_count')} for t in tasks]})
-    interventions = [key for key in ('policy', 'context_policy', 'max_output_tokens', 'progress_mode')
+    interventions = [key for key in ('policy', 'context_policy', 'max_output_tokens', 'progress_mode', 'memory_mode')
                      if manifests[0].get(key, 'none') != manifests[1].get(key, 'none')]
     return {'scope': 'Single run per development task per arm; not a benchmark or causal estimate.',
             'controls_match': True, 'intervention_fields': interventions, 'arms': arms}
@@ -79,7 +91,7 @@ if __name__ == '__main__':
     parser.add_argument('baseline', type=Path)
     parser.add_argument('recovery', type=Path)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--intervention', choices=('policy', 'output-budget', 'progress-feedback'), default='policy')
+    parser.add_argument('--intervention', choices=('policy', 'output-budget', 'progress-feedback', 'evidence-memory'), default='policy')
     args = parser.parse_args()
     result = compare(args.baseline, args.recovery, intervention=args.intervention)
     with args.output.open('x', encoding='utf-8') as handle:

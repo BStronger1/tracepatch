@@ -17,6 +17,7 @@ from tracepatch.budget import BudgetLedger
 from tracepatch.lifecycle import completion_status
 from tracepatch.repositories import repository_layout, reconstruct_candidate
 from tracepatch.progress import ProgressMonitor, ObservedEnvironment, docker_snapshot
+from tracepatch.memory import EvidenceMemory, docker_read_ranges
 
 spec = importlib.util.spec_from_file_location('runtime', ROOT / 'scripts/run-smoke.py')
 runtime = importlib.util.module_from_spec(spec)
@@ -78,7 +79,10 @@ def main():
     parser.add_argument('--max-output-tokens', type=int, choices=(512, 1024), default=512)
     parser.add_argument('--action-protocol', choices=('text', 'native'), default='text')
     parser.add_argument('--progress-mode', choices=('off', 'observe', 'feedback'), default='off')
+    parser.add_argument('--memory-mode', choices=('off', 'observe', 'recall'), default='off')
     args = parser.parse_args()
+    if args.memory_mode != 'off' and args.progress_mode == 'off':
+        parser.error('Evidence memory requires source observation')
     system = SYSTEM.replace('12 model calls', f'{args.max_calls} model calls')
     if args.action_protocol == 'native':
         system = system.replace('Return exactly one complete fenced bash action per reply.',
@@ -100,7 +104,7 @@ def main():
     batch = ROOT / 'runs' / args.batch
     batch.mkdir(parents=True, exist_ok=False)
     for name, path in {'runner': Path(__file__), 'runtime': ROOT / 'scripts/run-smoke.py',
-                       **{n: ROOT / f'src/tracepatch/{n}.py' for n in ('budget', 'actions', 'recovery', 'lifecycle', 'window', 'toolcalling', 'repositories', 'progress')}}.items():
+                       **{n: ROOT / f'src/tracepatch/{n}.py' for n in ('budget', 'actions', 'recovery', 'lifecycle', 'window', 'toolcalling', 'repositories', 'progress', 'memory', 'context')}}.items():
         shutil.copyfile(path, batch / f'{name}.snapshot.py')
     base, reference = batch / 'base', batch / 'reference'
     hashes = {'base_archive': archive_source(task_config['base_commit'], base, task_config['repository']),
@@ -117,6 +121,8 @@ def main():
                 'source_layout': {'vendor': layout.vendor, 'source': layout.source, 'imports': layout.imports},
                 'progress_mode': args.progress_mode,
                 'progress_threshold': 6, 'progress_schema': 'tracepatch-progress-0.1',
+                'memory_mode': args.memory_mode, 'memory_schema': 'tracepatch-memory-0.1',
+                'memory_byte_limit': 4200,
                 'max_output_tokens': args.max_output_tokens, 'enable_thinking': False, 'observation_char_limit': 6000,
                 'input_json_byte_limit': 24000, 'reject_provider_truncation': True,
                 'tasks': {task_config['id']: hashes}, 'provenance': task_config}
@@ -169,7 +175,13 @@ def main():
             if initial != expected:
                 raise ValueError('Initial source observation does not match the frozen base')
             monitor = ProgressMonitor(initial)
-            env = ObservedEnvironment(env, monitor, snapshot, run / 'progress.json')
+            memory = None
+            if args.memory_mode != 'off':
+                reader = lambda ranges: docker_read_ranges(runtime.DOCKER, container_id, ranges)
+                memory = EvidenceMemory(paths, run / 'memory.json', reader)
+                model.evidence_memory = memory
+                model.memory_mode = args.memory_mode
+            env = ObservedEnvironment(env, monitor, snapshot, run / 'progress.json', memory=memory)
             model.progress_monitor = monitor
             model.progress_feedback = args.progress_mode == 'feedback'
         agent = runtime.DefaultAgent(model, env, step_limit=args.max_calls, cost_limit=args.max_calls * 0.1,

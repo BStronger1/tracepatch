@@ -73,3 +73,17 @@ class CompareRunsTests(unittest.TestCase):
         path.write_text(json.dumps(manifest))
         with self.assertRaisesRegex(ValueError, 'progress_threshold'):
             module.compare(self.left, self.right, intervention='progress-feedback')
+
+    def test_memory_intervention_requires_matching_collectors_and_limits(self):
+        for folder, mode in ((self.left, 'observe'), (self.right, 'recall')):
+            path = folder / 'manifest.json'
+            manifest = json.loads(path.read_text())
+            manifest.update(memory_mode=mode, max_output_tokens=1024, memory_byte_limit=4200)
+            path.write_text(json.dumps(manifest))
+            for name in ('memory', 'context'):
+                (folder / f'{name}.snapshot.py').write_text('same collector')
+        result = module.compare(self.left, self.right, intervention='evidence-memory')
+        self.assertEqual(result['intervention_fields'], ['memory_mode'])
+        (self.right / 'memory.snapshot.py').write_text('different collector')
+        with self.assertRaisesRegex(ValueError, 'memory'):
+            module.compare(self.left, self.right, intervention='evidence-memory')
