@@ -1,0 +1,13 @@
+{
+  "id": "click-2040",
+  "repository": "https://github.com/pallets/click",
+  "issue": "https://github.com/pallets/click/issues/2040",
+  "reference_url": "https://github.com/pallets/click/commit/f2e579ab187ca8fdfbe6ce86de08f0e9f62fe4ae",
+  "base_commit": "d251cb0abc9b0dbda2402d4d831c18718cfb51bf",
+  "reference_commit": "f2e579ab187ca8fdfbe6ce86de08f0e9f62fe4ae",
+  "image": "python@sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b",
+  "evaluation": "first-use custom regression for a public historical issue; not a blind holdout or official benchmark",
+  "expected_failure": "test_symbol_value_reproduction",
+  "verifier_test_count": 12,
+  "instruction": "Fix Click shell completion for option values starting with symbols. For example a -c Choice containing +red and +blue should complete both for incomplete '+' when '+' is not an option prefix for that command. Determine option prefixes from the active context, not from whether a character is punctuation. Preserve option-name precedence for prefixes that are actually registered, including custom + and / options. Count options and boolean flags must not consume a following value-completion slot. Preserve regular choices, multi-value and repeated options, --option=value completion, positional values after --, path completion, and nested-command context behavior. Inspect the repository and implement a compatible fix. Only existing Python files under src/click/ will be exported. No network is available. You may write local tests; do not modify upstream tests. Submit after focused checks pass."
+}

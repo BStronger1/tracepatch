@@ -1,0 +1,409 @@
+{
+  "schema_version": "tracepatch-triage-0.1",
+  "scope": "Descriptive metadata audit. Categories are not causes or independent verification of the logs.",
+  "categories": {
+    "acceptance_failed_after_observed_edits": 10,
+    "submitted_but_acceptance_failed": 2,
+    "verified_without_submission": 1,
+    "verified_submitted": 2,
+    "acceptance_failed_without_observed_edits": 1
+  },
+  "runs": [
+    {
+      "run": "repo-memory-click-observe-001--click-1687",
+      "task": "click-1687",
+      "observations": {
+        "category": "acceptance_failed_after_observed_edits",
+        "acceptance_passed": false,
+        "agent_submitted": false,
+        "observed_changed_actions": 3,
+        "unknown_observation_actions": 0,
+        "final_net_source_change": true,
+        "final_source_sha256": "9a3586e554ee2efd23dbdc49dd8a1383ca4fc05442c3020a507404b6ff7b8ccc",
+        "current_public_status": "unknown",
+        "current_python_status": null,
+        "python_check_count": null,
+        "source_changing_python_checks": null,
+        "public_pass_but_acceptance_failed": false,
+        "python_pass_but_acceptance_failed": false
+      },
+      "source_file_hashes": {
+        "result.json": "c977e2f7a1f40d552a71d2dc03af6f9f11e03658528c93ba156f10d9b07c630b",
+        "progress.json": "3535cc0ae716af708c6817460238504b67f611434fa5ddb6e72c8a663b1656ea"
+      }
+    },
+    {
+      "run": "repo-memory-click-recall-001--click-1687",
+      "task": "click-1687",
+      "observations": {
+        "category": "acceptance_failed_after_observed_edits",
+        "acceptance_passed": false,
+        "agent_submitted": false,
+        "observed_changed_actions": 1,
+        "unknown_observation_actions": 0,
+        "final_net_source_change": true,
+        "final_source_sha256": "60fdd6331e78a5a0d8766a9ee95f89d31978392aa014013d5e288ad81cb33f53",
+        "current_public_status": "unknown",
+        "current_python_status": null,
+        "python_check_count": null,
+        "source_changing_python_checks": null,
+        "public_pass_but_acceptance_failed": false,
+        "python_pass_but_acceptance_failed": false
+      },
+      "source_file_hashes": {
+        "result.json": "5add692a92abfbcd42140d19cc18001ff1cb8bd73d1b1988a7ffe22b7d861132",
+        "progress.json": "dc71032f7c15a3c9686e14cb0fb9fe750487ff6775072be9c7c5c0d535cf2edb"
+      }
+    },
+    {
+      "run": "repo-memory-requests-observe-001--requests-2527-v2",
+      "task": "requests-2527-v2",
+      "observations": {
+        "category": "submitted_but_acceptance_failed",
+        "acceptance_passed": false,
+        "agent_submitted": true,
+        "observed_changed_actions": 4,
+        "unknown_observation_actions": 0,
+        "final_net_source_change": true,
+        "final_source_sha256": "242f6b9618e44c46382256ae9a2bc8a707b9a3509e8ed61ed31aa14bf3740879",
+        "current_public_status": "unknown",
+        "current_python_status": null,
+        "python_check_count": null,
+        "source_changing_python_checks": null,
+        "public_pass_but_acceptance_failed": false,
+        "python_pass_but_acceptance_failed": false
+      },
+      "source_file_hashes": {
+        "result.json": "9d97ebd8b7d55add64c21d4f2862cc0dcfce2d021c3911b68beb4bafa4f20685",
+        "progress.json": "dec4f0810f6d1eb56857cf51d42ff3c26fa5f7378981c445dec892ff42c7d758"
+      }
+    },
+    {
+      "run": "repo-memory-requests-recall-001--requests-2527-v2",
+      "task": "requests-2527-v2",
+      "observations": {
+        "category": "submitted_but_acceptance_failed",
+        "acceptance_passed": false,
+        "agent_submitted": true,
+        "observed_changed_actions": 2,
+        "unknown_observation_actions": 0,
+        "final_net_source_change": true,
+        "final_source_sha256": "faf479b9b72f9c52584dc37df13e9ffc3d2cef098016d7cde9837c2e35f1f923",
+        "current_public_status": "unknown",
+        "current_python_status": null,
+        "python_check_count": null,
+        "source_changing_python_checks": null,
+        "public_pass_but_acceptance_failed": false,
+        "python_pass_but_acceptance_failed": false
+      },
+      "source_file_hashes": {
+        "result.json": "ddb74036dd7bfaeff959237f692cfb931a5927c09c0bd55a80886c514ce53712",
+        "progress.json": "7fe6ba3d8a6808b3bedc8bbd635181c48eea62c6bdc4a474ba77bfa56f675e58"
+      }
+    },
+    {
+      "run": "repo-symbols-excerpts-001--requests-2527-v2",
+      "task": "requests-2527-v2",
+      "observations": {
+        "category": "acceptance_failed_after_observed_edits",
+        "acceptance_passed": false,
+        "agent_submitted": false,
+        "observed_changed_actions": 4,
+        "unknown_observation_actions": 0,
+        "final_net_source_change": true,
+        "final_source_sha256": "b2a69a0123448f5e8945d6e8668251d42279edb3a289fe713f05816893097121",
+        "current_public_status": "unknown",
+        "current_python_status": null,
+        "python_check_count": null,
+        "source_changing_python_checks": null,
+        "public_pass_but_acceptance_failed": false,
+        "python_pass_but_acceptance_failed": false
+      },
+      "source_file_hashes": {
+        "result.json": "e13d7b61a6c0ff1a78ba3bfe5d87df960e089f6f4599b1f36a6546276b27c0d5",
+        "progress.json": "34cc328389de19ee3a37a4a9e0f9475aeb3393a141e8c60d5f488da9664db687"
+      }
+    },
+    {
+      "run": "repo-symbols-structured-001--requests-2527-v2",
+      "task": "requests-2527-v2",
+      "observations": {
+        "category": "verified_without_submission",
+        "acceptance_passed": true,
+        "agent_submitted": false,
+        "observed_changed_actions": 1,
+        "unknown_observation_actions": 0,
+        "final_net_source_change": true,
+        "final_source_sha256": "adeed118a6b66d32d3a0ecbc0b8a8c24a21b445bbab38ad8997f07fa415483ce",
+        "current_public_status": "unknown",
+        "current_python_status": null,
+        "python_check_count": null,
+        "source_changing_python_checks": null,
+        "public_pass_but_acceptance_failed": false,
+        "python_pass_but_acceptance_failed": false
+      },
+      "source_file_hashes": {
+        "result.json": "a5667c61002e76ace1dea3081d589ded4f4909ea32a8f52698466111cece5ede",
+        "progress.json": "4855b7bb9d3b18916fccc18f5155504e13fc7385b5f13151fd215c4e0ec27af4"
+      }
+    },
+    {
+      "run": "repo-checks-observe-001--requests-2527-v2",
+      "task": "requests-2527-v2",
+      "observations": {
+        "category": "acceptance_failed_after_observed_edits",
+        "acceptance_passed": false,
+        "agent_submitted": false,
+        "observed_changed_actions": 5,
+        "unknown_observation_actions": 0,
+        "final_net_source_change": true,
+        "final_source_sha256": "4486b459bb7ab8febc2c5460a6d9858b9e5ad16fef43811f41bb860b4a580943",
+        "current_public_status": "passed",
+        "current_python_status": null,
+        "python_check_count": null,
+        "source_changing_python_checks": null,
+        "public_pass_but_acceptance_failed": true,
+        "python_pass_but_acceptance_failed": false
+      },
+      "source_file_hashes": {
+        "result.json": "8ab125c84ef982b501e11b8c3026dcbe2601b96003c74059796f5b54d424830a",
+        "progress.json": "63f21b8a3abefd78fea74ce4e47bf836e833a37eae84a59f4b19c9887dc2cb28",
+        "public-checks/checks.json": "e22549a4bfa739e74efe53122241fa68b6a1af1aece56c7e08364dd7e72a8da9"
+      }
+    },
+    {
+      "run": "repo-checks-feedback-001--requests-2527-v2",
+      "task": "requests-2527-v2",
+      "observations": {
+        "category": "acceptance_failed_after_observed_edits",
+        "acceptance_passed": false,
+        "agent_submitted": false,
+        "observed_changed_actions": 3,
+        "unknown_observation_actions": 0,
+        "final_net_source_change": true,
+        "final_source_sha256": "3fbeeffe8684c452292038a9320ace005d4d4ab636e9c7f654e2a67f29d45019",
+        "current_public_status": "passed",
+        "current_python_status": null,
+        "python_check_count": null,
+        "source_changing_python_checks": null,
+        "public_pass_but_acceptance_failed": true,
+        "python_pass_but_acceptance_failed": false
+      },
+      "source_file_hashes": {
+        "result.json": "666cab831963a379baac25b6384ade16d3c5d81ff19fdc7547435cde6eb869ef",
+        "progress.json": "64a6744cd52e0a6c785f0b8c2466fbb8ca256a018feba27e63450acfa2755117",
+        "public-checks/checks.json": "0a99ed11eac3cffe1fda7efe184d2d732e9b846cf1b6dbd1b84c58fe07bc6d00"
+      }
+    },
+    {
+      "run": "repo-forward-off-001--click-1840",
+      "task": "click-1840",
+      "observations": {
+        "category": "verified_submitted",
+        "acceptance_passed": true,
+        "agent_submitted": true,
+        "observed_changed_actions": 2,
+        "unknown_observation_actions": 0,
+        "final_net_source_change": true,
+        "final_source_sha256": "4559591d836c38af4c959c207e67013dd54f71cb4502070191f203aeea344bdb",
+        "current_public_status": "passed",
+        "current_python_status": null,
+        "python_check_count": null,
+        "source_changing_python_checks": null,
+        "public_pass_but_acceptance_failed": false,
+        "python_pass_but_acceptance_failed": false
+      },
+      "source_file_hashes": {
+        "result.json": "3bc3129d40fff292d8f67bb3faac1eec0d4f3112806cda6a73ecfb68066a294c",
+        "progress.json": "94e12c33cc738a44999397ea2b3d05602cde414e762b24754d1435e8f3eca633",
+        "public-checks/checks.json": "74545289b42817a7854d530fa5feeee2e0af6cf0cc67e0d30d4bb1149cc6255a"
+      }
+    },
+    {
+      "run": "repo-forward-python-001--click-1840",
+      "task": "click-1840",
+      "observations": {
+        "category": "acceptance_failed_without_observed_edits",
+        "acceptance_passed": false,
+        "agent_submitted": false,
+        "observed_changed_actions": 0,
+        "unknown_observation_actions": 0,
+        "final_net_source_change": false,
+        "final_source_sha256": "6f09ab0ba16b273d68a0eb8087440dbdadda7d09471630e4a74216921c261793",
+        "current_public_status": "failed",
+        "current_python_status": null,
+        "python_check_count": 0,
+        "source_changing_python_checks": 0,
+        "public_pass_but_acceptance_failed": false,
+        "python_pass_but_acceptance_failed": false
+      },
+      "source_file_hashes": {
+        "result.json": "bb8c4f6881b30eebe14d6593b5baca392d1d6e44fd4294b6a7dda861ed389ca0",
+        "progress.json": "dc8fc3c68e6a574406820ff432d47b7672a98e6ba3457ca20cefc8c3ebe63f61",
+        "public-checks/checks.json": "1376d18d8f5ad0db058cc84cc52079e16e880e58a9f6b9480ac5c70df8c6a925"
+      }
+    },
+    {
+      "run": "repo-stages-click-observe-001--click-1840-v2",
+      "task": "click-1840-v2",
+      "observations": {
+        "category": "acceptance_failed_after_observed_edits",
+        "acceptance_passed": false,
+        "agent_submitted": false,
+        "observed_changed_actions": 1,
+        "unknown_observation_actions": 0,
+        "final_net_source_change": true,
+        "final_source_sha256": "a31a7e62dc8892a37e6fe89ff123a40ae5780aee9dea5ef04d5a7694571b9c6a",
+        "current_public_status": "failed",
+        "current_python_status": null,
+        "python_check_count": 2,
+        "source_changing_python_checks": 0,
+        "public_pass_but_acceptance_failed": false,
+        "python_pass_but_acceptance_failed": false
+      },
+      "source_file_hashes": {
+        "result.json": "3a210511420b8fa8683093ddc3d752ccbbbbf5b19533aea445e4d7fde5066b9a",
+        "progress.json": "a33f582fdbffc5fd829ea0d46214a6e2534b4997bb3c5fa2c29cfe08089046da",
+        "public-checks/checks.json": "30eca20e9715615ef67f7bc7e961e8eaa82057c8285fd1c3dc171f132f6d386b",
+        "python-checks/001.json": "6bfc76bac397dd340604801a30cf80051ee0a184de85349fcac55687b9f8d51e",
+        "python-checks/002.json": "c8db4699313f1a1f9b25bd1119031cf60e84d1017dadc598250cc0641957c1f9"
+      }
+    },
+    {
+      "run": "repo-stages-click-guide-001--click-1840-v2",
+      "task": "click-1840-v2",
+      "observations": {
+        "category": "acceptance_failed_after_observed_edits",
+        "acceptance_passed": false,
+        "agent_submitted": false,
+        "observed_changed_actions": 2,
+        "unknown_observation_actions": 0,
+        "final_net_source_change": true,
+        "final_source_sha256": "e92b7320072aac55e7a4e46b710c9265313d58b2bc19d720ced521231ca14aec",
+        "current_public_status": "failed",
+        "current_python_status": "process_failed",
+        "python_check_count": 4,
+        "source_changing_python_checks": 1,
+        "public_pass_but_acceptance_failed": false,
+        "python_pass_but_acceptance_failed": false
+      },
+      "source_file_hashes": {
+        "result.json": "e2ade4861797bd1c2378d052233f5ebe688361165494c399539c7190f7a59144",
+        "progress.json": "7bb0d93e60957313c131c758ef9c55fa54926cb71a21ea578d8280f8b60cd9ee",
+        "public-checks/checks.json": "a5f4f4dcf6bf9a081f9d3df94592fd7279237f6b00549676f3d240dcdbbd61a8",
+        "python-checks/001.json": "bbf527bc78b5fdacde2abb8814a3b3ca6d69b1502a4689bf980edbcd37df1d6e",
+        "python-checks/002.json": "9082fb9fc75793e63a8ab6fa6303797bcbaefd53cefc0831f2e52b5dbb81ca57",
+        "python-checks/003.json": "ab09a1dfd8fb485bd3a51f64db7be8d8af4829edaf668490cfc06dc815043b37",
+        "python-checks/004.json": "0307eea1584f9622420777d465a5d4da0132cd7f454ab810c0f54df92b89c75e"
+      }
+    },
+    {
+      "run": "repo-stages-cookie-guide-001--requests-2527-v2",
+      "task": "requests-2527-v2",
+      "observations": {
+        "category": "acceptance_failed_after_observed_edits",
+        "acceptance_passed": false,
+        "agent_submitted": false,
+        "observed_changed_actions": 3,
+        "unknown_observation_actions": 0,
+        "final_net_source_change": true,
+        "final_source_sha256": "345d49b0e60a1e2cf64dfe91e508f8fb4cce7ac5ea379c9fcdef7d9a9a07d89b",
+        "current_public_status": "passed",
+        "current_python_status": null,
+        "python_check_count": 3,
+        "source_changing_python_checks": 0,
+        "public_pass_but_acceptance_failed": true,
+        "python_pass_but_acceptance_failed": false
+      },
+      "source_file_hashes": {
+        "result.json": "8d833c460e45555a54df8de8727b3c566bba90c75089d7a043bcbc5059d523b9",
+        "progress.json": "5e5e4b002c2e55d22ad4ce8a4f85bf2d0d4a54516480a4ea3f4ff13e21df4f47",
+        "public-checks/checks.json": "ccc4168a6c4397c99508fc4290da9f75a231e6bbc1453b2c485a552a7c36de04",
+        "python-checks/001.json": "f3d7b5567fe0826d2a5b4e18db332c63436084b9c11fcebfa986b49c72fe1986",
+        "python-checks/002.json": "015f5863d91e4b874f8012d9efcaec193279245c08eb9c4459777d10d5c9aad3",
+        "python-checks/003.json": "8468cd353858f0666c629a1401a0fd6cd1b442d2c7f3fe5aa8e34af9c163c938"
+      }
+    },
+    {
+      "run": "repo-stages-cookie-observe-001--requests-2527-v2",
+      "task": "requests-2527-v2",
+      "observations": {
+        "category": "verified_submitted",
+        "acceptance_passed": true,
+        "agent_submitted": true,
+        "observed_changed_actions": 3,
+        "unknown_observation_actions": 0,
+        "final_net_source_change": true,
+        "final_source_sha256": "56761c8458c32b95d6cf3ffdbe32dfcc90b034cf781cc1cdc642822ea914add5",
+        "current_public_status": "passed",
+        "current_python_status": null,
+        "python_check_count": 0,
+        "source_changing_python_checks": 0,
+        "public_pass_but_acceptance_failed": false,
+        "python_pass_but_acceptance_failed": false
+      },
+      "source_file_hashes": {
+        "result.json": "f9573f69573eb0dc557cf2c28378c4638c1d34176b21ac5849401fb291c661ea",
+        "progress.json": "95bb211730d77da79c4a4b3f5b81f903b0aaedfb78afd6ab3a309511b21b966a",
+        "public-checks/checks.json": "a519cbd62605a64a4455c5fb85aa7018c63d7b5991ea024176051a1df5a62dab"
+      }
+    },
+    {
+      "run": "repo-completion-guide-001--click-2040",
+      "task": "click-2040",
+      "observations": {
+        "category": "acceptance_failed_after_observed_edits",
+        "acceptance_passed": false,
+        "agent_submitted": false,
+        "observed_changed_actions": 3,
+        "unknown_observation_actions": 0,
+        "final_net_source_change": true,
+        "final_source_sha256": "f0167440302ecd123361702f3acf508bbc24e49c3327d9751aa6affce3c9cfb6",
+        "current_public_status": "failed",
+        "current_python_status": null,
+        "python_check_count": 2,
+        "source_changing_python_checks": 0,
+        "public_pass_but_acceptance_failed": false,
+        "python_pass_but_acceptance_failed": false
+      },
+      "source_file_hashes": {
+        "result.json": "f03f0f88222072e96722cc705fb824741026ebc1d5bf1e06ab1d8cf38ab93004",
+        "progress.json": "1d725d0e3a23826ec3bb7ac73712def1b90f47fe5ed32d8e742b3bdf7ab8e9f9",
+        "public-checks/checks.json": "69d10355bfbc3459d2e1a1c4b46f6af8f9810e16205724162bdb6c052331fc58",
+        "python-checks/001.json": "0c61dcdefbf46d2ac5ab3ab054168c836b1ac537c3390930c183c6738458725c",
+        "python-checks/002.json": "0a9666d7774045faf24accfaea1449961904413eff3a8af9e8321c941f17ddda"
+      }
+    },
+    {
+      "run": "repo-completion-observe-001--click-2040",
+      "task": "click-2040",
+      "observations": {
+        "category": "acceptance_failed_after_observed_edits",
+        "acceptance_passed": false,
+        "agent_submitted": false,
+        "observed_changed_actions": 1,
+        "unknown_observation_actions": 0,
+        "final_net_source_change": true,
+        "final_source_sha256": "10cc9f6d2b2717697d71aba00e98ca0197ab40456d4716994130cd5c4496384f",
+        "current_public_status": "failed",
+        "current_python_status": null,
+        "python_check_count": 1,
+        "source_changing_python_checks": 1,
+        "public_pass_but_acceptance_failed": false,
+        "python_pass_but_acceptance_failed": false
+      },
+      "source_file_hashes": {
+        "result.json": "785a69045e8c572194d806ada02c01e597f147673a4d866d194d64ac8525d760",
+        "progress.json": "f8605becd0c4bfd42fd96f5f3bce6c1bfb559ac7a11d2b0f52c28217ce73af3e",
+        "public-checks/checks.json": "55952c2cb364c973722eaf9880a1a2c95699e170d5b1c0d6996c4b978c50dc65",
+        "python-checks/001.json": "ab279c1579a9fb13df644ef5797a1da68b3993b5be841344de30ea3e67a9f910"
+      }
+    }
+  ],
+  "limitations": [
+    "No trace commands are executed.",
+    "Missing evidence stays unknown.",
+    "Passing checks do not prove sufficient coverage.",
+    "No claims about model reasoning, memory loss or general success rates."
+  ]
+}
