@@ -15,3 +15,4 @@ jobs:
         env:
           PYTHONPATH: src
       - run: python scripts/demo-memory.py --output-dir artifacts/ci-memory-demo
+      - run: python scripts/demo-interview.py --output-dir artifacts/ci-interview-demo

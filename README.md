@@ -4,6 +4,8 @@
 
 Diagnose coding-agent failures, preserve evidence, and evaluate recovery with independently verified patches. An early experimental toolkit.
 
+**先看五分钟演示：** [运行步骤与代码入口](docs/DEMO.md) · [项目讲解与常见追问](docs/LESSON_05.md)。只需 Python 3.12+，不需要 API Key、Docker 或第三方包；合成示例展示机制，真实模型成绩仍以实验报告为准。
+
 ## 当前可运行能力
 
 - 离线读取 mini-swe-agent `mini-swe-agent-1.1` 格式的结构化命令记录。
@@ -70,10 +72,12 @@ $env:PYTHONPATH = 'src'
 python -m tracepatch examples/synthetic.traj.json --output artifacts/demo-report.json
 python -m unittest discover -s tests -v
 python scripts/demo-memory.py --output-dir artifacts/memory-demo-new
+python scripts/demo-interview.py --output-dir artifacts/interview-demo-new
 ```
 
-最后一条是无需 Docker 或 API 的合成演示：展示记忆从有效变为过期、重新读取后更新，
-以及在固定字节预算内补回卡片。输出目录必须是新目录，演示结果不属于模型修复成绩。
+后两条是无需 Docker 或 API 的合成演示：记忆演示展示版本失效与补回；完整演示还包括源码编辑、
+换行保留、语法错误拒绝与模拟的提交/验收分类，生成 JSON 和中文讲解结果。
+输出目录必须是新目录，演示结果不属于模型修复成绩。
 
 正式接入模型后，使用相同命令分析真实轨迹。完整日志与报告默认仅保存在本地；分享前检查敏感内容。
 
