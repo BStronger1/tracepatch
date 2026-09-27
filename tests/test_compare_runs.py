@@ -10,6 +10,22 @@ spec.loader.exec_module(module)
 
 
 class CompareRunsTests(unittest.TestCase):
+    def test_edit_tool_comparison_only_allows_exact_instruction_change(self):
+        from tracepatch.editing import edit_tool_prompt
+        for folder, mode in ((self.left, 'off'), (self.right, 'replace')):
+            path = folder / 'manifest.json'
+            manifest = json.loads(path.read_text())
+            manifest.update(edit_tool=mode, test_tool='python', max_output_tokens=1024,
+                            system_prompt='base' if mode == 'off' else edit_tool_prompt('base'))
+            path.write_text(json.dumps(manifest))
+            (folder / 'editing.snapshot.py').write_text('same')
+        result = module.compare(self.left, self.right, intervention='edit-tool')
+        self.assertEqual(set(result['intervention_fields']), {'edit_tool', 'system_prompt'})
+        manifest['system_prompt'] += ' extra advice'
+        path.write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(ValueError, 'system_prompt'):
+            module.compare(self.left, self.right, intervention='edit-tool')
+
     def model_pair(self):
         for folder, model in ((self.left, 'flash'), (self.right, 'coder')):
             path = folder / 'manifest.json'

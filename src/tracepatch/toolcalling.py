@@ -1,5 +1,6 @@
 """Strict single-bash function calls and complete tool/result history."""
 import json
+from tracepatch.editing import validate_edit
 
 TOOL_OPTIONS = {
     'tools': [{'type': 'function', 'function': {'name': 'bash',
@@ -20,6 +21,13 @@ TEST_TOOL_OPTIONS = {
 }
 
 
+EDIT_TOOL_OPTIONS = {**TEST_TOOL_OPTIONS, 'tools': TEST_TOOL_OPTIONS['tools'] + [
+    {'type': 'function', 'function': {'name': 'replace_text',
+     'description': 'Replace one exact unique old string in an existing exported Python source file. Rejects missing, ambiguous or syntax-invalid edits. Returns persisted file hashes, not test success.',
+     'parameters': {'type': 'object', 'properties': {k: {'type': 'string'} for k in ('path', 'old', 'new')},
+                    'required': ['path', 'old', 'new'], 'additionalProperties': False}}}]}
+
+
 def unique_object(pairs):
     result = {}
     for key, value in pairs:
@@ -29,7 +37,7 @@ def unique_object(pairs):
     return result
 
 
-def parse_tool_call(message: dict, finish_reason: str | None, *, allow_python_check=False) -> tuple[str, dict]:
+def parse_tool_call(message: dict, finish_reason: str | None, *, allow_python_check=False, allow_replace_text=False) -> tuple[str, dict]:
     if finish_reason == 'length':
         raise ValueError('output_limit')
     if finish_reason not in ('tool_calls', 'stop'):
@@ -42,12 +50,19 @@ def parse_tool_call(message: dict, finish_reason: str | None, *, allow_python_ch
         raise ValueError('invalid_tool_call')
     function = call.get('function')
     allowed = ('bash', 'python_check') if allow_python_check else ('bash',)
+    if allow_replace_text:
+        allowed += ('replace_text',)
     if not isinstance(function, dict) or function.get('name') not in allowed or not isinstance(function.get('arguments'), str):
         raise ValueError('invalid_function')
     try:
         args = json.loads(function['arguments'], object_pairs_hook=unique_object)
     except ValueError:
         raise ValueError('invalid_arguments_json') from None
+    if function['name'] == 'replace_text':
+        validate_edit(args)
+        canonical = {'id': call['id'], 'type': 'function',
+                     'function': {'name': 'replace_text', 'arguments': json.dumps(args)}}
+        return json.dumps(args), canonical
     field = 'command' if function['name'] == 'bash' else 'code'
     if not isinstance(args, dict) or set(args) != {field} or not isinstance(args[field], str) or not args[field].strip():
         raise ValueError('invalid_command_schema')
@@ -58,7 +73,7 @@ def parse_tool_call(message: dict, finish_reason: str | None, *, allow_python_ch
     return args[field], canonical
 
 
-def native_history(messages: list[dict], *, allow_python_check=False) -> list[dict]:
+def native_history(messages: list[dict], *, allow_python_check=False, allow_replace_text=False) -> list[dict]:
     wire = []
     for message in messages:
         item = {'role': message['role'], 'content': message.get('content', '')}
@@ -67,11 +82,11 @@ def native_history(messages: list[dict], *, allow_python_check=False) -> list[di
         if message['role'] == 'tool':
             item['tool_call_id'] = message.get('tool_call_id')
         wire.append(item)
-    validate_history(wire, allow_python_check=allow_python_check)
+    validate_history(wire, allow_python_check=allow_python_check, allow_replace_text=allow_replace_text)
     return wire
 
 
-def validate_history(messages: list[dict], *, allow_python_check=False):
+def validate_history(messages: list[dict], *, allow_python_check=False, allow_replace_text=False):
     pending = None
     for message in messages:
         if pending is not None:
@@ -84,7 +99,7 @@ def validate_history(messages: list[dict], *, allow_python_check=False):
         if message.get('tool_calls'):
             if message.get('role') != 'assistant':
                 raise ValueError('Only assistants issue tools')
-            _, call = parse_tool_call(message, 'tool_calls', allow_python_check=allow_python_check)
+            _, call = parse_tool_call(message, 'tool_calls', allow_python_check=allow_python_check, allow_replace_text=allow_replace_text)
             pending = call['id']
     if pending is not None:
         raise ValueError('Missing tool result')

@@ -1,0 +1,351 @@
+{
+  "scope": "One known Click development task, one fresh run per arm. Optional editing interface and its fixed description together; not a general improvement claim.",
+  "plan": "edit-plan-001.json",
+  "pairs": [
+    {
+      "task": "click-2040",
+      "comparison": {
+        "scope": "Single run per development task per arm; not a benchmark or causal estimate.",
+        "controls_match": true,
+        "intervention_fields": [
+          "system_prompt",
+          "edit_tool"
+        ],
+        "arms": [
+          {
+            "batch": "repo-edit-off-001",
+            "policy": "recovery-submit",
+            "model": "qwen3-coder-plus",
+            "model_profile": "qwen3-coder-plus",
+            "progress_mode": "observe",
+            "memory_mode": "recall",
+            "memory_profile": "structured",
+            "check_mode": "feedback",
+            "test_tool": "python",
+            "edit_tool": "off",
+            "stage_mode": "observe",
+            "max_output_tokens": 1024,
+            "context_policy": "recent-turns",
+            "verified": 0,
+            "submitted": 0,
+            "calls": 24,
+            "rejected_actions": 0,
+            "estimated_known_no_cache_cny": 0.51149425,
+            "unknown_cost_requests": 0,
+            "tasks": [
+              {
+                "task": "click-2040",
+                "verified_success": false,
+                "agent_exit": "LimitsExceeded",
+                "api_calls": 24,
+                "format_error_count": 0
+              }
+            ]
+          },
+          {
+            "batch": "repo-edit-replace-001",
+            "policy": "recovery-submit",
+            "model": "qwen3-coder-plus",
+            "model_profile": "qwen3-coder-plus",
+            "progress_mode": "observe",
+            "memory_mode": "recall",
+            "memory_profile": "structured",
+            "check_mode": "feedback",
+            "test_tool": "python",
+            "edit_tool": "replace",
+            "stage_mode": "observe",
+            "max_output_tokens": 1024,
+            "context_policy": "recent-turns",
+            "verified": 0,
+            "submitted": 0,
+            "calls": 24,
+            "rejected_actions": 0,
+            "estimated_known_no_cache_cny": 0.56328825,
+            "unknown_cost_requests": 0,
+            "tasks": [
+              {
+                "task": "click-2040",
+                "verified_success": false,
+                "agent_exit": "LimitsExceeded",
+                "api_calls": 24,
+                "format_error_count": 0
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "arms": [
+    {
+      "batch": "repo-edit-off-001",
+      "task": "click-2040",
+      "requested_model": "qwen3-coder-plus",
+      "response_models": [
+        "qwen3-coder-plus"
+      ],
+      "result": {
+        "task": "click-2040",
+        "status": "verified",
+        "verified_success": false,
+        "agent_exit": "LimitsExceeded",
+        "verification": {
+          "output": "test_absolute_path_completion_metadata (__main__.CompletionContract) ... ok\ntest_boolean_flag_does_not_request_a_value (__main__.CompletionContract) ... ok\ntest_count_option_does_not_request_a_value (__main__.CompletionContract) ... FAIL\ntest_custom_completion_and_regular_option_names (__main__.CompletionContract) ... FAIL\ntest_double_dash_preserves_positional_values (__main__.CompletionContract) ... ok\ntest_equals_syntax_preserves_symbol_value (__main__.CompletionContract) ... FAIL\ntest_multivalue_symbol_argument_scanning (__main__.CompletionContract) ... FAIL\ntest_nested_context_prefixes_do_not_leak_from_siblings (__main__.CompletionContract) ... FAIL\ntest_registered_plus_prefix_keeps_option_precedence (__main__.CompletionContract) ... ok\ntest_registered_slash_prefix_keeps_option_precedence (__main__.CompletionContract) ... FAIL\ntest_repeat_option_still_accepts_values (__main__.CompletionContract) ... FAIL\ntest_symbol_value_reproduction (__main__.CompletionContract) ... \n======================================================================\nFAIL: test_count_option_does_not_request_a_value (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 36, in test_count_option_does_not_request_a_value\n    self.assertEqual(words(command, ['-v'], ''), ['north', 'south'])\nAssertionError: Lists differ: ['WRONG-count-value'] != ['north', 'south']\n\nFirst differing element 0:\n'WRONG-count-value'\n'north'\n\nSecond list contains 1 additional elements.\nFirst extra element 1:\n'south'\n\n- ['WRONG-count-value']\n+ ['north', 'south']\n\n======================================================================\nFAIL: test_custom_completion_and_regular_option_names (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 79, in test_custom_completion_and_regular_option_names\n    self.assertEqual([(x.value, x.help) for x in result], [('!done', 'custom help')])\nAssertionError: Lists differ: [] != [('!done', 'custom help')]\n\nSecond list contains 1 additional elements.\nFirst extra element 0:\n('!done', 'custom help')\n\n- []\n+ [('!done', 'custom help')]\n\n======================================================================\nFAIL: test_equals_syntax_preserves_symbol_value (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 56, in test_equals_syntax_preserves_symbol_value\n    self.assertEqual(words(command, [], '--color=!r'), ['!red', '!rose'])\nAssertionError: Lists differ: [] != ['!red', '!rose']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'!red'\n\n- []\n+ ['!red', '!rose']\n\n======================================================================\nFAIL: test_multivalue_symbol_argument_scanning (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 46, in test_multivalue_symbol_argument_scanning\n    self.assertEqual(words(command, ['-c', '!one'], '!'), ['!one', '!two'])\nAssertionError: Lists differ: [] != ['!one', '!two']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'!one'\n\n- []\n+ ['!one', '!two']\n\n======================================================================\nFAIL: test_nested_context_prefixes_do_not_leak_from_siblings (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 71, in test_nested_context_prefixes_do_not_leak_from_siblings\n    self.assertEqual(words(command, ['plain', '-c'], '+'), ['+red', '+rose'])\nAssertionError: Lists differ: [] != ['+red', '+rose']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'+red'\n\n- []\n+ ['+red', '+rose']\n\n======================================================================\nFAIL: test_registered_slash_prefix_keeps_option_precedence (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 30, in test_registered_slash_prefix_keeps_option_precedence\n    self.assertEqual(words(command, ['-c'], '/'), ['/extra'])\nAssertionError: Lists differ: ['/red'] != ['/extra']\n\nFirst differing element 0:\n'/red'\n'/extra'\n\n- ['/red']\n+ ['/extra']\n\n======================================================================\nFAIL: test_repeat_option_still_accepts_values (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 51, in test_repeat_option_still_accepts_values\n    self.assertEqual(words(command, ['-c', '+one', '-c'], '+'), ['+one', '+two'])\nAssertionError: Lists differ: [] != ['+one', '+two']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'+one'\n\n- []\n+ ['+one', '+two']\n\n======================================================================\nFAIL: test_symbol_value_reproduction (__main__.CompletionContract) (prefix='+')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 21, in test_symbol_value_reproduction\n    self.assertEqual(words(command, ['-c'], prefix), choices[:2])\nAssertionError: Lists differ: [] != ['+red', '+blue']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'+red'\n\n- []\n+ ['+red', '+blue']\n\n======================================================================\nFAIL: test_symbol_value_reproduction (__main__.CompletionContract) (prefix='!')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 21, in test_symbol_value_reproduction\n    self.assertEqual(words(command, ['-c'], prefix), choices[:2])\nAssertionError: Lists differ: [] != ['!red', '!blue']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'!red'\n\n- []\n+ ['!red', '!blue']\n\n======================================================================\nFAIL: test_symbol_value_reproduction (__main__.CompletionContract) (prefix='~')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 21, in test_symbol_value_reproduction\n    self.assertEqual(words(command, ['-c'], prefix), choices[:2])\nAssertionError: Lists differ: [] != ['~red', '~blue']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'~red'\n\n- []\n+ ['~red', '~blue']\n\n======================================================================\nFAIL: test_symbol_value_reproduction (__main__.CompletionContract) (prefix='@')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 21, in test_symbol_value_reproduction\n    self.assertEqual(words(command, ['-c'], prefix), choices[:2])\nAssertionError: Lists differ: [] != ['@red', '@blue']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'@red'\n\n- []\n+ ['@red', '@blue']\n\n----------------------------------------------------------------------\nRan 12 tests in 0.015s\n\nFAILED (failures=11)\n",
+          "returncode": 1,
+          "exception_info": ""
+        },
+        "completion": {
+          "state": "failed_unsubmitted",
+          "patch_verified": false,
+          "agent_submitted": false,
+          "agent_exit": "LimitsExceeded",
+          "verification_returncode": 1
+        },
+        "api_calls": 24,
+        "format_error_count": 0,
+        "estimated_known_no_cache_cny": 0.51149425,
+        "unknown_cost_requests": 0,
+        "elapsed_seconds": 55.984,
+        "budget": {
+          "limit_cny": "100",
+          "reserved_cny": "95.7",
+          "remaining_reservation_cny": "4.3",
+          "note": "Conservative planning reservations, not actual provider charges"
+        }
+      },
+      "tool_calls": {
+        "bash": 21,
+        "python_check": 3
+      },
+      "python_checks": [
+        {
+          "action": 4,
+          "schema": "tracepatch-python-check-0.1",
+          "provenance": "agent-authored-python",
+          "check_sha256": "d9218353a9070589a9911ed56804844d3f8c552700480ffa6b3f234ade1ef168",
+          "source_before_sha256": "6499cdd78de4a4bdea3bfc6468def2d4bc63f5112b609281271942576fab0a44",
+          "acceptance_verified": null,
+          "error_type": null,
+          "status": "process_failed",
+          "returncode": 1,
+          "timed_out": false,
+          "source_after_sha256": "6499cdd78de4a4bdea3bfc6468def2d4bc63f5112b609281271942576fab0a44",
+          "source_state": "unchanged",
+          "output_sha256": "abede9d59093b80be2c84ba003fdc588d6c8e7d85a76a8172f33c961a63dfbbc"
+        },
+        {
+          "action": 16,
+          "schema": "tracepatch-python-check-0.1",
+          "provenance": "agent-authored-python",
+          "check_sha256": "9ab49e1ecb30d295f7e1815bc6f973a2d1f4ec8736be67e777dc158b81bdd011",
+          "source_before_sha256": "6499cdd78de4a4bdea3bfc6468def2d4bc63f5112b609281271942576fab0a44",
+          "acceptance_verified": null,
+          "error_type": null,
+          "status": "process_passed",
+          "returncode": 0,
+          "timed_out": false,
+          "source_after_sha256": "6499cdd78de4a4bdea3bfc6468def2d4bc63f5112b609281271942576fab0a44",
+          "source_state": "unchanged",
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "action": 17,
+          "schema": "tracepatch-python-check-0.1",
+          "provenance": "agent-authored-python",
+          "check_sha256": "144f111a36346e91312c5882a20aaec969e671f03df7b929ed627b14e73da21d",
+          "source_before_sha256": "6499cdd78de4a4bdea3bfc6468def2d4bc63f5112b609281271942576fab0a44",
+          "acceptance_verified": null,
+          "error_type": null,
+          "status": "process_passed",
+          "returncode": 0,
+          "timed_out": false,
+          "source_after_sha256": "6499cdd78de4a4bdea3bfc6468def2d4bc63f5112b609281271942576fab0a44",
+          "source_state": "unchanged",
+          "output_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+        }
+      ],
+      "edits": [],
+      "edit_tool": "off",
+      "rejections": [],
+      "progress": {
+        "actions": 24,
+        "changed_actions": 0,
+        "unknown_actions": 0,
+        "review_signals": 4,
+        "max_unchanged_streak": 24
+      },
+      "first_changed_action": null,
+      "history_pruned_requests": 15,
+      "prompt_tokens": 103979,
+      "completion_tokens": 926,
+      "all_stage_decisions_replayed": true,
+      "triage": {
+        "run": "repo-edit-off-001--click-2040",
+        "task": "click-2040",
+        "observations": {
+          "category": "acceptance_failed_without_observed_edits",
+          "acceptance_passed": false,
+          "agent_submitted": false,
+          "observed_changed_actions": 0,
+          "unknown_observation_actions": 0,
+          "final_net_source_change": false,
+          "final_source_sha256": "6499cdd78de4a4bdea3bfc6468def2d4bc63f5112b609281271942576fab0a44",
+          "current_public_status": "failed",
+          "current_python_status": "process_passed",
+          "python_check_count": 3,
+          "source_changing_python_checks": 0,
+          "public_pass_but_acceptance_failed": false,
+          "python_pass_but_acceptance_failed": true
+        },
+        "source_file_hashes": {
+          "result.json": "c40aa31d27f541a6e522da4f5f170d39ce25ab5b984177aac813bb497be67c3f",
+          "progress.json": "8e442499ff8c964f7b8b2e11c54310166d9bf59e786a5bf70a7026b6db58b3c7",
+          "public-checks/checks.json": "4acc33be5dccc7299bf77416523c1dff8bd2158ed724f41a14d294bafce9aac3",
+          "python-checks/001.json": "071817edeaf3714abb727a8df87bdb0747bf0e9b0915c8c5712d16d570363016",
+          "python-checks/002.json": "a0beda4312a670b8d5634c69382a5a2c826350d420278bd5c36083cbe2af6261",
+          "python-checks/003.json": "20b052b4dec7301e786fdd22bbfa3041e767c2beb47836e101cdad847b150891"
+        }
+      },
+      "hashes": {
+        "requests.json": "ab4a7dc73290a8c71be6cdc98101a1a56069b8ebebb4673817354173d8d4e17e",
+        "trajectory.json": "ff7f6f4787f3e926642e44ca346ec361fe305354be1defcd2005b100de125b5a",
+        "patch.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "batch": "repo-edit-replace-001",
+      "task": "click-2040",
+      "requested_model": "qwen3-coder-plus",
+      "response_models": [
+        "qwen3-coder-plus"
+      ],
+      "result": {
+        "task": "click-2040",
+        "status": "verified",
+        "verified_success": false,
+        "agent_exit": "LimitsExceeded",
+        "verification": {
+          "output": "test_absolute_path_completion_metadata (__main__.CompletionContract) ... ok\ntest_boolean_flag_does_not_request_a_value (__main__.CompletionContract) ... ok\ntest_count_option_does_not_request_a_value (__main__.CompletionContract) ... FAIL\ntest_custom_completion_and_regular_option_names (__main__.CompletionContract) ... FAIL\ntest_double_dash_preserves_positional_values (__main__.CompletionContract) ... ok\ntest_equals_syntax_preserves_symbol_value (__main__.CompletionContract) ... FAIL\ntest_multivalue_symbol_argument_scanning (__main__.CompletionContract) ... FAIL\ntest_nested_context_prefixes_do_not_leak_from_siblings (__main__.CompletionContract) ... FAIL\ntest_registered_plus_prefix_keeps_option_precedence (__main__.CompletionContract) ... ok\ntest_registered_slash_prefix_keeps_option_precedence (__main__.CompletionContract) ... FAIL\ntest_repeat_option_still_accepts_values (__main__.CompletionContract) ... FAIL\ntest_symbol_value_reproduction (__main__.CompletionContract) ... \n======================================================================\nFAIL: test_count_option_does_not_request_a_value (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 36, in test_count_option_does_not_request_a_value\n    self.assertEqual(words(command, ['-v'], ''), ['north', 'south'])\nAssertionError: Lists differ: ['WRONG-count-value'] != ['north', 'south']\n\nFirst differing element 0:\n'WRONG-count-value'\n'north'\n\nSecond list contains 1 additional elements.\nFirst extra element 1:\n'south'\n\n- ['WRONG-count-value']\n+ ['north', 'south']\n\n======================================================================\nFAIL: test_custom_completion_and_regular_option_names (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 79, in test_custom_completion_and_regular_option_names\n    self.assertEqual([(x.value, x.help) for x in result], [('!done', 'custom help')])\nAssertionError: Lists differ: [] != [('!done', 'custom help')]\n\nSecond list contains 1 additional elements.\nFirst extra element 0:\n('!done', 'custom help')\n\n- []\n+ [('!done', 'custom help')]\n\n======================================================================\nFAIL: test_equals_syntax_preserves_symbol_value (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 56, in test_equals_syntax_preserves_symbol_value\n    self.assertEqual(words(command, [], '--color=!r'), ['!red', '!rose'])\nAssertionError: Lists differ: [] != ['!red', '!rose']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'!red'\n\n- []\n+ ['!red', '!rose']\n\n======================================================================\nFAIL: test_multivalue_symbol_argument_scanning (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 46, in test_multivalue_symbol_argument_scanning\n    self.assertEqual(words(command, ['-c', '!one'], '!'), ['!one', '!two'])\nAssertionError: Lists differ: [] != ['!one', '!two']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'!one'\n\n- []\n+ ['!one', '!two']\n\n======================================================================\nFAIL: test_nested_context_prefixes_do_not_leak_from_siblings (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 71, in test_nested_context_prefixes_do_not_leak_from_siblings\n    self.assertEqual(words(command, ['plain', '-c'], '+'), ['+red', '+rose'])\nAssertionError: Lists differ: [] != ['+red', '+rose']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'+red'\n\n- []\n+ ['+red', '+rose']\n\n======================================================================\nFAIL: test_registered_slash_prefix_keeps_option_precedence (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 30, in test_registered_slash_prefix_keeps_option_precedence\n    self.assertEqual(words(command, ['-c'], '/'), ['/extra'])\nAssertionError: Lists differ: ['/red'] != ['/extra']\n\nFirst differing element 0:\n'/red'\n'/extra'\n\n- ['/red']\n+ ['/extra']\n\n======================================================================\nFAIL: test_repeat_option_still_accepts_values (__main__.CompletionContract)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 51, in test_repeat_option_still_accepts_values\n    self.assertEqual(words(command, ['-c', '+one', '-c'], '+'), ['+one', '+two'])\nAssertionError: Lists differ: [] != ['+one', '+two']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'+one'\n\n- []\n+ ['+one', '+two']\n\n======================================================================\nFAIL: test_symbol_value_reproduction (__main__.CompletionContract) (prefix='+')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 21, in test_symbol_value_reproduction\n    self.assertEqual(words(command, ['-c'], prefix), choices[:2])\nAssertionError: Lists differ: [] != ['+red', '+blue']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'+red'\n\n- []\n+ ['+red', '+blue']\n\n======================================================================\nFAIL: test_symbol_value_reproduction (__main__.CompletionContract) (prefix='!')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 21, in test_symbol_value_reproduction\n    self.assertEqual(words(command, ['-c'], prefix), choices[:2])\nAssertionError: Lists differ: [] != ['!red', '!blue']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'!red'\n\n- []\n+ ['!red', '!blue']\n\n======================================================================\nFAIL: test_symbol_value_reproduction (__main__.CompletionContract) (prefix='~')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 21, in test_symbol_value_reproduction\n    self.assertEqual(words(command, ['-c'], prefix), choices[:2])\nAssertionError: Lists differ: [] != ['~red', '~blue']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'~red'\n\n- []\n+ ['~red', '~blue']\n\n======================================================================\nFAIL: test_symbol_value_reproduction (__main__.CompletionContract) (prefix='@')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/verify.py\", line 21, in test_symbol_value_reproduction\n    self.assertEqual(words(command, ['-c'], prefix), choices[:2])\nAssertionError: Lists differ: [] != ['@red', '@blue']\n\nSecond list contains 2 additional elements.\nFirst extra element 0:\n'@red'\n\n- []\n+ ['@red', '@blue']\n\n----------------------------------------------------------------------\nRan 12 tests in 0.017s\n\nFAILED (failures=11)\n",
+          "returncode": 1,
+          "exception_info": ""
+        },
+        "completion": {
+          "state": "failed_unsubmitted",
+          "patch_verified": false,
+          "agent_submitted": false,
+          "agent_exit": "LimitsExceeded",
+          "verification_returncode": 1
+        },
+        "api_calls": 24,
+        "format_error_count": 0,
+        "estimated_known_no_cache_cny": 0.56328825,
+        "unknown_cost_requests": 0,
+        "elapsed_seconds": 66.344,
+        "budget": {
+          "limit_cny": "100",
+          "reserved_cny": "98.1",
+          "remaining_reservation_cny": "1.9",
+          "note": "Conservative planning reservations, not actual provider charges"
+        }
+      },
+      "tool_calls": {
+        "bash": 21,
+        "python_check": 1,
+        "replace_text": 2
+      },
+      "python_checks": [
+        {
+          "action": 4,
+          "schema": "tracepatch-python-check-0.1",
+          "provenance": "agent-authored-python",
+          "check_sha256": "d9218353a9070589a9911ed56804844d3f8c552700480ffa6b3f234ade1ef168",
+          "source_before_sha256": "6499cdd78de4a4bdea3bfc6468def2d4bc63f5112b609281271942576fab0a44",
+          "acceptance_verified": null,
+          "error_type": null,
+          "status": "process_failed",
+          "returncode": 1,
+          "timed_out": false,
+          "source_after_sha256": "6499cdd78de4a4bdea3bfc6468def2d4bc63f5112b609281271942576fab0a44",
+          "source_state": "unchanged",
+          "output_sha256": "abede9d59093b80be2c84ba003fdc588d6c8e7d85a76a8172f33c961a63dfbbc"
+        }
+      ],
+      "edits": [
+        {
+          "action": 13,
+          "provenance": "supervised-source-edit",
+          "status": "old_text_not_found",
+          "path": "src/click/shell_completion.py",
+          "file_before_sha256": "e3648c95c03b4f8fea6616ba2cda74133ae8b4e5d07070e0e633fe2b8a47f35b",
+          "file_after_sha256": "e3648c95c03b4f8fea6616ba2cda74133ae8b4e5d07070e0e633fe2b8a47f35b",
+          "old_sha256": "62b558146af5ba8f7d54660066fa7a707603bed99b48a490a3f08cf4c30dd544",
+          "new_sha256": "a81c72a60271098cc07485c7687f34e2e9e610e5255f721f943d535c0f9dd14a",
+          "matches": 0,
+          "acceptance_verified": null,
+          "edit_sha256": "8e8ed91a9108df3972d9425edf55e624cb9eb7bd47ba495b1c61028aec3e1c87"
+        },
+        {
+          "action": 18,
+          "provenance": "supervised-source-edit",
+          "status": "old_text_not_found",
+          "path": "src/click/shell_completion.py",
+          "file_before_sha256": "e3648c95c03b4f8fea6616ba2cda74133ae8b4e5d07070e0e633fe2b8a47f35b",
+          "file_after_sha256": "e3648c95c03b4f8fea6616ba2cda74133ae8b4e5d07070e0e633fe2b8a47f35b",
+          "old_sha256": "62b558146af5ba8f7d54660066fa7a707603bed99b48a490a3f08cf4c30dd544",
+          "new_sha256": "7aa396cff0d5807dbc388ddd0a8dc57fe19f74686a4ba3481d9d7a039e213643",
+          "matches": 0,
+          "acceptance_verified": null,
+          "edit_sha256": "a8aafb33334ecb5eb072edc8ab0d73ca06420ad75dae17322ad3f2be2db8721f"
+        }
+      ],
+      "edit_tool": "replace",
+      "rejections": [],
+      "progress": {
+        "actions": 24,
+        "changed_actions": 0,
+        "unknown_actions": 0,
+        "review_signals": 4,
+        "max_unchanged_streak": 24
+      },
+      "first_changed_action": null,
+      "history_pruned_requests": 17,
+      "prompt_tokens": 111227,
+      "completion_tokens": 1840,
+      "all_stage_decisions_replayed": true,
+      "triage": {
+        "run": "repo-edit-replace-001--click-2040",
+        "task": "click-2040",
+        "observations": {
+          "category": "acceptance_failed_without_observed_edits",
+          "acceptance_passed": false,
+          "agent_submitted": false,
+          "observed_changed_actions": 0,
+          "unknown_observation_actions": 0,
+          "final_net_source_change": false,
+          "final_source_sha256": "6499cdd78de4a4bdea3bfc6468def2d4bc63f5112b609281271942576fab0a44",
+          "current_public_status": "failed",
+          "current_python_status": "process_failed",
+          "python_check_count": 1,
+          "source_changing_python_checks": 0,
+          "public_pass_but_acceptance_failed": false,
+          "python_pass_but_acceptance_failed": false
+        },
+        "source_file_hashes": {
+          "result.json": "f0751da484d2f63ebccceaf7d223cc055804de82554128c97926449cec11ca41",
+          "progress.json": "bb6f6b56f079125d0ed196a9dc5bfb6e333656a9a770695797779f8b8473af5d",
+          "public-checks/checks.json": "4acc33be5dccc7299bf77416523c1dff8bd2158ed724f41a14d294bafce9aac3",
+          "python-checks/001.json": "071817edeaf3714abb727a8df87bdb0747bf0e9b0915c8c5712d16d570363016"
+        }
+      },
+      "hashes": {
+        "requests.json": "042d83985baa2f85f5164e7ae06c2f7caa55112a76a497c3f3051529caf50396",
+        "trajectory.json": "1b48628b5d5d23110ecdfd2e0612cfc7d8c1a9e61a62cc18534218e6bec50eb6",
+        "patch.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "totals": {
+    "calls": 48,
+    "estimated_known_no_cache_cny": 1.0747825
+  }
+}

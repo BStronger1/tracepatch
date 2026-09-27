@@ -30,7 +30,7 @@ def read(path):
     return json.loads(path.read_text(encoding='utf-8'))
 
 
-def summarize(plan_path):
+def summarize(plan_path, intervention='model'):
     plan = read(plan_path)
     for name, digest in plan['file_hashes'].items():
         if hashlib.sha256(local_path(name).read_bytes()).hexdigest() != digest:
@@ -55,12 +55,33 @@ def summarize(plan_path):
             assert snapshot_digest(state) == record['source_sha256']
             versions[record['source_sha256']] = state
         trajectory = read(run / 'trajectory.json')
-        action_index, tools, python_records = 0, Counter(), []
+        action_index, tools, python_records, edit_records = 0, Counter(), [], []
         for index, message in enumerate(trajectory['messages']):
             for action in message.get('extra', {}).get('actions', []):
                 action_index += 1
                 name = action.get('tool', 'bash')
                 tools[name] += 1
+                if name == 'replace_text':
+                    assert manifest.get('edit_tool') == 'replace'
+                    number = len(edit_records) + 1
+                    record = read(run / 'edits' / f'{number:03d}.json')
+                    edit = read(run / 'edits' / f'{number:03d}.input.json')
+                    assert action['edit'] == edit
+                    assert hashlib.sha256(json.dumps(edit, sort_keys=True).encode()).hexdigest() == record['edit_sha256']
+                    assert record['provenance'] == 'supervised-source-edit' and record['acceptance_verified'] is None
+                    assert record.get('error_type') is None and record['status'] != 'unknown'
+                    before = progress['initial_sha256'] if action_index == 1 else progress['events'][action_index-2]['snapshot_sha256']
+                    after = progress['events'][action_index-1]['snapshot_sha256']
+                    if record.get('file_before_sha256') is not None:
+                        assert record['file_before_sha256'] == versions[before][edit['path']]
+                        assert record['file_after_sha256'] == versions[after][edit['path']]
+                    if record['status'] == 'applied':
+                        assert before != after
+                    else:
+                        assert before == after
+                    observation = json.loads(trajectory['messages'][index+1]['content'])
+                    assert observation['status'] == record['status'] and observation['acceptance_verified'] is None
+                    edit_records.append({'action': action_index, **record})
                 if name != 'python_check':
                     continue
                 number = len(python_records) + 1
@@ -95,7 +116,8 @@ def summarize(plan_path):
         assert snapshot_digest(final_state) == progress['events'][-1]['snapshot_sha256']
         arms.append({'batch': arm['batch'], 'task': arm['task'], 'requested_model': manifest['model'],
             'response_models': sorted({c.get('response_model') or '(missing)' for c in calls}),
-            'result': result, 'tool_calls': dict(tools), 'python_checks': python_records, 'rejections': diagnoses,
+            'result': result, 'tool_calls': dict(tools), 'python_checks': python_records, 'edits': edit_records,
+            'edit_tool': manifest.get('edit_tool', 'off'), 'rejections': diagnoses,
             'progress': progress['summary'], 'first_changed_action': next((e['action'] for e in progress['events'] if e['state'] == 'changed'), None),
             'history_pruned_requests': sum(c.get('omitted_messages', 0) > 0 for c in calls),
             'prompt_tokens': sum(c['prompt_tokens'] for c in calls), 'completion_tokens': sum(c['completion_tokens'] for c in calls),
@@ -105,7 +127,7 @@ def summarize(plan_path):
     for task in sorted({a['task'] for a in plan['order']}):
         selected = [a for a in plan['order'] if a['task'] == task]
         assert len(selected) == 2
-        pairs.append({'task': task, 'comparison': compare_runs.compare(*(local_path('runs/' + a['batch']) for a in selected), intervention='model')})
+        pairs.append({'task': task, 'comparison': compare_runs.compare(*(local_path('runs/' + a['batch']) for a in selected), intervention=intervention)})
     return {'scope': plan['scope'], 'plan': plan_path.name, 'pairs': pairs, 'arms': arms,
             'totals': {'calls': sum(a['result']['api_calls'] for a in arms),
                        'estimated_known_no_cache_cny': sum(a['result']['estimated_known_no_cache_cny'] for a in arms)}}
@@ -115,8 +137,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--plan', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--intervention', choices=['model', 'edit-tool'], default='model')
     args = parser.parse_args()
-    report = summarize(args.plan)
+    report = summarize(args.plan, args.intervention)
     with args.output.open('x', encoding='utf-8') as handle:
         json.dump(report, handle, indent=2)
     print(json.dumps({'arms': [{k: a[k] for k in ('task', 'requested_model', 'response_models', 'tool_calls', 'first_changed_action')} for a in report['arms']],

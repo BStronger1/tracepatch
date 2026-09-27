@@ -21,6 +21,7 @@ from tracepatch.memory import EvidenceMemory, docker_read_ranges
 from tracepatch.checks import PublicChecks
 from tracepatch.testing import PythonCheckEnvironment, docker_python_check, python_tool_prompt
 from tracepatch.modelconfig import select_profile
+from tracepatch.editing import EditingEnvironment, docker_replace, edit_tool_prompt
 
 spec = importlib.util.spec_from_file_location('runtime', ROOT / 'scripts/run-smoke.py')
 runtime = importlib.util.module_from_spec(spec)
@@ -135,8 +136,11 @@ def main():
     parser.add_argument('--check-mode', choices=('off', 'observe', 'feedback'), default='off')
     parser.add_argument('--test-tool', choices=('off', 'python'), default='off')
     parser.add_argument('--stage-mode', choices=('off', 'observe', 'guide'), default='off')
+    parser.add_argument('--edit-tool', choices=('off', 'replace'), default='off')
     parser.add_argument('--model-profile', default='default', help='Versioned entry in configs/model-profiles.json; default preserves configs/model.json')
     args = parser.parse_args()
+    if args.edit_tool == 'replace' and (args.test_tool != 'python' or args.progress_mode == 'off'):
+        parser.error('Structured editing requires Python tool and source observation')
     if args.memory_mode != 'off' and args.progress_mode == 'off':
         parser.error('Evidence memory requires source observation')
     if args.check_mode != 'off' and (args.progress_mode == 'off' or not args.visible_reproducer):
@@ -151,6 +155,8 @@ def main():
                                 'Call the bash function exactly once per reply with a complete command argument. Do not write XML or fenced actions.')
     if args.test_tool == 'python':
         system = python_tool_prompt(system)
+    if args.edit_tool == 'replace':
+        system = edit_tool_prompt(system)
     if not re.fullmatch(r'repo-[a-z0-9-]{1,45}', args.batch):
         parser.error('Use a new repo-... batch ID')
     task = ROOT / 'tasks/repos' / args.task
@@ -169,7 +175,7 @@ def main():
     batch = ROOT / 'runs' / args.batch
     batch.mkdir(parents=True, exist_ok=False)
     for name, path in {'runner': Path(__file__), 'runtime': ROOT / 'scripts/run-smoke.py',
-                       **{n: ROOT / f'src/tracepatch/{n}.py' for n in ('budget', 'actions', 'recovery', 'lifecycle', 'window', 'toolcalling', 'repositories', 'progress', 'memory', 'context', 'symbols', 'checks', 'testing', 'stages', 'modelconfig')}}.items():
+                       **{n: ROOT / f'src/tracepatch/{n}.py' for n in ('budget', 'actions', 'recovery', 'lifecycle', 'window', 'toolcalling', 'repositories', 'progress', 'memory', 'context', 'symbols', 'checks', 'testing', 'stages', 'modelconfig', 'editing')}}.items():
         shutil.copyfile(path, batch / f'{name}.snapshot.py')
     base, reference = batch / 'base', batch / 'reference'
     hashes = {'base_archive': archive_source(task_config['base_commit'], base, task_config['repository']),
@@ -196,6 +202,7 @@ def main():
                 'test_tool': args.test_tool, 'test_tool_schema': 'tracepatch-python-check-0.1',
                 'test_tool_timeout': 20,
                 'stage_mode': args.stage_mode, 'stage_schema': 'tracepatch-stages-0.1',
+                'edit_tool': args.edit_tool, 'edit_tool_schema': 'tracepatch-edit-0.1',
                 'stage_inspect_calls': 6, 'stage_final_calls': 2,
                 'max_output_tokens': args.max_output_tokens, 'enable_thinking': False, 'observation_char_limit': 6000,
                 'input_json_byte_limit': 24000, 'reject_provider_truncation': True,
@@ -265,6 +272,9 @@ def main():
                 public_checks.observe(initial, 0)
                 model.public_checks = public_checks
                 model.check_feedback = args.check_mode == 'feedback'
+            if args.edit_tool == 'replace':
+                env = EditingEnvironment(env, lambda edit: docker_replace(runtime.DOCKER, container_id, paths, edit), run / 'edits')
+                model.edit_tool = 'replace'
             if args.test_tool == 'python':
                 execute_check = lambda code: docker_python_check(runtime.DOCKER, container_id, code, layout.imports)
                 env = PythonCheckEnvironment(env, execute_check, snapshot, run / 'python-checks')

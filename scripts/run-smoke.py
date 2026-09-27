@@ -23,7 +23,7 @@ from tracepatch.actions import parse_action
 from tracepatch.recovery import diagnose_action, recovery_feedback
 from tracepatch.lifecycle import prepare_messages
 from tracepatch.window import request_payload, validate_output_limit
-from tracepatch.toolcalling import TOOL_OPTIONS, TEST_TOOL_OPTIONS, native_history, parse_tool_call
+from tracepatch.toolcalling import TOOL_OPTIONS, TEST_TOOL_OPTIONS, EDIT_TOOL_OPTIONS, native_history, parse_tool_call
 from tracepatch.testing import observation_json
 from tracepatch.stages import decide_stage, stage_notice, stage_tool_options
 from minisweagent.agents.default import DefaultAgent
@@ -76,6 +76,7 @@ class DmxModel:
         self.public_checks = None
         self.check_feedback = False
         self.test_tool = 'off'
+        self.edit_tool = 'off'
         self.stage_mode = 'off'
         self.python_check_environment = None
 
@@ -94,7 +95,7 @@ class DmxModel:
             raise RuntimeError('Smoke request limit reached')
         wire, notice = prepare_messages(messages, len(self.calls), self.max_calls, self.policy)
         if self.action_protocol == 'native':
-            wire = native_history(messages, allow_python_check=self.test_tool == 'python')
+            wire = native_history(messages, allow_python_check=self.test_tool == 'python', allow_replace_text=self.edit_tool == 'replace')
             if notice:
                 wire.append({'role': 'user', 'content': notice})
         progress_notice = None
@@ -113,6 +114,8 @@ class DmxModel:
         if self.memory_mode == 'recall' and self.evidence_memory is not None:
             memory_notice, memory_cards = self.evidence_memory.recall(self.progress_monitor.previous, profile=self.memory_profile)
         options = (TEST_TOOL_OPTIONS if self.test_tool == 'python' else TOOL_OPTIONS) if self.action_protocol == 'native' else None
+        if self.edit_tool == 'replace':
+            options = EDIT_TOOL_OPTIONS
         stage, stage_feedback = None, None
         if self.stage_mode != 'off':
             stage = decide_stage(self.progress_monitor.initial, self.progress_monitor.previous,
@@ -125,8 +128,7 @@ class DmxModel:
         payload, context_metadata = request_payload(self.config['model'], wire, self.context_policy,
             tool_options=options,
             max_output_tokens=self.max_output_tokens, memory_notice=memory_notice)
-        # At quoted prices even input + cache creation per byte and full output
-        # plus up to 1024 output tokens fits within 0.1 CNY/request.
+        # Planning reservation, not a price guarantee across model profiles.
         record = {'index': len(self.calls) + 1, 'status': 'started',
                   'request_bytes': len(payload), 'reserved_cny': 0.1}
         record.update(calls_remaining_including_current=self.max_calls - len(self.calls), budget_notice=notice)
@@ -134,6 +136,7 @@ class DmxModel:
         record['action_protocol'] = self.action_protocol
         record['max_output_tokens'] = self.max_output_tokens
         record['test_tool'] = self.test_tool
+        record['edit_tool'] = self.edit_tool
         if self.stage_mode != 'off':
             record.update(stage_mode=self.stage_mode, stage_decision=stage,
                           stage_notice=stage_feedback, actual_tool_choice=options['tool_choice'])
@@ -186,7 +189,7 @@ class DmxModel:
         if self.action_protocol == 'native':
             raw_message = data['choices'][0]['message']
             try:
-                command, call = parse_tool_call(raw_message, finish_reason, allow_python_check=self.test_tool == 'python')
+                command, call = parse_tool_call(raw_message, finish_reason, allow_python_check=self.test_tool == 'python', allow_replace_text=self.edit_tool == 'replace')
                 if self.stage_mode == 'guide' and stage['required_tool'] and call['function']['name'] != stage['required_tool']:
                     raise ValueError('stage_requires_python_check')
             except ValueError as error:
@@ -201,6 +204,7 @@ class DmxModel:
                      'Use Python assertions, not shell syntax.' if self.stage_mode == 'guide' and stage['required_tool'] else
                      'No command was executed. Call exactly one function: bash with a nonempty command string, '
                      'or python_check with a nonempty code string. Do not write XML or fenced actions.'
+                     + (' You may also call replace_text with exactly path, old, new string fields.' if self.edit_tool == 'replace' else '')
                      if self.test_tool == 'python' else
                      'No command was executed. Call the bash function once with a complete JSON object containing only a nonempty command string. Do not write XML or fenced actions. Keep the command short enough for the configured output limit.')})
             record.update(finish_reason=finish_reason, action_diagnosis='valid', policy=self.policy)
@@ -209,6 +213,9 @@ class DmxModel:
             if call['function']['name'] == 'python_check':
                 action = {'tool': 'python_check', 'code': command,
                           'command': 'python_check sha256:' + hashlib.sha256(command.encode()).hexdigest()}
+            if call['function']['name'] == 'replace_text':
+                action = {'tool': 'replace_text', 'edit': json.loads(command),
+                          'command': 'replace_text sha256:' + hashlib.sha256(command.encode()).hexdigest()}
             return {'role': 'assistant', 'content': raw_message.get('content'), 'tool_calls': [call],
                     'extra': {'cost': record['estimated_no_cache_cny'], 'usage': usage,
                               'actions': [action]}}
@@ -242,7 +249,7 @@ class DmxModel:
             if len(outputs) != 1:
                 raise ValueError('Expected one tool result')
             return [{'role': 'tool', 'tool_call_id': message['tool_calls'][0]['id'],
-                     'content': observation_json(outputs[0]) if outputs[0].get('provenance') == 'agent-authored-python'
+                     'content': observation_json(outputs[0]) if outputs[0].get('provenance') in ('agent-authored-python', 'supervised-source-edit')
                      else json.dumps(outputs[0], ensure_ascii=False)[:6000]}]
         return [{'role': 'user', 'content': json.dumps(output, ensure_ascii=False)[:6000]}
                 for output in outputs]

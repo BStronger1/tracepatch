@@ -1,0 +1,55 @@
+{
+  "scope": "Read-only post hoc action audit; commands were not replayed; not proof that a new tool would solve the task.",
+  "run": "repo-model-completion-coder-001--click-2040",
+  "initial_source_sha256": "6499cdd78de4a4bdea3bfc6468def2d4bc63f5112b609281271942576fab0a44",
+  "observed_source_changes": 0,
+  "selected_actions": [
+    {
+      "interpretation_from_recorded_action": "Copied package source to a backup file outside the exported source list.",
+      "action": 21,
+      "command_sha256": "c392784b8d5e941c45c2543f34ab860526849e76d7f95b59870bb206e26e3e7a",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "6499cdd78de4a4bdea3bfc6468def2d4bc63f5112b609281271942576fab0a44",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 21
+    },
+    {
+      "interpretation_from_recorded_action": "Compared unchanged backup and source; empty diff and exit zero are not repair evidence.",
+      "action": 22,
+      "command_sha256": "f33ec247ac55405cf18473c07de556e784efb5f5a5b33442246ee8e1114c12f8",
+      "tool_returncode": 0,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "6499cdd78de4a4bdea3bfc6468def2d4bc63f5112b609281271942576fab0a44",
+      "signal": null,
+      "state": "unchanged",
+      "unchanged_streak": 22
+    },
+    {
+      "interpretation_from_recorded_action": "Wrote a temporary file and executed a function in a separate namespace; package source and original module call path remained unchanged, assertion failed.",
+      "action": 24,
+      "command_sha256": "5b1bfd321d48331ce6d0170e23fbd96e8bf2e13b9c5371a984567b2aa3d4ec76",
+      "tool_returncode": 1,
+      "test_passed": null,
+      "observation_error": null,
+      "changed_paths": [],
+      "net_changed_paths": [],
+      "snapshot_sha256": "6499cdd78de4a4bdea3bfc6468def2d4bc63f5112b609281271942576fab0a44",
+      "signal": "unchanged_source_review",
+      "state": "unchanged",
+      "unchanged_streak": 24
+    }
+  ],
+  "source_file_hashes": {
+    "trajectory.json": "717cf1979ae7ab04efe26b3e598655732fd1120d5982622cf25688a5ce7f0b8a",
+    "progress.json": "7bbf0fe6b2f8b57df4e6602f0992880847b45ef1fd136d27518c07265622ba54",
+    "patch.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

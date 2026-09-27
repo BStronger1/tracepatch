@@ -1,0 +1,24 @@
+{
+  "scope": "Synthetic replies through real adapter and Docker; not repair evidence",
+  "model_api_calls": 0,
+  "assertions_passed": true,
+  "image": "python@sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b",
+  "statuses": [
+    "old_text_not_found",
+    "ambiguous_match",
+    "syntax_error",
+    "path_not_allowed",
+    "no_change",
+    "applied"
+  ],
+  "symlink_rejected": true,
+  "persisted_value_checked_in_separate_process": true,
+  "only_explicit_submission_finishes": true,
+  "crlf_source_lf_arguments_persisted": true,
+  "line_endings_preserved": true,
+  "advertised_tools": [
+    "bash",
+    "python_check",
+    "replace_text"
+  ]
+}
